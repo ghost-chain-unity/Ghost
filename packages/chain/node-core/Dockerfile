@@ -18,7 +18,10 @@ WORKDIR /polkadot
 # Dependency caching layer (very important)
 # =======================================
 # Copy workspace manifests (needed for cargo fetch)
-COPY Cargo.toml Cargo.lock ./
+# Note: COPY paths are relative to build context - adjust based on where Docker is built from
+# If building from repo root: use packages/chain/node-core/...
+# If building from node-core: use ./, runtime/, etc.
+COPY Cargo.toml Cargo.lock* ./
 COPY runtime/Cargo.toml ./runtime/
 COPY node/Cargo.toml ./node/
 COPY pallets/chainghost/Cargo.toml ./pallets/chainghost/
@@ -26,16 +29,27 @@ COPY pallets/g3mail/Cargo.toml ./pallets/g3mail/
 COPY pallets/ghonity/Cargo.toml ./pallets/ghonity/
 COPY pallets/template/Cargo.toml ./pallets/template/
 
+# Copy dummy source files to satisfy Cargo manifest checks
+# Cargo will use these during fetch, then replace with real source on next COPY
+RUN mkdir -p runtime/src node/src pallets/chainghost/src pallets/g3mail/src pallets/ghonity/src pallets/template/src
+RUN echo 'fn main() {}' > node/src/main.rs
+RUN echo 'fn main() {}' > runtime/src/lib.rs
+RUN echo 'pub fn lib() {}' > pallets/chainghost/src/lib.rs
+RUN echo 'pub fn lib() {}' > pallets/g3mail/src/lib.rs
+RUN echo 'pub fn lib() {}' > pallets/ghonity/src/lib.rs
+RUN echo 'pub fn lib() {}' > pallets/template/src/lib.rs
+
 # Prevent temp directory issues in Docker
 ENV RUST_TMPDIR=/polkadot/tmp
 RUN mkdir -p /polkadot/tmp
 
-# Prefetch dependencies for caching
-RUN cargo fetch
+# Prefetch dependencies for caching (with --locked if Cargo.lock exists)
+RUN cargo fetch --locked || cargo fetch
 
 # =======================================
 # Real source build
 # =======================================
+# Copy full source code (overwrites dummy files)
 COPY . /polkadot
 
 RUN cargo build --locked --release
