@@ -565,37 +565,41 @@ This document provides a **complete task breakdown** for all phases of Ghost Pro
 - **Status:** ⏳ Not Started
 
 #### TASK-1.2.2: Build API Gateway (NestJS)
-- **Description:** Core API service with auth, routing, rate limiting
+- **Description:** Core API service with auth, routing, rate limiting, caching
 - **Acceptance Criteria:**
   - [ ] NestJS app structure
   - [ ] Authentication (JWT) with refresh tokens
   - [ ] Authorization (RBAC) middleware
-  - [ ] Rate limiting (Redis-based)
+  - [ ] Rate limiting (PostgreSQL-based via Guards/Middleware)
   - [ ] Request logging and tracing
   - [ ] OpenAPI documentation
   - [ ] Health check endpoints (/health, /health/ready)
+  - [ ] RPC call cache layer (Dragonfly for distributed caching)
   - [ ] **DEFERRED from TASK-0.4.6:** Instrument with OpenTelemetry SDK for distributed tracing - See [DEFER-0.4.6-1](#deferred-items-tracking)
+- **Caching Strategy:** Hybrid cache with Dragonfly (RPC response cache) + local memory (short-lived)
 - **Dependencies:** TASK-1.2.1
 - **Deferred Items to Pick Up:** [DEFER-0.4.6-1](#deferred-items-tracking) (OpenTelemetry SDK instrumentation for tracing)
-- **Effort:** 21 story points (1 week) - includes OTel SDK instrumentation
+- **Effort:** 21 story points (1 week) - includes OTel SDK instrumentation + caching layer
 - **Owner:** Agent Backend
 - **Priority:** P0 (CRITICAL)
 - **Status:** ⏳ Not Started
 
 #### TASK-1.2.3: Build Indexer Service
-- **Description:** Stream blocks from chain, extract events, write to DB
+- **Description:** Stream blocks from chain, extract events, write to DB with optimized indexing
 - **Acceptance Criteria:**
   - [ ] Connect to Chain Ghost RPC
   - [ ] Stream new blocks (WebSocket subscription)
   - [ ] Parse transactions and events
-  - [ ] Write to PostgreSQL (transactions, events, balances)
+  - [ ] Write to DuckDB or LMDB (high-performance indexed storage for events)
+  - [ ] Write block/transaction metadata to PostgreSQL (for aggregations)
   - [ ] Handle reorgs (rollback mechanism)
   - [ ] Backfill historical data
   - [ ] Monitoring and alerting
   - [ ] **DEFERRED from TASK-1.1.3:** Implement advanced RPC subscriptions (chainghost_subscribe*, g3mail_subscribe*, ghonity_subscribe* methods) for real-time event streaming - See [DEFER-1.1.3-2](#deferred-items-tracking)
+- **Storage Strategy:** DuckDB/LMDB for event indexing (fast analytics) + PostgreSQL for aggregations
 - **Dependencies:** TASK-1.1.3, TASK-1.2.1
 - **Deferred Items to Pick Up:** [DEFER-1.1.3-2](#deferred-items-tracking) (Advanced subscriptions: Block notifications, Event subscriptions, Log filtering)
-- **Effort:** 21 story points (1 week) - includes deferred subscription implementation
+- **Effort:** 21 story points (1 week) - includes deferred subscription implementation + DuckDB/LMDB setup
 - **Owner:** Agent Backend
 - **Priority:** P0 (CRITICAL)
 - **Status:** ⏳ Not Started

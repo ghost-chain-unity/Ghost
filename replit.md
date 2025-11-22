@@ -92,6 +92,13 @@ The project utilizes a mono-repo architecture with pnpm workspaces, enforcing st
 
 **AI/ML:** Python/Node.js AI Engine leveraging Hugging Face LLM endpoints for story generation, with multi-LLM fallback and content safety filtering.
 
+**Caching & Storage Strategy (Hybrid):**
+- **RPC Call Cache:** Dragonfly (Redis-compatible, opensource alternative) for distributed caching of RPC responses
+- **Event Indexing:** DuckDB or LMDB for high-performance event storage and analytics
+- **Node Storage:** IPFS for decentralized content storage (messages, data)
+- **Rate Limiting:** PostgreSQL-based (via API Gateway Guards/Middleware)
+- **Session State:** PostgreSQL (primary), Dragonfly (cache layer)
+
 **Infrastructure:** Docker Compose (local development), Kubernetes (production), GitHub Actions (CI/CD).
 
 ### Core Services Architecture
@@ -117,8 +124,12 @@ Security measures include JWT authentication, request signing, client-side encry
 
 - **Blockchain & Web3:** Substrate framework, RocksDB.
 - **AI/ML:** Hugging Face API.
-- **Storage:** IPFS, Amazon S3.
-- **Databases:** PostgreSQL 15+, TimescaleDB, Redis.
+- **Caching & Storage:** 
+  - Dragonfly (opensource Redis-compatible alternative for RPC caching)
+  - DuckDB or LMDB (high-performance event indexing)
+  - IPFS (decentralized content storage for messages and data)
+  - Amazon S3 (alternative/fallback storage)
+- **Databases:** PostgreSQL 15+, TimescaleDB.
 - **Infrastructure & DevOps:** Docker, Docker Compose, Kubernetes, GitHub Actions.
 - **Frontend Libraries:** Three.js, Spline, GSAP, Framer Motion, Hero UI, Tailwind CSS.
 - **Backend Libraries:** NestJS, Prisma ORM.

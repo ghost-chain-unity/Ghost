@@ -8,16 +8,26 @@
 - Node Orchestration (NodeJS)
   - Node manager, telemetry, plugin loader for indexer hooks.
 - Indexer Service (NodeJS / Rust)
-  - Streams blocks, extracts events, writes to Postgres.
+  - Streams blocks, extracts events via WebSocket subscription.
+  - Writes high-performance indexed events to DuckDB/LMDB.
+  - Writes block/transaction metadata to Postgres (for aggregations).
   - Exposes GraphQL and REST APIs for frontend.
 - API Gateway (NodeJS)
-  - Auth, rate-limiting, request aggregation. JWT + request signing.
+  - Auth (JWT + request signing), rate-limiting, request aggregation.
+  - RPC response caching via Dragonfly (distributed cache).
+  - PostgreSQL-based rate limiting via Guards/Middleware.
+- Hybrid Caching Strategy:
+  - **RPC Cache:** Dragonfly (Redis-compatible, opensource) for distributed RPC response caching
+  - **Event Storage:** DuckDB or LMDB for high-performance event indexing and analytics
+  - **Rate Limiting:** PostgreSQL-based storage for rate limit state (per-IP, per-token tracking)
+  - **Session State:** PostgreSQL (primary), Dragonfly (cache layer)
 - ChainGhost (Unified Execution + Journey)
   - Wallet operations + auto-generated narrative visualization
   - Intent-based architecture for cross-chain transactions
   - Story generation integrated into transaction flow
 - G3Mail (Ghost Web3 Mail Product)
-  - Encrypted off-chain storage (IPFS / S3 + encryption).
+  - Encrypted off-chain storage via IPFS (decentralized, censorship-resistant).
+  - Alternative: S3 with client-side encryption as fallback.
   - On-chain pointers to message roots, client-side decryption.
 - AI Engine (Python/NodeJS)
   - LLM orchestration with Hugging Face endpoints; request queuing and caching.
@@ -88,5 +98,7 @@
 
 ## Scalability notes
 - Indexer horizontally scalable via partitioning block ranges.
-- API Gateway stateless; use Redis for transient state but not as single source for persistence.
+- API Gateway stateless; use Dragonfly for transient cache (RPC responses) but not as single source for persistence.
+- Event storage in DuckDB/LMDB enables fast analytics queries without overloading Postgres.
+- Rate limiting state in PostgreSQL ensures consistency across multiple Gateway instances.
 - Use database read replicas for heavy read queries (marketplace search).

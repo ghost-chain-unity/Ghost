@@ -95,9 +95,14 @@ We need to select a technology stack that supports:
 - **Language:** TypeScript
 - **Database:** PostgreSQL 15 + TimescaleDB (time-series)
 - **ORM:** Prisma
-- **Caching:** Redis
+- **Caching Strategy (Hybrid):**
+  - **RPC Call Cache:** Dragonfly (Redis-compatible, opensource alternative) for distributed caching
+  - **Event Indexing:** DuckDB or LMDB for high-performance event storage and analytics
+  - **Rate Limiting:** PostgreSQL-based (via API Gateway Guards/Middleware)
+  - **Session State:** PostgreSQL (primary), Dragonfly (cache layer)
+- **Node Storage:** IPFS for decentralized content storage
 - **Search:** Elasticsearch (optional)
-- **Message Queue:** Bull (Redis-based)
+- **Message Queue:** Bull or AMQP-based (with Dragonfly for pub/sub)
 - **AI/ML:** Hugging Face Inference API + Python microservice
 
 **Justification:**
@@ -106,6 +111,9 @@ We need to select a technology stack that supports:
 - PostgreSQL is ACID-compliant, supports JSON, and has excellent tooling
 - Prisma offers type-safe database access and migrations
 - Node.js enables JavaScript/TypeScript monorepo
+- Dragonfly (opensource Redis-compatible) eliminates vendor lock-in
+- DuckDB/LMDB provide high-performance event indexing for analytics
+- IPFS enables decentralized, censorship-resistant content storage
 
 ### Blockchain
 - **Node:** Custom Substrate-based chain (Rust)

@@ -74,9 +74,10 @@ Ghost Protocol requires a scalable, secure, and cost-effective infrastructure st
 
 **Justification:**
 - AWS has most mature ecosystem for blockchain workloads
-- Best support for Kubernetes (EKS), RDS PostgreSQL, ElastiCache Redis
+- Best support for Kubernetes (EKS), RDS PostgreSQL
 - Kubernetes provides compute-layer portability across clouds
 - Lowest cost for development phase (generous free tier)
+- Dragonfly (opensource Redis alternative) self-hosted on Kubernetes reduces vendor lock-in
 
 **Multi-Cloud Abstraction Strategy:**
 
@@ -95,9 +96,10 @@ infra/terraform/modules/
 │   ├── gcp/         # Cloud SQL PostgreSQL module (future)
 │   └── azure/       # Azure PostgreSQL module (future)
 ├── cache/
-│   ├── aws/         # ElastiCache Redis module
-│   ├── gcp/         # Memorystore Redis module (future)
-│   └── azure/       # Azure Cache for Redis module (future)
+│   ├── kubernetes/  # Dragonfly deployed on Kubernetes (portable, opensource)
+│   ├── aws/         # ElastiCache Redis module (alternative, legacy)
+│   ├── gcp/         # Memorystore Redis module (alternative, future)
+│   └── azure/       # Azure Cache for Redis module (alternative, future)
 └── storage/
     ├── aws/         # S3 module
     ├── gcp/         # GCS module (future)
@@ -106,8 +108,9 @@ infra/terraform/modules/
 
 **Layer 3: Data Portability**
 - **Database:** PostgreSQL (standard SQL, portable via pg_dump/pg_restore)
-- **Cache:** Redis protocol (compatible across providers)
-- **Storage:** S3-compatible API (MinIO gateway for cross-cloud sync)
+- **Cache:** Dragonfly (Kubernetes-native, portable across clouds) with Redis protocol compatibility
+- **Event Indexing:** DuckDB or LMDB (embedded, portable)
+- **Storage:** IPFS (decentralized, censorship-resistant) + S3-compatible API (MinIO gateway for cross-cloud sync)
 
 **Migration Strategy (AWS → GCP/Azure):**
 1. Provision equivalent services on target cloud (Terraform modules)
@@ -212,7 +215,8 @@ infra/terraform/modules/
 │  │  10.0.23.0/24 (AZ-c)                     │                  │
 │  │                                          │                  │
 │  │  - RDS PostgreSQL (Multi-AZ)             │                  │
-│  │  - ElastiCache Redis (Multi-AZ)          │                  │
+│  │  - Dragonfly (on Kubernetes, Multi-AZ)   │                  │
+│  │  - DuckDB/LMDB (Event Indexing)          │                  │
 │  │  - Security Groups: Allow only EKS nodes │                  │
 │  └──────────────────────────────────────────┘                  │
 │                                                                 │

@@ -13,7 +13,7 @@
 
 Developers need a consistent, reproducible development environment that:
 - Works across different operating systems (macOS, Linux, Windows)
-- Includes all required services (PostgreSQL, Redis, Elasticsearch)
+- Includes all required services (PostgreSQL, Dragonfly, DuckDB/LMDB, Elasticsearch, IPFS)
 - Supports hot reloading and fast iteration
 - Minimizes setup time (<30 minutes from clone to running)
 - Matches production environment closely
@@ -86,18 +86,32 @@ services:
     tmpfs:
       - /var/lib/postgresql/data
   
-  redis:
-    image: redis:7-alpine
-    container_name: ghost-redis
+  dragonfly:
+    image: docker.io/easystack/dragonfly:latest
+    container_name: ghost-dragonfly
     ports:
       - "6379:6379"
     volumes:
-      - redis-data:/data
+      - dragonfly-data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 5
+    # Dragonfly is a Redis-compatible, opensource alternative
+    # Used for RPC response caching and distributed cache layer
+  
+  ipfs:
+    image: ipfs/kubo:latest
+    container_name: ghost-ipfs
+    ports:
+      - "5001:5001"  # API port
+      - "8080:8080"  # Gateway port
+    volumes:
+      - ipfs-data:/data/ipfs
+    environment:
+      - IPFS_PATH=/data/ipfs
+    # IPFS for decentralized content storage (messages, data)
   
   elasticsearch:
     image: elasticsearch:8.11.0
@@ -132,9 +146,10 @@ services:
 
 volumes:
   postgres-data:
-  redis-data:
+  dragonfly-data:
   elasticsearch-data:
   pgadmin-data:
+  ipfs-data:
 ```
 
 **Usage:**
@@ -240,8 +255,14 @@ pnpm run dev
 DATABASE_URL=postgresql://ghost:development@localhost:5432/ghost_dev
 DATABASE_URL_TEST=postgresql://ghost:test@localhost:5433/ghost_test
 
-# Redis
-REDIS_URL=redis://localhost:6379
+# Dragonfly (Redis-compatible cache)
+DRAGONFLY_URL=redis://localhost:6379
+# Or for direct usage
+REDIS_URL=redis://localhost:6379  # Dragonfly is Redis-compatible
+
+# IPFS for decentralized storage
+IPFS_API_URL=http://localhost:5001
+IPFS_GATEWAY_URL=http://localhost:8080
 
 # Elasticsearch (optional)
 ELASTICSEARCH_URL=http://localhost:9200
@@ -269,7 +290,7 @@ cp .env.example .env
 ### Positive Consequences
 
 - **Fast Setup:** Docker Compose starts all services in 30 seconds
-- **Consistency:** Same PostgreSQL, Redis versions across all developers
+- **Consistency:** Same PostgreSQL, Dragonfly, IPFS versions across all developers
 - **Production Parity:** Docker images match production
 - **Easy Reset:** `docker-compose down -v` resets all data
 - **Database GUI:** pgAdmin included for database inspection
