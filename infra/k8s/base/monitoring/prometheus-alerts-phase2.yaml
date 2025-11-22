@@ -1,0 +1,345 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: ghost-protocol-alerts-phase2
+  labels:
+    app.kubernetes.io/part-of: ghost-protocol
+    prometheus: ghost-protocol
+spec:
+  groups:
+  # P0 - Critical Alerts (PagerDuty + Slack)
+  - name: p0_critical_alerts
+    interval: 30s
+    rules:
+    # Service completely down for >5 minutes
+    - alert: ServiceDown
+      expr: up{job=~"api-gateway|indexer|rpc-orchestrator|ai-engine"} == 0
+      for: 5m
+      labels:
+        severity: critical
+        priority: P0
+        component: service
+      annotations:
+        summary: "Service {{ $labels.job }} is completely down"
+        description: "{{ $labels.job }} instance {{ $labels.instance }} has been down for more than 5 minutes. All traffic is failing."
+        runbook_url: "https://runbooks.ghost-protocol.com/service-down"
+        action_required: "Investigate immediately. Check pod status, logs, and recent deployments."
+
+    # High error rate (>10% of requests failing)
+    - alert: HighErrorRate
+      expr: |
+        (sum(rate(http_requests_total{status=~"5..", namespace=~"ghost-protocol.*"}[5m])) by (service)
+        / sum(rate(http_requests_total{namespace=~"ghost-protocol.*"}[5m])) by (service)) > 0.10
+      for: 5m
+      labels:
+        severity: critical
+        priority: P0
+        component: application
+      annotations:
+        summary: "Critical error rate for {{ $labels.service }}"
+        description: "Service {{ $labels.service }} is experiencing {{ $value | humanizePercentage }} error rate (>10% threshold). User impact is severe."
+        runbook_url: "https://runbooks.ghost-protocol.com/high-error-rate"
+        action_required: "Check application logs, recent deployments, database connectivity."
+
+    # Database connection pool exhausted
+    - alert: DatabaseConnectionFailure
+      expr: |
+        (db_connection_pool_active{namespace=~"ghost-protocol.*"} 
+        / db_connection_pool_max{namespace=~"ghost-protocol.*"}) > 0.95
+      for: 2m
+      labels:
+        severity: critical
+        priority: P0
+        component: database
+      annotations:
+        summary: "Database connection pool exhausted for {{ $labels.service }}"
+        description: "Service {{ $labels.service }} is using {{ $value | humanizePercentage }} of database connections. New requests will fail."
+        runbook_url: "https://runbooks.ghost-protocol.com/database-connection-failure"
+        action_required: "Check for connection leaks, scale connection pool, or investigate slow queries."
+
+    # All instances of a service are down
+    - alert: AllServiceInstancesDown
+      expr: |
+        sum(up{job=~"api-gateway|indexer|rpc-orchestrator|ai-engine"}) by (job) == 0
+      for: 2m
+      labels:
+        severity: critical
+        priority: P0
+        component: service
+      annotations:
+        summary: "All instances of {{ $labels.job }} are down"
+        description: "No healthy instances of {{ $labels.job }} are running. Complete service outage."
+        runbook_url: "https://runbooks.ghost-protocol.com/total-service-outage"
+        action_required: "IMMEDIATE ACTION REQUIRED. Check cluster health, node status, deployments."
+
+  # P1 - High Severity Alerts (PagerDuty + Slack)
+  - name: p1_high_severity_alerts
+    interval: 30s
+    rules:
+    # High latency (p95 > 1s)
+    - alert: HighLatency
+      expr: |
+        histogram_quantile(0.95, 
+          sum(rate(http_request_duration_seconds_bucket{namespace=~"ghost-protocol.*"}[5m])) by (le, service)
+        ) > 1
+      for: 5m
+      labels:
+        severity: high
+        priority: P1
+        component: application
+      annotations:
+        summary: "High latency for {{ $labels.service }}"
+        description: "Service {{ $labels.service }} p95 latency is {{ $value }}s (threshold: 1s). User experience degraded."
+        runbook_url: "https://runbooks.ghost-protocol.com/high-latency"
+        action_required: "Check application performance, database query times, external API calls."
+
+    # High memory usage (>85%)
+    - alert: HighMemoryUsage
+      expr: |
+        (container_memory_working_set_bytes{namespace=~"ghost-protocol.*", container!="", container!="POD"} 
+        / container_spec_memory_limit_bytes{namespace=~"ghost-protocol.*", container!="", container!="POD"}) > 0.85
+      for: 10m
+      labels:
+        severity: high
+        priority: P1
+        component: infrastructure
+      annotations:
+        summary: "High memory usage for {{ $labels.pod }}"
+        description: "Container {{ $labels.container }} in pod {{ $labels.pod }} is using {{ $value | humanizePercentage }} of memory limit. OOM kill risk."
+        runbook_url: "https://runbooks.ghost-protocol.com/high-memory-usage"
+        action_required: "Check for memory leaks, consider scaling horizontally or increasing limits."
+
+    # Disk space critical (<10% free)
+    - alert: DiskSpaceCritical
+      expr: |
+        (node_filesystem_avail_bytes{mountpoint="/", fstype!="tmpfs"} 
+        / node_filesystem_size_bytes{mountpoint="/", fstype!="tmpfs"}) < 0.10
+      for: 5m
+      labels:
+        severity: high
+        priority: P1
+        component: infrastructure
+      annotations:
+        summary: "Critical disk space on node {{ $labels.instance }}"
+        description: "Node {{ $labels.instance }} has less than {{ $value | humanizePercentage }} disk space remaining."
+        runbook_url: "https://runbooks.ghost-protocol.com/disk-space-critical"
+        action_required: "Clean up logs, old images, or add storage capacity immediately."
+
+    # Persistent volume usage critical
+    - alert: PersistentVolumeSpaceCritical
+      expr: |
+        (kubelet_volume_stats_available_bytes{namespace=~"ghost-protocol.*"} 
+        / kubelet_volume_stats_capacity_bytes{namespace=~"ghost-protocol.*"}) < 0.10
+      for: 5m
+      labels:
+        severity: high
+        priority: P1
+        component: storage
+      annotations:
+        summary: "Critical space on PVC {{ $labels.persistentvolumeclaim }}"
+        description: "PVC {{ $labels.persistentvolumeclaim }} in namespace {{ $labels.namespace }} has less than 10% space remaining."
+        runbook_url: "https://runbooks.ghost-protocol.com/pvc-space-critical"
+        action_required: "Expand PVC or clean up old data immediately."
+
+    # Pod crash looping
+    - alert: PodCrashLooping
+      expr: rate(kube_pod_container_status_restarts_total{namespace=~"ghost-protocol.*"}[15m]) > 0.05
+      for: 5m
+      labels:
+        severity: high
+        priority: P1
+        component: infrastructure
+      annotations:
+        summary: "Pod {{ $labels.pod }} is crash looping"
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is restarting {{ $value }} times per second."
+        runbook_url: "https://runbooks.ghost-protocol.com/pod-crash-loop"
+        action_required: "Check pod logs for errors. Investigate application startup failures."
+
+  # P2 - Medium Severity Alerts (Email + Slack)
+  - name: p2_medium_severity_alerts
+    interval: 30s
+    rules:
+    # Pod restart loops (less severe than crash looping)
+    - alert: PodRestartingFrequently
+      expr: rate(kube_pod_container_status_restarts_total{namespace=~"ghost-protocol.*"}[30m]) > 0.01
+      for: 15m
+      labels:
+        severity: warning
+        priority: P2
+        component: infrastructure
+      annotations:
+        summary: "Pod {{ $labels.pod }} restarting frequently"
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is restarting more than expected."
+        runbook_url: "https://runbooks.ghost-protocol.com/pod-restarts"
+        action_required: "Monitor pod health. Investigate if restarts increase or impact service."
+
+    # High CPU usage (>80%)
+    - alert: HighCPUUsage
+      expr: |
+        rate(container_cpu_usage_seconds_total{namespace=~"ghost-protocol.*", container!="", container!="POD"}[5m]) 
+        / container_spec_cpu_quota{namespace=~"ghost-protocol.*", container!="", container!="POD"} 
+        * container_spec_cpu_period{namespace=~"ghost-protocol.*", container!="", container!="POD"} > 0.8
+      for: 15m
+      labels:
+        severity: warning
+        priority: P2
+        component: infrastructure
+      annotations:
+        summary: "High CPU usage for {{ $labels.pod }}"
+        description: "Container {{ $labels.container }} in pod {{ $labels.pod }} is using {{ $value | humanizePercentage }} of CPU limit."
+        runbook_url: "https://runbooks.ghost-protocol.com/high-cpu-usage"
+        action_required: "Consider horizontal scaling or optimizing CPU-intensive operations."
+
+    # Moderate error rate (>1% but <10%)
+    - alert: ModerateErrorRate
+      expr: |
+        (sum(rate(http_requests_total{status=~"5..", namespace=~"ghost-protocol.*"}[5m])) by (service)
+        / sum(rate(http_requests_total{namespace=~"ghost-protocol.*"}[5m])) by (service)) > 0.01
+      for: 10m
+      labels:
+        severity: warning
+        priority: P2
+        component: application
+      annotations:
+        summary: "Moderate error rate for {{ $labels.service }}"
+        description: "Service {{ $labels.service }} is experiencing {{ $value | humanizePercentage }} error rate."
+        runbook_url: "https://runbooks.ghost-protocol.com/moderate-error-rate"
+        action_required: "Investigate errors before they escalate to critical levels."
+
+    # Indexer lagging behind blockchain
+    - alert: IndexerLaggingBehind
+      expr: (latest_block_number - indexer_last_indexed_block{namespace=~"ghost-protocol.*"}) > 100
+      for: 10m
+      labels:
+        severity: warning
+        priority: P2
+        component: indexer
+      annotations:
+        summary: "Indexer is lagging behind blockchain"
+        description: "Indexer is {{ $value }} blocks behind the latest block."
+        runbook_url: "https://runbooks.ghost-protocol.com/indexer-lag"
+        action_required: "Check indexer performance, database write speed, RPC provider health."
+
+    # Database query latency elevated
+    - alert: ElevatedDatabaseQueryLatency
+      expr: |
+        histogram_quantile(0.95, 
+          sum(rate(db_query_duration_seconds_bucket{namespace=~"ghost-protocol.*"}[5m])) by (le, service)
+        ) > 0.5
+      for: 10m
+      labels:
+        severity: warning
+        priority: P2
+        component: database
+      annotations:
+        summary: "Elevated database query latency for {{ $labels.service }}"
+        description: "Service {{ $labels.service }} database p95 query latency is {{ $value }}s."
+        runbook_url: "https://runbooks.ghost-protocol.com/database-latency"
+        action_required: "Review slow queries, check database performance, consider indexing."
+
+  # P3 - Low Severity Alerts (Slack only)
+  - name: p3_low_severity_alerts
+    interval: 60s
+    rules:
+    # Certificate expiring soon (<30 days)
+    - alert: CertificateExpiringSoon
+      expr: (cert_exporter_certificate_not_after - time()) / 86400 < 30
+      for: 1h
+      labels:
+        severity: info
+        priority: P3
+        component: security
+      annotations:
+        summary: "Certificate {{ $labels.cert_name }} expiring soon"
+        description: "Certificate {{ $labels.cert_name }} will expire in {{ $value }} days."
+        runbook_url: "https://runbooks.ghost-protocol.com/certificate-renewal"
+        action_required: "Renew certificate before expiration. Plan renewal process."
+
+    # High request rate (scaling recommendation)
+    - alert: HighRequestRate
+      expr: sum(rate(http_requests_total{namespace=~"ghost-protocol.*"}[5m])) by (service) > 1000
+      for: 30m
+      labels:
+        severity: info
+        priority: P3
+        component: application
+      annotations:
+        summary: "High request rate for {{ $labels.service }}"
+        description: "Service {{ $labels.service }} is receiving {{ $value }} requests/sec. Consider scaling."
+        runbook_url: "https://runbooks.ghost-protocol.com/scaling"
+        action_required: "Monitor service health. Plan capacity increase if sustained."
+
+    # Moderate latency (>500ms but <1s)
+    - alert: ModerateLatency
+      expr: |
+        histogram_quantile(0.95, 
+          sum(rate(http_request_duration_seconds_bucket{namespace=~"ghost-protocol.*"}[5m])) by (le, service)
+        ) > 0.5
+      for: 15m
+      labels:
+        severity: info
+        priority: P3
+        component: application
+      annotations:
+        summary: "Moderate latency for {{ $labels.service }}"
+        description: "Service {{ $labels.service }} p95 latency is {{ $value }}s (warning threshold: 500ms)."
+        runbook_url: "https://runbooks.ghost-protocol.com/latency-optimization"
+        action_required: "Monitor trend. Investigate if latency continues to increase."
+
+    # RPC rate limit approaching
+    - alert: RPCRateLimitApproaching
+      expr: (rpc_requests_total{namespace=~"ghost-protocol.*"} / rpc_rate_limit{namespace=~"ghost-protocol.*"}) > 0.8
+      for: 10m
+      labels:
+        severity: info
+        priority: P3
+        component: rpc-orchestrator
+      annotations:
+        summary: "RPC rate limit approaching for {{ $labels.provider }}"
+        description: "RPC provider {{ $labels.provider }} is at {{ $value | humanizePercentage }} of its rate limit."
+        runbook_url: "https://runbooks.ghost-protocol.com/rpc-rate-limit"
+        action_required: "Monitor usage. Plan to add additional RPC providers if sustained."
+
+    # Pod not ready (non-critical)
+    - alert: PodNotReady
+      expr: kube_pod_status_ready{condition="false", namespace=~"ghost-protocol.*"} == 1
+      for: 15m
+      labels:
+        severity: info
+        priority: P3
+        component: infrastructure
+      annotations:
+        summary: "Pod {{ $labels.pod }} not ready"
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has been in not-ready state for 15+ minutes."
+        runbook_url: "https://runbooks.ghost-protocol.com/pod-not-ready"
+        action_required: "Check pod status and logs. May be normal during rolling updates."
+
+    # Disk space warning (<20% free)
+    - alert: DiskSpaceWarning
+      expr: |
+        (node_filesystem_avail_bytes{mountpoint="/", fstype!="tmpfs"} 
+        / node_filesystem_size_bytes{mountpoint="/", fstype!="tmpfs"}) < 0.20
+      for: 30m
+      labels:
+        severity: info
+        priority: P3
+        component: infrastructure
+      annotations:
+        summary: "Low disk space on node {{ $labels.instance }}"
+        description: "Node {{ $labels.instance }} has less than {{ $value | humanizePercentage }} disk space remaining."
+        runbook_url: "https://runbooks.ghost-protocol.com/disk-cleanup"
+        action_required: "Plan disk cleanup or capacity expansion."
+
+# NOTE: These alerts require application instrumentation with Prometheus client libraries.
+# Services must expose the following metrics:
+#
+# - http_requests_total (labels: status, service)
+# - http_request_duration_seconds (histogram, labels: service)
+# - db_connection_pool_active, db_connection_pool_max
+# - db_query_duration_seconds (histogram, labels: service)
+# - indexer_last_indexed_block
+# - latest_block_number
+# - rpc_requests_total, rpc_rate_limit
+# - cert_exporter_certificate_not_after
+#
+# Instrumentation will be added in Phase 1 after services are deployed.

@@ -1,0 +1,60 @@
+# Code Owners - Automated Reviewer Assignment
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global fallback
+* @ghost-protocol/core-team
+
+# Documentation
+*.md @ghost-protocol/core-team
+/docs/ @ghost-protocol/core-team
+/README.md @ghost-protocol/core-team
+
+# Architecture Decision Records (CRITICAL - requires architect review)
+/docs/adr/ @ghost-protocol/architects
+
+# Frontend
+/packages/frontend/ @ghost-protocol/frontend-team
+/packages/frontend/web/ @ghost-protocol/frontend-team
+/packages/frontend/admin/ @ghost-protocol/frontend-team
+/packages/frontend/components/ @ghost-protocol/frontend-team
+
+# Backend
+/packages/backend/ @ghost-protocol/backend-team
+/packages/backend/api-gateway/ @ghost-protocol/backend-team
+/packages/backend/indexer/ @ghost-protocol/backend-team
+/packages/backend/rpc-orchestrator/ @ghost-protocol/backend-team
+/packages/backend/ai-engine/ @ghost-protocol/backend-team @ghost-protocol/ai-team
+
+# Smart Contracts (CRITICAL - requires security review)
+/packages/contracts/ @ghost-protocol/blockchain-team @ghost-protocol/security-team
+/packages/contracts/**/*.sol @ghost-protocol/blockchain-team @ghost-protocol/security-team
+
+# Blockchain Core
+/packages/chain/ @ghost-protocol/blockchain-team
+
+# Infrastructure & DevOps
+/infra/ @ghost-protocol/devops-team
+/infra/terraform/ @ghost-protocol/devops-team
+/infra/k8s/ @ghost-protocol/devops-team
+/docker-compose.yml @ghost-protocol/devops-team
+/.devcontainer/ @ghost-protocol/devops-team
+
+# CI/CD (requires review from DevOps + relevant team)
+/.github/workflows/frontend-ci.yml @ghost-protocol/frontend-team @ghost-protocol/devops-team
+/.github/workflows/backend-ci.yml @ghost-protocol/backend-team @ghost-protocol/devops-team
+/.github/workflows/contracts-ci.yml @ghost-protocol/blockchain-team @ghost-protocol/devops-team
+/.github/workflows/security-scan.yml @ghost-protocol/security-team @ghost-protocol/devops-team
+
+# Security
+/SECURITY.md @ghost-protocol/security-team
+/.github/dependabot.yml @ghost-protocol/security-team
+
+# Package Management (CRITICAL - mono-repo structure)
+/package.json @ghost-protocol/architects @ghost-protocol/devops-team
+/pnpm-workspace.yaml @ghost-protocol/architects @ghost-protocol/devops-team
+/.npmrc @ghost-protocol/architects @ghost-protocol/devops-team
+
+# Agent Rules & Guidelines
+/agent-rules.md @ghost-protocol/architects
+/reference-file.md @ghost-protocol/architects
+/roadmap-tasks.md @ghost-protocol/core-team

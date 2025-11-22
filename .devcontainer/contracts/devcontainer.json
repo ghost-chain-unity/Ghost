@@ -1,0 +1,78 @@
+{
+  "name": "Ghost Protocol - Smart Contracts",
+  "dockerComposeFile": "../docker-compose.devcontainer.yml",
+  "service": "contracts-devcontainer",
+  "workspaceFolder": "/workspace",
+  
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+        "solidity.compileUsingRemoteVersion": "v0.8.20",
+        "solidity.formatter": "prettier",
+        "solidity.defaultCompiler": "remote"
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "juanblanco.solidity",
+        "tintinweb.solidity-visual-auditor",
+        "tintinweb.vscode-solidity-flattener",
+        "nomicfoundation.hardhat-solidity",
+        "ms-azuretools.vscode-docker",
+        "eamodio.gitlens",
+        "christian-kohler.path-intellisense",
+        "mikestead.dotenv"
+      ]
+    }
+  },
+  
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20",
+      "nodeGypDependencies": true,
+      "installYarnUsingApt": false,
+      "installToolsForNodeOnApt": true
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.11",
+      "installTools": true
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "dockerDashComposeVersion": "v2"
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {
+      "version": "latest"
+    }
+  },
+  
+  "forwardPorts": [8545, 5000, 4000],
+  "portsAttributes": {
+    "8545": {
+      "label": "Hardhat Node",
+      "onAutoForward": "notify"
+    },
+    "5000": {
+      "label": "Frontend",
+      "onAutoForward": "silent"
+    },
+    "4000": {
+      "label": "Backend API",
+      "onAutoForward": "silent"
+    }
+  },
+  
+  "postCreateCommand": "bash .devcontainer/contracts/setup.sh",
+  
+  "remoteUser": "node",
+  
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/home/node/.ssh,readonly,type=bind,consistency=cached"
+  ]
+}

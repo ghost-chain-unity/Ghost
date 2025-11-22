@@ -1,0 +1,265 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-config
+  labels:
+    app: alertmanager
+    component: monitoring
+data:
+  alertmanager.yml: |
+    global:
+      resolve_timeout: 5m
+      pagerduty_url: 'https://events.pagerduty.com/v2/enqueue'
+      slack_api_url_file: '/etc/alertmanager/secrets/slack-webhook-url'
+      smtp_smarthost: 'smtp.example.com:587'
+      smtp_from: 'alertmanager@ghost-protocol.com'
+      smtp_auth_username: 'alertmanager@ghost-protocol.com'
+      smtp_auth_password_file: '/etc/alertmanager/secrets/smtp-password'
+      smtp_require_tls: true
+
+    templates:
+    - '/etc/alertmanager/*.tmpl'
+
+    route:
+      group_by: ['alertname', 'severity', 'service']
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 12h
+      receiver: 'slack-notifications'
+      routes:
+      # P0 - Critical: PagerDuty + Slack
+      - match:
+          severity: critical
+        receiver: 'pagerduty-critical'
+        continue: true
+        group_wait: 10s
+        group_interval: 5m
+        repeat_interval: 4h
+      
+      - match:
+          severity: critical
+        receiver: 'slack-critical'
+        continue: false
+
+      # P1 - High: PagerDuty + Slack
+      - match:
+          severity: high
+        receiver: 'pagerduty-high'
+        continue: true
+        group_wait: 30s
+        group_interval: 10m
+        repeat_interval: 8h
+      
+      - match:
+          severity: high
+        receiver: 'slack-high'
+        continue: false
+
+      # P2 - Medium: Email + Slack
+      - match:
+          severity: warning
+        receiver: 'email-team'
+        continue: true
+        group_wait: 1m
+        group_interval: 15m
+        repeat_interval: 12h
+      
+      - match:
+          severity: warning
+        receiver: 'slack-warnings'
+        continue: false
+
+      # P3 - Low: Slack only
+      - match:
+          severity: info
+        receiver: 'slack-info'
+        group_wait: 5m
+        group_interval: 30m
+        repeat_interval: 24h
+
+    # Inhibition rules
+    inhibit_rules:
+    # Suppress warning/info if critical alert is firing
+    - source_match:
+        severity: 'critical'
+      target_match:
+        severity: 'warning'
+      equal: ['alertname', 'service', 'namespace']
+    
+    - source_match:
+        severity: 'critical'
+      target_match:
+        severity: 'info'
+      equal: ['alertname', 'service', 'namespace']
+    
+    # Suppress info if high alert is firing
+    - source_match:
+        severity: 'high'
+      target_match:
+        severity: 'warning'
+      equal: ['alertname', 'service', 'namespace']
+    
+    - source_match:
+        severity: 'high'
+      target_match:
+        severity: 'info'
+      equal: ['alertname', 'service', 'namespace']
+
+    # Suppress warning if high alert is firing
+    - source_match:
+        severity: 'warning'
+      target_match:
+        severity: 'info'
+      equal: ['alertname', 'service', 'namespace']
+
+    receivers:
+    # PagerDuty receivers
+    - name: 'pagerduty-critical'
+      pagerduty_configs:
+      - service_key_file: '/etc/alertmanager/secrets/pagerduty-integration-key'
+        severity: 'critical'
+        description: '{{ .GroupLabels.alertname }}: {{ .CommonAnnotations.summary }}'
+        details:
+          firing: '{{ .Alerts.Firing | len }}'
+          resolved: '{{ .Alerts.Resolved | len }}'
+          alertname: '{{ .GroupLabels.alertname }}'
+          service: '{{ .GroupLabels.service }}'
+          severity: '{{ .GroupLabels.severity }}'
+          description: '{{ .CommonAnnotations.description }}'
+        client: 'Ghost Protocol AlertManager'
+        client_url: 'https://alertmanager.ghost-protocol.com'
+
+    - name: 'pagerduty-high'
+      pagerduty_configs:
+      - service_key_file: '/etc/alertmanager/secrets/pagerduty-integration-key'
+        severity: 'error'
+        description: '{{ .GroupLabels.alertname }}: {{ .CommonAnnotations.summary }}'
+        details:
+          firing: '{{ .Alerts.Firing | len }}'
+          resolved: '{{ .Alerts.Resolved | len }}'
+          alertname: '{{ .GroupLabels.alertname }}'
+          service: '{{ .GroupLabels.service }}'
+          severity: '{{ .GroupLabels.severity }}'
+          description: '{{ .CommonAnnotations.description }}'
+        client: 'Ghost Protocol AlertManager'
+        client_url: 'https://alertmanager.ghost-protocol.com'
+
+    # Slack receivers
+    - name: 'slack-critical'
+      slack_configs:
+      - api_url_file: '/etc/alertmanager/secrets/slack-webhook-url'
+        channel: '#alerts-critical'
+        username: 'AlertManager'
+        icon_emoji: ':fire:'
+        title: '🔥 [P0 CRITICAL] {{ .GroupLabels.alertname }}'
+        text: >-
+          *Summary:* {{ .CommonAnnotations.summary }}
+          
+          *Description:* {{ .CommonAnnotations.description }}
+          
+          *Severity:* {{ .GroupLabels.severity }}
+          
+          *Service:* {{ .GroupLabels.service }}
+          
+          *Firing Alerts:* {{ .Alerts.Firing | len }}
+        send_resolved: true
+
+    - name: 'slack-high'
+      slack_configs:
+      - api_url_file: '/etc/alertmanager/secrets/slack-webhook-url'
+        channel: '#alerts-high'
+        username: 'AlertManager'
+        icon_emoji: ':warning:'
+        title: '⚠️ [P1 HIGH] {{ .GroupLabels.alertname }}'
+        text: >-
+          *Summary:* {{ .CommonAnnotations.summary }}
+          
+          *Description:* {{ .CommonAnnotations.description }}
+          
+          *Severity:* {{ .GroupLabels.severity }}
+          
+          *Service:* {{ .GroupLabels.service }}
+          
+          *Firing Alerts:* {{ .Alerts.Firing | len }}
+        send_resolved: true
+
+    - name: 'slack-warnings'
+      slack_configs:
+      - api_url_file: '/etc/alertmanager/secrets/slack-webhook-url'
+        channel: '#alerts-warnings'
+        username: 'AlertManager'
+        icon_emoji: ':information_source:'
+        title: 'ℹ️ [P2 WARNING] {{ .GroupLabels.alertname }}'
+        text: >-
+          *Summary:* {{ .CommonAnnotations.summary }}
+          
+          *Description:* {{ .CommonAnnotations.description }}
+          
+          *Severity:* {{ .GroupLabels.severity }}
+          
+          *Service:* {{ .GroupLabels.service }}
+          
+          *Firing Alerts:* {{ .Alerts.Firing | len }}
+        send_resolved: true
+
+    - name: 'slack-info'
+      slack_configs:
+      - api_url_file: '/etc/alertmanager/secrets/slack-webhook-url'
+        channel: '#alerts-info'
+        username: 'AlertManager'
+        icon_emoji: ':white_check_mark:'
+        title: '✅ [P3 INFO] {{ .GroupLabels.alertname }}'
+        text: >-
+          *Summary:* {{ .CommonAnnotations.summary }}
+          
+          *Description:* {{ .CommonAnnotations.description }}
+          
+          *Severity:* {{ .GroupLabels.severity }}
+          
+          *Service:* {{ .GroupLabels.service }}
+          
+          *Firing Alerts:* {{ .Alerts.Firing | len }}
+        send_resolved: true
+
+    - name: 'slack-notifications'
+      slack_configs:
+      - api_url_file: '/etc/alertmanager/secrets/slack-webhook-url'
+        channel: '#alerts'
+        username: 'AlertManager'
+        icon_emoji: ':bell:'
+        title: '🔔 {{ .GroupLabels.alertname }}'
+        text: >-
+          *Summary:* {{ .CommonAnnotations.summary }}
+          
+          *Description:* {{ .CommonAnnotations.description }}
+          
+          *Severity:* {{ .GroupLabels.severity }}
+          
+          *Service:* {{ .GroupLabels.service }}
+          
+          *Firing Alerts:* {{ .Alerts.Firing | len }}
+        send_resolved: true
+
+    # Email receiver
+    - name: 'email-team'
+      email_configs:
+      - to: 'oncall-team@ghost-protocol.com'
+        from: 'alertmanager@ghost-protocol.com'
+        smarthost: 'smtp.example.com:587'
+        auth_username: 'alertmanager@ghost-protocol.com'
+        auth_password_file: '/etc/alertmanager/secrets/smtp-password'
+        require_tls: true
+        headers:
+          Subject: '[Ghost Protocol] {{ .GroupLabels.severity | toUpper }}: {{ .GroupLabels.alertname }}'
+        html: |
+          <h2>Alert: {{ .GroupLabels.alertname }}</h2>
+          <p><strong>Severity:</strong> {{ .GroupLabels.severity }}</p>
+          <p><strong>Service:</strong> {{ .GroupLabels.service }}</p>
+          <p><strong>Summary:</strong> {{ .CommonAnnotations.summary }}</p>
+          <p><strong>Description:</strong> {{ .CommonAnnotations.description }}</p>
+          <p><strong>Firing Alerts:</strong> {{ .Alerts.Firing | len }}</p>
+          <hr>
+          <h3>Alert Details:</h3>
+          {{ range .Alerts }}
+          <p><strong>{{ .Labels.alertname }}</strong> - {{ .Annotations.summary }}</p>
+          {{ end }}

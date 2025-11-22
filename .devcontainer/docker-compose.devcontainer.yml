@@ -1,0 +1,139 @@
+version: '3.9'
+
+services:
+  # Development container (Root) - Full stack dengan Node.js + Rust
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/base:ubuntu
+    container_name: ghost-devcontainer
+    volumes:
+      - ../:/workspace:cached
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: sleep infinity
+    working_dir: /workspace
+    environment:
+      - DATABASE_URL=postgresql://ghost:development@postgres:5432/ghost_dev
+      - DATABASE_URL_TEST=postgresql://ghost:test@postgres-test:5432/ghost_test
+      - REDIS_URL=redis://redis:6379
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    networks:
+      - ghost-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # Smart Contracts container - Pre-optimized dengan Node.js + Python + Build tools
+  contracts-devcontainer:
+    image: mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye
+    container_name: ghost-contracts-devcontainer
+    volumes:
+      - ../:/workspace:cached
+      - /var/run/docker.sock:/var/run/docker.sock
+      - contracts-node-modules:/workspace/packages/contracts/chaing-token/node_modules
+      - contracts-cache:/home/node/.cache
+      - foundry-bin:/home/node/.foundry
+    command: sleep infinity
+    working_dir: /workspace
+    environment:
+      - DATABASE_URL=postgresql://ghost:development@postgres:5432/ghost_dev
+      - REDIS_URL=redis://redis:6379
+      - PATH=/home/node/.foundry/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+    networks:
+      - ghost-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # Blockchain Node container - Rust optimized dengan cargo cache
+  chain-devcontainer:
+    image: mcr.microsoft.com/devcontainers/rust:1-bullseye
+    container_name: ghost-chain-devcontainer
+    volumes:
+      - ../:/workspace:cached
+      - /var/run/docker.sock:/var/run/docker.sock
+      - cargo-registry:/usr/local/cargo/registry
+      - cargo-git:/usr/local/cargo/git
+      - target-cache:/workspace/packages/chain/node-core/target
+    command: sleep infinity
+    working_dir: /workspace
+    environment:
+      - CARGO_HOME=/usr/local/cargo
+    networks:
+      - ghost-network
+
+  # Inherited services from main docker-compose.yml
+  postgres:
+    image: postgres:15-alpine
+    container_name: ghost-postgres
+    environment:
+      POSTGRES_USER: ghost
+      POSTGRES_PASSWORD: development
+      POSTGRES_DB: ghost_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ghost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ghost-network
+
+  postgres-test:
+    image: postgres:15-alpine
+    container_name: ghost-postgres-test
+    environment:
+      POSTGRES_USER: ghost
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: ghost_test
+    ports:
+      - "5433:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ghost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ghost-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: ghost-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ghost-network
+
+volumes:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+  contracts-node-modules:
+    driver: local
+  contracts-cache:
+    driver: local
+  foundry-bin:
+    driver: local
+  cargo-registry:
+    driver: local
+  cargo-git:
+    driver: local
+  target-cache:
+    driver: local
+
+networks:
+  ghost-network:
+    driver: bridge

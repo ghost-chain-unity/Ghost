@@ -1,0 +1,44 @@
+{
+  "name": "ghost-protocol-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Ghost Protocol - Web3 Super-App Ecosystem (Mono-Repo)",
+  "packageManager": "pnpm@8.15.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.15.0"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "dev:web": "pnpm --filter web dev",
+    "dev:admin": "pnpm --filter admin dev",
+    "dev:api": "pnpm --filter api-gateway dev",
+    "dev:indexer": "pnpm --filter indexer dev",
+    "build:all": "pnpm -r build",
+    "test:all": "pnpm -r test",
+    "lint:all": "pnpm -r lint",
+    "clean": "pnpm -r clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "husky": "^9.0.11"
+  },
+  "workspaces": [
+    "packages/frontend/*",
+    "packages/backend/*",
+    "packages/contracts/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ghostprotocol/ghost-protocol.git"
+  },
+  "keywords": [
+    "web3",
+    "blockchain",
+    "wallet",
+    "chainghost",
+    "g3mail",
+    "ghonity"
+  ],
+  "author": "Ghost Protocol Development Team",
+  "license": "UNLICENSED"
+}

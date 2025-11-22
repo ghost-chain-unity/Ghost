@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ghost-protocol-dev
+  labels:
+    name: ghost-protocol
+    environment: dev
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ghost-protocol-staging
+  labels:
+    name: ghost-protocol
+    environment: staging
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ghost-protocol-prod
+  labels:
+    name: ghost-protocol
+    environment: production
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ghost-protocol-monitoring
+  labels:
+    name: ghost-protocol
+    purpose: monitoring

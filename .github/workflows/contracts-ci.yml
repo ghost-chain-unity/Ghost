@@ -1,0 +1,140 @@
+name: Smart Contracts CI
+
+# Workflow triggers: Manual trigger only (workflow_dispatch)
+# User can activate workflow manually from GitHub Actions tab
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-analyze:
+    name: Contracts - ${{ matrix.contract }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        contract: [chaing-token, marketplace]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+      
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      
+      - name: Check if contract package exists
+        id: check-package
+        run: |
+          if [ -f "packages/contracts/${{ matrix.contract }}/package.json" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Contract package packages/contracts/${{ matrix.contract }} does not exist yet"
+          fi
+      
+      - name: Install dependencies
+        if: steps.check-package.outputs.exists == 'true'
+        run: |
+          cd packages/contracts/${{ matrix.contract }}
+          pnpm install --frozen-lockfile
+      
+      - name: Compile contracts
+        if: steps.check-package.outputs.exists == 'true'
+        run: |
+          cd packages/contracts/${{ matrix.contract }}
+          pnpx hardhat compile
+      
+      - name: Run contract tests
+        if: steps.check-package.outputs.exists == 'true'
+        run: |
+          cd packages/contracts/${{ matrix.contract }}
+          pnpx hardhat test
+      
+      - name: Generate coverage report
+        if: steps.check-package.outputs.exists == 'true'
+        run: |
+          cd packages/contracts/${{ matrix.contract }}
+          pnpx hardhat coverage
+      
+      - name: Check coverage threshold (95%)
+        if: steps.check-package.outputs.exists == 'true'
+        run: |
+          if [ -f "packages/contracts/${{ matrix.contract }}/coverage/coverage-summary.json" ]; then
+            COVERAGE=$(cat packages/contracts/${{ matrix.contract }}/coverage/coverage-summary.json | jq '.total.statements.pct')
+            echo "Coverage: $COVERAGE%"
+            if (( $(echo "$COVERAGE < 95" | bc -l) )); then
+              echo "❌ Coverage $COVERAGE% is below required 95%"
+              exit 1
+            else
+              echo "✅ Coverage $COVERAGE% meets threshold"
+            fi
+          else
+            echo "No coverage file found, skipping check"
+          fi
+      
+      - name: Upload coverage to Codecov
+        if: always() && steps.check-package.outputs.exists == 'true'
+        uses: codecov/codecov-action@v3
+        with:
+          file: packages/contracts/${{ matrix.contract }}/coverage/coverage-final.json
+          flags: contracts-${{ matrix.contract }}
+          name: contracts-${{ matrix.contract }}
+      
+      - name: Generate gas report
+        if: steps.check-package.outputs.exists == 'true'
+        run: |
+          cd packages/contracts/${{ matrix.contract }}
+          REPORT_GAS=true pnpx hardhat test
+        env:
+          COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
+      
+      - name: Check if contracts directory exists
+        id: check-contracts
+        if: steps.check-package.outputs.exists == 'true'
+        run: |
+          if [ -d "packages/contracts/${{ matrix.contract }}/contracts/" ]; then
+            echo "has-contracts=true" >> $GITHUB_OUTPUT
+          else
+            echo "has-contracts=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Run Slither static analysis
+        if: steps.check-package.outputs.exists == 'true' && steps.check-contracts.outputs.has-contracts == 'true'
+        uses: crytic/slither-action@v0.3.0
+        with:
+          target: packages/contracts/${{ matrix.contract }}/contracts/
+          slither-args: --filter-paths "node_modules|test" --exclude naming-convention,solc-version
+        continue-on-error: true
+      
+      - name: Upload Slither report
+        if: always() && steps.check-package.outputs.exists == 'true' && steps.check-contracts.outputs.has-contracts == 'true'
+        uses: actions/upload-artifact@v3
+        with:
+          name: slither-report-${{ matrix.contract }}
+          path: slither-report.json

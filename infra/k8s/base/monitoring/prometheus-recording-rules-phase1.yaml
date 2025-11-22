@@ -1,0 +1,60 @@
+# Phase 1 Recording Rules (Requires Service Instrumentation)
+# 
+# DO NOT APPLY until services expose Prometheus metrics
+# These rules will be activated during Phase 1.2 backend deployment
+#
+# These recording rules depend on HTTP metrics (http_requests_total, 
+# http_request_duration_seconds_bucket) that will be emitted by services
+# after they are instrumented with Prometheus client libraries in Phase 1.
+#
+# This file is intentionally NOT included in kustomization.yaml and should
+# be applied manually after Phase 1 service instrumentation is complete.
+
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: ghost-protocol-recording-rules
+  labels:
+    app.kubernetes.io/part-of: ghost-protocol
+    prometheus: ghost-protocol
+spec:
+  groups:
+  - name: recording_rules
+    interval: 30s
+    rules:
+    - record: job:http_requests:rate5m
+      expr: sum(rate(http_requests_total{namespace=~"ghost-protocol.*"}[5m])) by (job, namespace)
+    
+    - record: job:http_request_duration_seconds:p99
+      expr: |
+        histogram_quantile(0.99, 
+          sum(rate(http_request_duration_seconds_bucket{namespace=~"ghost-protocol.*"}[5m])) by (le, job, namespace)
+        )
+    
+    - record: job:http_request_duration_seconds:p95
+      expr: |
+        histogram_quantile(0.95, 
+          sum(rate(http_request_duration_seconds_bucket{namespace=~"ghost-protocol.*"}[5m])) by (le, job, namespace)
+        )
+    
+    - record: job:http_request_duration_seconds:p50
+      expr: |
+        histogram_quantile(0.50, 
+          sum(rate(http_request_duration_seconds_bucket{namespace=~"ghost-protocol.*"}[5m])) by (le, job, namespace)
+        )
+    
+    - record: job:memory_usage:ratio
+      expr: |
+        container_memory_working_set_bytes{namespace=~"ghost-protocol.*", container!="", container!="POD"} 
+        / container_spec_memory_limit_bytes{namespace=~"ghost-protocol.*", container!="", container!="POD"}
+    
+    - record: job:cpu_usage:ratio
+      expr: |
+        rate(container_cpu_usage_seconds_total{namespace=~"ghost-protocol.*", container!="", container!="POD"}[5m]) 
+        / (container_spec_cpu_quota{namespace=~"ghost-protocol.*", container!="", container!="POD"} 
+        / container_spec_cpu_period{namespace=~"ghost-protocol.*", container!="", container!="POD"})
+    
+    - record: namespace:availability:ratio
+      expr: |
+        sum(rate(http_requests_total{status!~"5..", namespace=~"ghost-protocol.*"}[5m])) by (namespace)
+        / sum(rate(http_requests_total{namespace=~"ghost-protocol.*"}[5m])) by (namespace)

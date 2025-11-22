@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rpc-orchestrator
+  labels:
+    app: rpc-orchestrator
+    tier: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rpc-orchestrator
+  template:
+    metadata:
+      labels:
+        app: rpc-orchestrator
+        tier: backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3002"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: rpc-orchestrator
+      containers:
+      - name: rpc-orchestrator
+        image: ghost-protocol/rpc-orchestrator:latest
+        ports:
+        - containerPort: 3002
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3002"
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: rpc-orchestrator-config
+              key: redis-url
+        - name: RPC_PROVIDERS
+          valueFrom:
+            configMapKeyRef:
+              name: rpc-orchestrator-config
+              key: rpc-providers
+        - name: FAILOVER_STRATEGY
+          valueFrom:
+            configMapKeyRef:
+              name: rpc-orchestrator-config
+              key: failover-strategy
+        - name: MAX_RETRIES
+          valueFrom:
+            configMapKeyRef:
+              name: rpc-orchestrator-config
+              key: max-retries
+        - name: TIMEOUT_MS
+          valueFrom:
+            configMapKeyRef:
+              name: rpc-orchestrator-config
+              key: timeout-ms
+        resources:
+          requests:
+            cpu: 200m
+            memory: 384Mi
+          limits:
+            cpu: 800m
+            memory: 768Mi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3002
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 3002
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 2

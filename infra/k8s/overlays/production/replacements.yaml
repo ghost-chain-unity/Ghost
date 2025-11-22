@@ -1,0 +1,164 @@
+# Kustomize Replacements Configuration
+# This file defines dynamic value injection from environment-specific ConfigMap
+# into Kubernetes manifests, enabling namespace-agnostic and account-agnostic deployments
+
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+
+# ConfigMap Generator - Creates ConfigMap from .env file
+configMapGenerator:
+- name: kustomize-values
+  envs:
+  - .env
+  options:
+    disableNameSuffixHash: true
+
+# Replacements - Dynamic value injection
+replacements:
+# 1. Namespace Replacement - Fix hard-coded monitoring namespace in DNS names
+- source:
+    kind: ConfigMap
+    name: kustomize-values
+    fieldPath: data.MONITORING_NAMESPACE
+  targets:
+  # Loki Write ConfigMap
+  - select:
+      kind: ConfigMap
+      name: loki-write-config
+    fieldPaths:
+    - data.[loki.yaml]
+    options:
+      delimiter: '.'
+      index: 0
+  # Loki Read ConfigMap
+  - select:
+      kind: ConfigMap
+      name: loki-read-config
+    fieldPaths:
+    - data.[loki.yaml]
+    options:
+      delimiter: '.'
+      index: 0
+  # Loki Backend ConfigMap
+  - select:
+      kind: ConfigMap
+      name: loki-backend-config
+    fieldPaths:
+    - data.[loki.yaml]
+    options:
+      delimiter: '.'
+      index: 0
+  # Loki Gateway ConfigMap
+  - select:
+      kind: ConfigMap
+      name: loki-gateway-config
+    fieldPaths:
+    - data.[nginx.conf]
+    options:
+      delimiter: '.'
+      index: 0
+
+# 2. IRSA ARN Replacements - Dynamic IAM role injection
+- source:
+    kind: ConfigMap
+    name: kustomize-values
+    fieldPath: data.API_GATEWAY_ROLE_ARN
+  targets:
+  - select:
+      kind: ServiceAccount
+      name: api-gateway
+    fieldPaths:
+    - metadata.annotations.[eks.amazonaws.com/role-arn]
+    options:
+      create: true
+
+- source:
+    kind: ConfigMap
+    name: kustomize-values
+    fieldPath: data.INDEXER_ROLE_ARN
+  targets:
+  - select:
+      kind: ServiceAccount
+      name: indexer
+    fieldPaths:
+    - metadata.annotations.[eks.amazonaws.com/role-arn]
+    options:
+      create: true
+
+- source:
+    kind: ConfigMap
+    name: kustomize-values
+    fieldPath: data.RPC_ORCHESTRATOR_ROLE_ARN
+  targets:
+  - select:
+      kind: ServiceAccount
+      name: rpc-orchestrator
+    fieldPaths:
+    - metadata.annotations.[eks.amazonaws.com/role-arn]
+    options:
+      create: true
+
+- source:
+    kind: ConfigMap
+    name: kustomize-values
+    fieldPath: data.AI_ENGINE_ROLE_ARN
+  targets:
+  - select:
+      kind: ServiceAccount
+      name: ai-engine
+    fieldPaths:
+    - metadata.annotations.[eks.amazonaws.com/role-arn]
+    options:
+      create: true
+
+- source:
+    kind: ConfigMap
+    name: kustomize-values
+    fieldPath: data.LOKI_ROLE_ARN
+  targets:
+  - select:
+      kind: ServiceAccount
+      name: loki
+    fieldPaths:
+    - metadata.annotations.[eks.amazonaws.com/role-arn]
+    options:
+      create: true
+
+# 3. ECR Image Replacements - Dynamic ECR repository URL
+- source:
+    kind: ConfigMap
+    name: kustomize-values
+    fieldPath: data.ECR_REPOSITORY_URL
+  targets:
+  - select:
+      kind: Deployment
+      name: api-gateway
+    fieldPaths:
+    - spec.template.spec.containers.[name=api-gateway].image
+    options:
+      delimiter: '/'
+      index: 0
+  - select:
+      kind: Deployment
+      name: indexer
+    fieldPaths:
+    - spec.template.spec.containers.[name=indexer].image
+    options:
+      delimiter: '/'
+      index: 0
+  - select:
+      kind: Deployment
+      name: rpc-orchestrator
+    fieldPaths:
+    - spec.template.spec.containers.[name=rpc-orchestrator].image
+    options:
+      delimiter: '/'
+      index: 0
+  - select:
+      kind: Deployment
+      name: ai-engine
+    fieldPaths:
+    - spec.template.spec.containers.[name=ai-engine].image
+    options:
+      delimiter: '/'
+      index: 0

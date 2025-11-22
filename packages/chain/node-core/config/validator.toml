@@ -1,0 +1,183 @@
+# ChainGhost Validator Node Configuration Template
+# This file serves as a reference for validator node configuration
+# Substrate nodes don't use TOML configs directly, but this template
+# helps document and standardize validator deployments
+
+[node]
+# Node name displayed in telemetry and logs
+name = "MyValidator"
+
+# Base directory for all node data (blockchain DB, keystore, etc.)
+base_path = "/var/lib/ghost-validator"
+
+# Chain specification to use
+# Options: "dev", "local", or path to custom chain spec JSON
+chain = "mainnet"
+
+# Enable validator mode (required for block production)
+validator = true
+
+[network]
+# P2P network port for peer connections
+port = 30333
+
+# List of bootnode addresses (multiaddr format)
+# Example: ["/ip4/192.168.1.100/tcp/30333/p2p/12D3KooW..."]
+bootnodes = []
+
+# Reserved peer nodes (always maintain connection)
+reserved_nodes = []
+
+# Only connect to reserved nodes (useful for private networks)
+reserved_only = false
+
+# Public address to advertise to other peers
+# Leave empty for auto-detection
+public_addr = ""
+
+# Maximum number of inbound peer connections
+in_peers = 25
+
+# Maximum number of outbound peer connections
+out_peers = 25
+
+# Node identity key (hex format)
+# Generate with: ghost-node key generate-node-key
+# Leave empty to generate automatically
+node_key = ""
+
+[rpc]
+# HTTP RPC server port
+port = 9944
+
+# RPC methods allowed
+# Options: "Safe" (default), "Unsafe" (development only), "Auto"
+methods = "Safe"
+
+# CORS allowed origins
+# Options: "all" (not recommended for production), comma-separated list
+# Example: "https://polkadot.js.org,https://app.example.com"
+cors = "https://polkadot.js.org"
+
+# Listen on all interfaces (not just localhost)
+# WARNING: Only enable if behind firewall or with proper security
+external = false
+
+# Maximum number of RPC connections
+max_connections = 100
+
+# WebSocket maximum connections
+ws_max_connections = 100
+
+# Rate limiting (requests per minute per IP)
+rate_limit = 100
+
+[database]
+# Database backend
+# Options: "rocksdb" (default), "paritydb"
+backend = "rocksdb"
+
+# Database cache size in MB
+cache_size = 1024
+
+# State pruning mode
+# Options: "archive" (keep all state), number of blocks to keep
+# Validators typically use "256" or "1024"
+pruning = 256
+
+[telemetry]
+# Telemetry server URL and verbosity level (0-9)
+# Set to empty to disable telemetry
+url = "wss://telemetry.polkadot.io/submit/ 0"
+
+[prometheus]
+# Enable Prometheus metrics endpoint
+enabled = true
+
+# Prometheus metrics port
+port = 9615
+
+# Allow external access to Prometheus endpoint
+external = true
+
+[logging]
+# Log level and targets
+# Format: "target1=level1,target2=level2"
+# Levels: error, warn, info, debug, trace
+# Examples:
+#   "info" - info level for all targets
+#   "runtime=debug,consensus=trace" - specific targets
+log_level = "info"
+
+# Log pattern
+# Available placeholders: {d} (date), {h} (hour), {m} (minute), {s} (second),
+# {l} (level), {t} (target), {T} (thread), {M} (message)
+log_pattern = "{d} {h}:{m}:{s} {l} {t} {M}"
+
+[execution]
+# Runtime execution strategy
+# Options: "Native" (faster), "Wasm" (safer), "Both", "NativeElseWasm"
+execution = "Wasm"
+
+# Number of execution threads
+# Set to 0 to use number of CPU cores
+execution_threads = 0
+
+[misc]
+# Enable detailed logging for specific subsystems
+# Useful for debugging
+detailed_log = false
+
+# Force authoring of blocks even if offline
+force_authoring = false
+
+# Disable GRANDPA finality
+# WARNING: Only for testing, never in production
+no_grandpa = false
+
+# Maximum block size (bytes)
+# Default is typically 5MB
+max_block_size = 5242880
+
+# Maximum extrinsic size (bytes)
+# Default is typically 3.5MB
+max_extrinsic_size = 3670016
+
+# Comments and best practices:
+# ===================================
+# 
+# 1. SECURITY:
+#    - Never expose RPC externally without authentication
+#    - Use firewall rules to restrict RPC access
+#    - Set rpc.methods to "Safe" in production
+#    - Protect your base_path directory (contains keys)
+#
+# 2. PERFORMANCE:
+#    - Increase database.cache_size for better performance (2-4GB recommended)
+#    - Use SSD storage for base_path
+#    - Ensure sufficient RAM (8GB+ recommended)
+#    - Monitor with Prometheus metrics
+#
+# 3. NETWORKING:
+#    - Ensure port 30333 is open for P2P
+#    - Configure firewall to allow validator traffic
+#    - Use static IP or dynamic DNS for public_addr
+#    - Add trusted validators to reserved_nodes
+#
+# 4. KEYS:
+#    - Store session keys securely in keystore
+#    - Backup keystore directory regularly
+#    - Use hardware security modules (HSM) for production
+#    - Rotate session keys periodically
+#
+# 5. MONITORING:
+#    - Enable Prometheus metrics
+#    - Set up alerting for validator downtime
+#    - Monitor block production and finalization
+#    - Track peer count and sync status
+#
+# 6. MAINTENANCE:
+#    - Keep node software updated
+#    - Monitor disk space (blockchain grows continuously)
+#    - Regular backups of keystore and chain data
+#    - Test upgrades on testnet first

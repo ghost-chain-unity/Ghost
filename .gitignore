@@ -1,0 +1,83 @@
+# CRITICAL: Each package manages its own node_modules and lockfiles
+# NEVER commit root node_modules (should not exist if following mono-repo rules)
+
+# Dependencies (each package has its own)
+**/node_modules/
+**/pnpm-lock.yaml
+**/package-lock.json
+**/yarn.lock
+
+# Build outputs
+**/.next/
+**/dist/
+**/build/
+**/out/
+**/.turbo/
+**/target/
+**/.cache/
+
+# Environment variables
+**/.env
+**/.env.local
+**/.env.*.local
+!**/.env.example
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+**/logs/
+**/*.log
+**/npm-debug.log*
+**/pnpm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# Testing
+**/coverage/
+**/.nyc_output/
+**/test-results/
+**/__snapshots__/
+
+# Temporary files
+**/tmp/
+**/temp/
+**/.temp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Replit
+.replit.nix
+
+# Smart contracts
+**/artifacts/
+**/cache/
+**/typechain/
+**/typechain-types/
+
+# Terraform
+**/.terraform/
+**/.terraform.lock.hcl
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfvars
+**/*.tfvars.json
+**/override.tf
+**/override.tf.json
+**/*_override.tf
+**/*_override.tf.json
+**/.terraformrc
+**/terraform.rc
+**/crash.log
+**/crash.*.log
+
+# Don't ignore Replit configuration
+!.replit
+!replit.nix

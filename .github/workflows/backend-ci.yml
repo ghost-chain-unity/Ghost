@@ -1,0 +1,156 @@
+name: Backend CI
+
+# Workflow triggers: Manual trigger only (workflow_dispatch)
+# User can activate workflow manually from GitHub Actions tab
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-test:
+    name: Backend - ${{ matrix.service }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: ghost
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: ghost_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [api-gateway, indexer, rpc-orchestrator, ai-engine]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+      
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      
+      - name: Check if package exists
+        id: check-package
+        run: |
+          if [ -f "packages/backend/${{ matrix.service }}/package.json" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Package packages/backend/${{ matrix.service }} does not exist yet"
+          fi
+      
+      - name: Install dependencies
+        if: steps.check-package.outputs.exists == 'true'
+        run: |
+          cd packages/backend/${{ matrix.service }}
+          pnpm install --frozen-lockfile
+      
+      - name: Run ESLint
+        if: steps.check-package.outputs.exists == 'true'
+        run: |
+          cd packages/backend/${{ matrix.service }}
+          pnpm run lint
+      
+      - name: Run TypeScript type check
+        if: steps.check-package.outputs.exists == 'true'
+        run: |
+          cd packages/backend/${{ matrix.service }}
+          if grep -q '"type-check"' package.json; then
+            pnpm run type-check
+          else
+            echo "Type check script not found in package.json, skipping"
+          fi
+      
+      - name: Run database migrations (if applicable)
+        if: steps.check-package.outputs.exists == 'true'
+        run: |
+          cd packages/backend/${{ matrix.service }}
+          if [ -f "prisma/schema.prisma" ]; then
+            pnpx prisma migrate deploy
+          fi
+        env:
+          DATABASE_URL: postgresql://ghost:test@localhost:5432/ghost_test
+      
+      - name: Run unit tests
+        if: steps.check-package.outputs.exists == 'true'
+        run: |
+          cd packages/backend/${{ matrix.service }}
+          pnpm test -- --coverage --passWithNoTests
+        env:
+          DATABASE_URL: postgresql://ghost:test@localhost:5432/ghost_test
+          REDIS_URL: redis://localhost:6379
+          NODE_ENV: test
+      
+      - name: Upload coverage to Codecov
+        if: always() && steps.check-package.outputs.exists == 'true'
+        uses: codecov/codecov-action@v3
+        with:
+          file: packages/backend/${{ matrix.service }}/coverage/coverage-final.json
+          flags: backend-${{ matrix.service }}
+          name: backend-${{ matrix.service }}
+      
+      - name: Run integration tests
+        if: steps.check-package.outputs.exists == 'true'
+        run: |
+          cd packages/backend/${{ matrix.service }}
+          if grep -q '"test:e2e"' package.json; then
+            pnpm run test:e2e
+          else
+            echo "E2E test script not found in package.json, skipping"
+          fi
+        env:
+          DATABASE_URL: postgresql://ghost:test@localhost:5432/ghost_test
+          REDIS_URL: redis://localhost:6379
+          NODE_ENV: test
+      
+      - name: Build service
+        if: steps.check-package.outputs.exists == 'true'
+        run: |
+          cd packages/backend/${{ matrix.service }}
+          pnpm run build
+        env:
+          NODE_ENV: production

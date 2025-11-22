@@ -1,0 +1,45 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: ghost-protocol-monitoring
+
+resources:
+- prometheus-deployment.yaml
+- prometheus-service.yaml
+- prometheus-configmap.yaml
+- prometheus-rbac.yaml
+- prometheus-alerts.yaml
+- prometheus-recording-rules-phase1.yaml
+- prometheus-alerts-phase2.yaml
+- alertmanager-deployment.yaml
+- alertmanager-service.yaml
+- alertmanager-configmap.yaml
+- alertmanager-secret.yaml
+- grafana-deployment.yaml
+- grafana-service.yaml
+- grafana-configmap.yaml
+- grafana-secret.yaml
+- loki-serviceaccount.yaml
+- loki-write-configmap.yaml
+- loki-write-statefulset.yaml
+- loki-write-headless-service.yaml
+- loki-write-service.yaml
+- loki-read-configmap.yaml
+- loki-read-statefulset.yaml
+- loki-read-headless-service.yaml
+- loki-read-service.yaml
+- loki-backend-configmap.yaml
+- loki-backend-statefulset.yaml
+- loki-backend-headless-service.yaml
+- loki-backend-service.yaml
+- loki-gateway-configmap.yaml
+- loki-gateway-deployment.yaml
+- loki-gateway-service.yaml
+- promtail-daemonset.yaml
+- promtail-configmap.yaml
+- promtail-rbac.yaml
+- otel-collector-configmap.yaml
+- otel-collector-deployment.yaml
+- otel-collector-service.yaml
+- jaeger-deployment.yaml
+- jaeger-service.yaml

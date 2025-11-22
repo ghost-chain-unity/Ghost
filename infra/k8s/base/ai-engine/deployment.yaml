@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-engine
+  labels:
+    app: ai-engine
+    tier: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-engine
+  template:
+    metadata:
+      labels:
+        app: ai-engine
+        tier: backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3003"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: ai-engine
+      nodeSelector:
+        workload-type: ml-inference
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: ai-engine
+        image: ghost-protocol/ai-engine:latest
+        ports:
+        - containerPort: 3003
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3003"
+        - name: MODEL_PATH
+          valueFrom:
+            configMapKeyRef:
+              name: ai-engine-config
+              key: model-path
+        - name: INFERENCE_BATCH_SIZE
+          valueFrom:
+            configMapKeyRef:
+              name: ai-engine-config
+              key: inference-batch-size
+        - name: MAX_CONCURRENT_REQUESTS
+          valueFrom:
+            configMapKeyRef:
+              name: ai-engine-config
+              key: max-concurrent-requests
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: ai-engine-secret
+              key: openai-api-key
+              optional: true
+        - name: MODEL_CACHE_DIR
+          value: "/models"
+        resources:
+          requests:
+            cpu: 500m
+            memory: 2Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        volumeMounts:
+        - name: model-cache
+          mountPath: /models
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3003
+          initialDelaySeconds: 60
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health/ready
+            port: 3003
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 2
+      volumes:
+      - name: model-cache
+        emptyDir:
+          sizeLimit: 10Gi

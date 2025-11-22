@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run linting and formatting checks before commit
+
+echo "Running pre-commit checks..."
+
+# Frontend checks (if frontend files changed)
+if git diff --cached --name-only | grep -q "^packages/frontend/"; then
+  echo "Checking frontend..."
+  cd packages/frontend/web && pnpm run lint && pnpm run format:check && pnpm run type-check
+  if [ $? -ne 0 ]; then
+    echo "Frontend checks failed. Please fix the errors and try again."
+    exit 1
+  fi
+fi
+
+# Backend checks (if backend files changed)
+if git diff --cached --name-only | grep -q "^packages/backend/api-gateway/"; then
+  echo "Checking backend..."
+  cd packages/backend/api-gateway && pnpm run lint && pnpm run format:check && pnpm run type-check
+  if [ $? -ne 0 ]; then
+    echo "Backend checks failed. Please fix the errors and try again."
+    exit 1
+  fi
+fi
+
+echo "Pre-commit checks passed!"

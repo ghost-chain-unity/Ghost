@@ -1,0 +1,91 @@
+name: Security Scan
+
+# Workflow triggers: Manual trigger only (workflow_dispatch)
+# User can activate workflow manually from GitHub Actions tab
+on:
+  workflow_dispatch:
+
+jobs:
+  dependency-scan:
+    name: Dependency Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        workspace:
+          - packages/frontend/web
+          - packages/frontend/admin
+          - packages/frontend/components
+          - packages/backend/api-gateway
+          - packages/backend/indexer
+          - packages/backend/rpc-orchestrator
+          - packages/backend/ai-engine
+          - packages/contracts/chaing-token
+          - packages/contracts/marketplace
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Check if workspace exists
+        id: check-workspace
+        run: |
+          if [ -f "${{ matrix.workspace }}/package.json" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "Workspace ${{ matrix.workspace }} does not exist yet"
+          fi
+      
+      - name: Run Snyk security scan
+        if: steps.check-workspace.outputs.exists == 'true'
+        uses: snyk/actions/node@b5b430e1cabece375cb04d810e9f606e6840e800
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: >-
+            --severity-threshold=high
+            --file=${{ matrix.workspace }}/package.json
+            --package-manager=pnpm
+        continue-on-error: true
+      
+      - name: Upload Snyk report
+        if: always() && steps.check-workspace.outputs.exists == 'true'
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk.sarif
+        continue-on-error: true
+  
+  codeql-analysis:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['javascript', 'typescript']
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-and-quality
+      
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+      
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{ matrix.language }}"

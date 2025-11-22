@@ -1,0 +1,177 @@
+# ChainGhost Full Node Configuration Template
+# Full nodes sync and relay the blockchain but don't produce blocks
+# This file serves as a reference for full node configuration
+
+[node]
+# Node name displayed in telemetry and logs
+name = "MyFullNode"
+
+# Base directory for all node data
+base_path = "/var/lib/ghost-node"
+
+# Chain specification to use
+chain = "mainnet"
+
+# Full nodes do not validate (no block production)
+validator = false
+
+[network]
+# P2P network port
+port = 30333
+
+# Bootnode addresses to connect to network
+# Example: ["/ip4/192.168.1.100/tcp/30333/p2p/12D3KooW..."]
+bootnodes = []
+
+# Reserved peer nodes
+reserved_nodes = []
+
+# Only connect to reserved nodes
+reserved_only = false
+
+# Public address (if behind NAT, specify external address)
+public_addr = ""
+
+# Maximum inbound connections
+# Full nodes can handle more connections than validators
+in_peers = 50
+
+# Maximum outbound connections
+out_peers = 50
+
+# Node identity key
+node_key = ""
+
+[rpc]
+# RPC server port
+port = 9944
+
+# RPC methods allowed
+# Full nodes often use "Unsafe" for development or "Safe" for production
+methods = "Safe"
+
+# CORS settings
+# Can be more permissive for public RPC nodes
+cors = "all"
+
+# Enable external RPC access
+# Set to true if providing public RPC service
+external = false
+
+# Maximum RPC connections
+# Increase for public RPC endpoints
+max_connections = 200
+
+# WebSocket max connections
+ws_max_connections = 200
+
+# Rate limiting (requests per minute)
+rate_limit = 200
+
+[database]
+# Database backend
+backend = "rocksdb"
+
+# Cache size in MB
+# Full nodes can use more cache for better RPC performance
+cache_size = 2048
+
+# State pruning
+# Full nodes typically keep recent state (not archive)
+# Values: number of blocks or "archive"
+pruning = 256
+
+[telemetry]
+# Telemetry server (optional for full nodes)
+url = "wss://telemetry.polkadot.io/submit/ 0"
+
+[prometheus]
+# Prometheus metrics
+enabled = true
+
+# Metrics port
+port = 9615
+
+# External access to metrics
+external = false
+
+[logging]
+# Log level
+log_level = "info"
+
+# Log pattern
+log_pattern = "{d} {h}:{m}:{s} {l} {t} {M}"
+
+[execution]
+# Execution strategy
+execution = "Wasm"
+
+# Execution threads
+execution_threads = 0
+
+[misc]
+# Detailed logging
+detailed_log = false
+
+# Force authoring (disabled for full nodes)
+force_authoring = false
+
+# GRANDPA finality
+no_grandpa = false
+
+# Maximum block size
+max_block_size = 5242880
+
+# Maximum extrinsic size
+max_extrinsic_size = 3670016
+
+# Full Node Use Cases and Best Practices:
+# ===================================
+#
+# COMMON USE CASES:
+# 1. RPC Service Provider
+#    - Serve dApp requests
+#    - Provide blockchain data access
+#    - Enable wallet connectivity
+#
+# 2. Network Support
+#    - Help relay blocks and transactions
+#    - Improve network decentralization
+#    - Provide additional sync sources
+#
+# 3. Development/Testing
+#    - Test dApp integration
+#    - Monitor network activity
+#    - Debug blockchain issues
+#
+# RPC SERVICE CONFIGURATION:
+# If running a public RPC endpoint:
+# - Set rpc.external = true
+# - Use reverse proxy (nginx) with HTTPS
+# - Implement rate limiting
+# - Monitor resource usage
+# - Consider DDoS protection
+#
+# SECURITY:
+# - Full nodes don't hold validator keys (less critical)
+# - Still protect RPC access in production
+# - Use firewall rules for RPC port
+# - Keep software updated
+#
+# PERFORMANCE:
+# - More cache improves RPC response times
+# - SSD storage recommended
+# - 4-8GB RAM minimum
+# - Good network bandwidth for peer connections
+#
+# NETWORKING:
+# - Open port 30333 for P2P
+# - Configure NAT/firewall properly
+# - Use multiple bootnodes for reliability
+# - Consider running on cloud providers
+#
+# MONITORING:
+# - Track sync status
+# - Monitor peer count
+# - Watch RPC request rates
+# - Alert on service downtime

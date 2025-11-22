@@ -1,0 +1,153 @@
+# Dependabot configuration for automated dependency updates
+# See: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  # Frontend packages
+  - package-ecosystem: "npm"
+    directory: "/packages/frontend/web"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "ghost-protocol/frontend-team"
+    labels:
+      - "dependencies"
+      - "frontend"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    ignore:
+      # Ignore major version updates for stable dependencies
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+  
+  - package-ecosystem: "npm"
+    directory: "/packages/frontend/admin"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "frontend"
+    commit-message:
+      prefix: "chore(deps)"
+  
+  - package-ecosystem: "npm"
+    directory: "/packages/frontend/components"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "frontend"
+    commit-message:
+      prefix: "chore(deps)"
+  
+  # Backend packages
+  - package-ecosystem: "npm"
+    directory: "/packages/backend/api-gateway"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "ghost-protocol/backend-team"
+    labels:
+      - "dependencies"
+      - "backend"
+    commit-message:
+      prefix: "chore(deps)"
+    ignore:
+      - dependency-name: "@nestjs/core"
+        update-types: ["version-update:semver-major"]
+  
+  - package-ecosystem: "npm"
+    directory: "/packages/backend/indexer"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "backend"
+    commit-message:
+      prefix: "chore(deps)"
+  
+  - package-ecosystem: "npm"
+    directory: "/packages/backend/rpc-orchestrator"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "backend"
+    commit-message:
+      prefix: "chore(deps)"
+  
+  - package-ecosystem: "npm"
+    directory: "/packages/backend/ai-engine"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "backend"
+    commit-message:
+      prefix: "chore(deps)"
+  
+  # Smart Contracts
+  - package-ecosystem: "npm"
+    directory: "/packages/contracts/chaing-token"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "ghost-protocol/blockchain-team"
+    labels:
+      - "dependencies"
+      - "contracts"
+      - "security-review-required"
+    commit-message:
+      prefix: "chore(deps)"
+    ignore:
+      # Be very conservative with contract dependencies
+      - dependency-name: "@openzeppelin/contracts"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "hardhat"
+        update-types: ["version-update:semver-major"]
+  
+  - package-ecosystem: "npm"
+    directory: "/packages/contracts/marketplace"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "contracts"
+      - "security-review-required"
+    commit-message:
+      prefix: "chore(deps)"
+  
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "thursday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "ci-cd"
+    commit-message:
+      prefix: "chore(ci)"

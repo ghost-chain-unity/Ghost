@@ -1,0 +1,208 @@
+# ChainGhost Archive Node Configuration Template
+# Archive nodes store complete blockchain history (all state at all blocks)
+# Required for historical queries and block explorers
+
+[node]
+# Node name
+name = "MyArchiveNode"
+
+# Base directory - needs LOTS of disk space
+# Archive nodes can be 10-100x larger than full nodes
+base_path = "/var/lib/ghost-archive"
+
+# Chain specification
+chain = "mainnet"
+
+# Archive nodes don't validate
+validator = false
+
+[network]
+# P2P port
+port = 30333
+
+# Bootnodes
+bootnodes = []
+
+# Reserved nodes
+reserved_nodes = []
+
+reserved_only = false
+
+# Public address
+public_addr = ""
+
+# Archive nodes can serve as reliable peers
+in_peers = 75
+
+out_peers = 25
+
+# Node key
+node_key = ""
+
+[rpc]
+# RPC port
+port = 9944
+
+# Methods - often "Unsafe" for block explorers
+# They need access to historical state queries
+methods = "Unsafe"
+
+# CORS - permissive for public services
+cors = "all"
+
+# External RPC - typically enabled for archive nodes
+external = true
+
+# High connection limits for archive RPC
+max_connections = 500
+
+ws_max_connections = 500
+
+# Rate limiting
+rate_limit = 300
+
+[database]
+# Database backend
+# ParityDB can be more efficient for archives
+backend = "rocksdb"
+
+# Large cache for better query performance
+# Archives need 8GB+ RAM, allocate 4-6GB to cache
+cache_size = 4096
+
+# CRITICAL: Archive pruning mode
+# This is what makes it an archive node
+pruning = "archive"
+
+[telemetry]
+# Telemetry
+url = "wss://telemetry.polkadot.io/submit/ 0"
+
+[prometheus]
+# Prometheus metrics
+enabled = true
+
+port = 9615
+
+external = true
+
+[logging]
+# Log level
+log_level = "info"
+
+# Log pattern
+log_pattern = "{d} {h}:{m}:{s} {l} {t} {M}"
+
+[execution]
+# Execution strategy
+execution = "Wasm"
+
+# Execution threads
+# Archive queries can be CPU intensive
+execution_threads = 0
+
+[misc]
+# Detailed logging
+detailed_log = false
+
+force_authoring = false
+
+no_grandpa = false
+
+# Maximum sizes
+max_block_size = 5242880
+max_extrinsic_size = 3670016
+
+# Archive Node Requirements and Best Practices:
+# ===================================
+#
+# HARDWARE REQUIREMENTS:
+# - Storage: 500GB-2TB+ SSD (grows continuously)
+# - RAM: 16GB+ (32GB recommended)
+# - CPU: 4+ cores
+# - Network: 100Mbps+ bandwidth
+# - Consider enterprise SSD for I/O performance
+#
+# STORAGE PLANNING:
+# - Monitor disk usage closely
+# - Archive grows much faster than pruned nodes
+# - Plan for 20-50GB+ growth per month
+# - Use LVM or similar for easy expansion
+# - Regular monitoring and alerting
+#
+# USE CASES:
+# 1. Block Explorers
+#    - Query any historical block/state
+#    - Display full transaction history
+#    - Analyze blockchain data
+#
+# 2. Analytics Platforms
+#    - Historical data analysis
+#    - Token tracking
+#    - Network statistics
+#
+# 3. Backup/Recovery
+#    - Complete chain history
+#    - Disaster recovery source
+#    - Network bootstrap node
+#
+# 4. Development
+#    - Testing historical queries
+#    - State at specific blocks
+#    - Historical event analysis
+#
+# PERFORMANCE OPTIMIZATION:
+# - Use NVMe SSD for best performance
+# - Large database cache (4-8GB)
+# - Dedicated database disk
+# - Tune OS I/O scheduler (deadline/noop)
+# - Consider RAID 10 for redundancy
+#
+# RPC CONSIDERATIONS:
+# - Archive RPC queries are expensive
+# - Implement aggressive rate limiting
+# - Cache common queries
+# - Use CDN for static data
+# - Monitor query patterns
+#
+# SECURITY:
+# - Protect RPC endpoint (reverse proxy)
+# - HTTPS for external access
+# - Authentication for sensitive queries
+# - DDoS protection
+# - Regular security updates
+#
+# BACKUP STRATEGY:
+# - Snapshot-based backups
+# - Incremental backups of DB
+# - Test restore procedures
+# - Off-site backup copies
+# - Document recovery process
+#
+# MONITORING:
+# - Disk space alerts (critical!)
+# - I/O performance metrics
+# - RPC response times
+# - Query load
+# - Peer connectivity
+# - Sync status
+#
+# MAINTENANCE:
+# - Regular disk space checks
+# - Database optimization (occasional)
+# - Software updates
+# - Performance tuning
+# - Backup verification
+#
+# COST CONSIDERATIONS:
+# - Archive nodes are expensive to run
+# - High storage costs
+# - Significant bandwidth usage
+# - 24/7 uptime requirements
+# - Consider cloud vs dedicated hardware
+#
+# NETWORK CONTRIBUTION:
+# - Valuable for network health
+# - Help new nodes sync faster
+# - Provide historical data access
+# - Support ecosystem infrastructure

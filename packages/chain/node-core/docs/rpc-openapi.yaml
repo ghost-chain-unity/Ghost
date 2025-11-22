@@ -1,0 +1,883 @@
+openapi: 3.0.3
+info:
+  title: Ghost Chain JSON-RPC API
+  version: 1.0.0
+  description: |
+    JSON-RPC 2.0 interface for Ghost Protocol blockchain node.
+    
+    ## Overview
+    Ghost Chain is a Substrate-based blockchain that provides:
+    - **ChainGhost**: Intent-based execution layer with journey visualization
+    - **G3Mail**: Decentralized messaging with on-chain message pointers
+    - **Ghonity**: Community ecosystem with social graph and reputation system
+    
+    ## Rate Limiting
+    The Ghost Chain RPC implements per-IP and per-token rate limiting:
+    - **Public RPC (IP-based)**: 100 requests per minute
+    - **Authenticated RPC (API key)**: 1000 requests per minute
+    - **Rate Limit Window**: 60 seconds
+    
+    Rate limit information is provided in response headers:
+    - `X-RateLimit-Limit`: Maximum requests allowed
+    - `X-RateLimit-Remaining`: Requests remaining in current window
+    - `X-RateLimit-Reset`: Unix timestamp when limit resets
+    
+    When rate limit is exceeded, the API returns HTTP 429 with error details.
+    
+    ## WebSocket Support
+    All RPC methods are available via WebSocket for real-time subscriptions:
+    - Connect to `wss://testnet-rpc.ghostprotocol.io` or `wss://mainnet-rpc.ghostprotocol.io`
+    - Use JSON-RPC 2.0 format for all messages
+    - Subscribe to events using `subscribe` methods
+    
+    ## Authentication
+    For authenticated requests with higher rate limits, include API key in header:
+    ```
+    X-API-Key: your-api-key-here
+    ```
+    
+  contact:
+    name: Ghost Protocol Team
+    url: https://ghostprotocol.io
+    email: dev@ghostprotocol.io
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+
+servers:
+  - url: https://testnet-rpc.ghostprotocol.io
+    description: Testnet RPC endpoint (HTTP/HTTPS)
+  - url: wss://testnet-rpc.ghostprotocol.io
+    description: Testnet WebSocket endpoint
+  - url: https://mainnet-rpc.ghostprotocol.io
+    description: Mainnet RPC endpoint (HTTP/HTTPS)
+  - url: wss://mainnet-rpc.ghostprotocol.io
+    description: Mainnet WebSocket endpoint
+
+security:
+  - ApiKeyAuth: []
+  - {}
+
+paths:
+  /:
+    post:
+      summary: JSON-RPC 2.0 Endpoint
+      description: |
+        All RPC methods are called via POST request to the root endpoint.
+        The method name is specified in the `method` field of the JSON-RPC request.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JsonRpcRequest'
+            examples:
+              chainghost_getIntent:
+                $ref: '#/components/examples/ChainGhostGetIntentRequest'
+              g3mail_getMessage:
+                $ref: '#/components/examples/G3MailGetMessageRequest'
+              ghonity_getReputationScore:
+                $ref: '#/components/examples/GhonityGetReputationScoreRequest'
+      responses:
+        '200':
+          description: Successful JSON-RPC response
+          headers:
+            X-RateLimit-Limit:
+              $ref: '#/components/headers/X-RateLimit-Limit'
+            X-RateLimit-Remaining:
+              $ref: '#/components/headers/X-RateLimit-Remaining'
+            X-RateLimit-Reset:
+              $ref: '#/components/headers/X-RateLimit-Reset'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/JsonRpcSuccessResponse'
+                  - $ref: '#/components/schemas/JsonRpcErrorResponse'
+              examples:
+                chainghost_getIntent_success:
+                  $ref: '#/components/examples/ChainGhostGetIntentResponse'
+                g3mail_getMessage_success:
+                  $ref: '#/components/examples/G3MailGetMessageResponse'
+                error_response:
+                  $ref: '#/components/examples/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonRpcErrorResponse'
+              example:
+                jsonrpc: "2.0"
+                id: 1
+                error:
+                  code: -32000
+                  message: "Rate limit of 100 requests per minute exceeded. Resets in 45 seconds"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: |
+        API key for authenticated requests with higher rate limits (1000 req/min).
+        Contact Ghost Protocol team to obtain an API key.
+
+  headers:
+    X-RateLimit-Limit:
+      description: Maximum number of requests allowed in the time window
+      schema:
+        type: integer
+        example: 100
+    X-RateLimit-Remaining:
+      description: Number of requests remaining in the current window
+      schema:
+        type: integer
+        example: 95
+    X-RateLimit-Reset:
+      description: Unix timestamp when the rate limit resets
+      schema:
+        type: integer
+        format: int64
+        example: 1700000000
+
+  schemas:
+    JsonRpcRequest:
+      type: object
+      required:
+        - jsonrpc
+        - method
+        - id
+      properties:
+        jsonrpc:
+          type: string
+          enum: ["2.0"]
+          description: JSON-RPC protocol version
+        method:
+          type: string
+          description: RPC method name
+          enum:
+            - chainghost_getIntent
+            - chainghost_getIntentsByAccount
+            - chainghost_getJourneySteps
+            - chainghost_getIntentStatus
+            - g3mail_getPublicKey
+            - g3mail_getMessagesByRecipient
+            - g3mail_getMessage
+            - g3mail_getInboxCount
+            - ghonity_isFollowing
+            - ghonity_getFollowerCount
+            - ghonity_getFollowingCount
+            - ghonity_getReputationScore
+            - system_health
+            - system_peers
+            - system_syncState
+            - chain_getBlock
+            - chain_getHeader
+            - chain_getFinalizedHead
+            - transactionPayment_queryInfo
+            - transactionPayment_queryFeeDetails
+        params:
+          type: array
+          description: Method parameters (varies by method)
+          items: {}
+        id:
+          oneOf:
+            - type: string
+            - type: integer
+          description: Request identifier
+
+    JsonRpcSuccessResponse:
+      type: object
+      required:
+        - jsonrpc
+        - result
+        - id
+      properties:
+        jsonrpc:
+          type: string
+          enum: ["2.0"]
+        result:
+          description: Method result (type varies by method)
+        id:
+          oneOf:
+            - type: string
+            - type: integer
+
+    JsonRpcErrorResponse:
+      type: object
+      required:
+        - jsonrpc
+        - error
+        - id
+      properties:
+        jsonrpc:
+          type: string
+          enum: ["2.0"]
+        error:
+          $ref: '#/components/schemas/JsonRpcError'
+        id:
+          oneOf:
+            - type: string
+            - type: integer
+            - type: "null"
+
+    JsonRpcError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          description: Error code
+          enum:
+            - -32700  # Parse error
+            - -32600  # Invalid request
+            - -32601  # Method not found
+            - -32602  # Invalid params
+            - -32603  # Internal error
+            - -32000  # Server error (rate limit, runtime error, etc.)
+        message:
+          type: string
+          description: Error message
+        data:
+          description: Additional error data
+          type: string
+
+    AccountId:
+      type: string
+      description: |
+        SS58-encoded account address (Substrate address format).
+        For Ghost Chain, this is a 48-character string starting with 'G'.
+      pattern: '^G[1-9A-HJ-NP-Za-km-z]{47}$'
+      example: "GhostAccountAddress1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabc"
+
+    BlockHash:
+      type: string
+      description: 32-byte block hash, hex-encoded with 0x prefix
+      pattern: '^0x[0-9a-fA-F]{64}$'
+      example: "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+
+    BlockNumber:
+      type: integer
+      format: uint32
+      description: Block number (height)
+      minimum: 0
+      example: 123456
+
+    IntentStatus:
+      type: string
+      enum:
+        - pending
+        - executed
+        - failed
+      description: |
+        Status of an intent execution:
+        - `pending`: Intent created but not yet executed
+        - `executed`: Intent successfully executed
+        - `failed`: Intent execution failed
+
+    IntentResponse:
+      type: object
+      required:
+        - intentId
+        - account
+        - status
+        - timestamp
+        - metadata
+      properties:
+        intentId:
+          type: integer
+          format: uint64
+          description: Unique identifier for the intent
+          example: 42
+        account:
+          $ref: '#/components/schemas/AccountId'
+        status:
+          $ref: '#/components/schemas/IntentStatus'
+        timestamp:
+          $ref: '#/components/schemas/BlockNumber'
+        metadata:
+          type: string
+          format: byte
+          description: Base64-encoded metadata (IPFS CID, execution details, etc.)
+          example: "UW1hZ2ljIElQRlMgSGFzaA=="
+
+    JourneyStepResponse:
+      type: object
+      required:
+        - stepId
+        - description
+        - timestamp
+      properties:
+        stepId:
+          type: integer
+          format: uint32
+          description: Sequential step identifier
+          example: 1
+        description:
+          type: string
+          format: byte
+          description: Base64-encoded step description
+          example: "U3RlcCAxOiBJbml0aWF0ZWQgc3dhcA=="
+        timestamp:
+          $ref: '#/components/schemas/BlockNumber'
+
+    MessageResponse:
+      type: object
+      required:
+        - messageId
+        - sender
+        - recipient
+        - cid
+        - timestamp
+        - read
+      properties:
+        messageId:
+          type: integer
+          format: uint64
+          description: Unique message identifier
+          example: 123
+        sender:
+          $ref: '#/components/schemas/AccountId'
+        recipient:
+          $ref: '#/components/schemas/AccountId'
+        cid:
+          type: string
+          format: byte
+          description: Base64-encoded IPFS content identifier for encrypted message
+          example: "UW1ZMTIzNDU2Nzg5MEFCQ0RFRg=="
+        timestamp:
+          $ref: '#/components/schemas/BlockNumber'
+        read:
+          type: boolean
+          description: Whether the message has been read
+          example: false
+
+    SystemHealth:
+      type: object
+      required:
+        - peers
+        - isSyncing
+        - shouldHavePeers
+      properties:
+        peers:
+          type: integer
+          description: Number of connected peers
+          example: 25
+        isSyncing:
+          type: boolean
+          description: Whether the node is currently syncing
+          example: false
+        shouldHavePeers:
+          type: boolean
+          description: Whether the node should have peers (not in offline mode)
+          example: true
+
+    PeerInfo:
+      type: object
+      properties:
+        peerId:
+          type: string
+          description: Peer identifier
+        roles:
+          type: string
+          description: Peer roles (FULL, LIGHT, AUTHORITY)
+        bestHash:
+          $ref: '#/components/schemas/BlockHash'
+        bestNumber:
+          $ref: '#/components/schemas/BlockNumber'
+
+    SyncState:
+      type: object
+      required:
+        - startingBlock
+        - currentBlock
+        - highestBlock
+      properties:
+        startingBlock:
+          $ref: '#/components/schemas/BlockNumber'
+        currentBlock:
+          $ref: '#/components/schemas/BlockNumber'
+        highestBlock:
+          $ref: '#/components/schemas/BlockNumber'
+
+    RuntimeDispatchInfo:
+      type: object
+      required:
+        - weight
+        - class
+        - partialFee
+      properties:
+        weight:
+          type: integer
+          format: uint64
+          description: Transaction weight (computational cost)
+        class:
+          type: string
+          enum: [Normal, Operational, Mandatory]
+          description: Transaction class
+        partialFee:
+          type: string
+          description: Estimated fee in smallest unit (femtoGHOST)
+
+    FeeDetails:
+      type: object
+      required:
+        - inclusionFee
+      properties:
+        inclusionFee:
+          type: object
+          properties:
+            baseFee:
+              type: string
+              description: Base fee component
+            lenFee:
+              type: string
+              description: Length-based fee component
+            adjustedWeightFee:
+              type: string
+              description: Weight-based fee component
+
+  examples:
+    ChainGhostGetIntentRequest:
+      summary: Get intent by ID
+      value:
+        jsonrpc: "2.0"
+        method: "chainghost_getIntent"
+        params: [42, null]
+        id: 1
+
+    ChainGhostGetIntentResponse:
+      summary: Intent response
+      value:
+        jsonrpc: "2.0"
+        result:
+          intentId: 42
+          account: "GhostAccountAddress1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabc"
+          status: "executed"
+          timestamp: 123456
+          metadata: "UW1hZ2ljIElQRlMgSGFzaA=="
+        id: 1
+
+    G3MailGetMessageRequest:
+      summary: Get message by recipient and ID
+      value:
+        jsonrpc: "2.0"
+        method: "g3mail_getMessage"
+        params: ["GhostAccountAddress1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabc", 123, null]
+        id: 1
+
+    G3MailGetMessageResponse:
+      summary: Message response
+      value:
+        jsonrpc: "2.0"
+        result:
+          messageId: 123
+          sender: "GhostSenderAddress1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabc"
+          recipient: "GhostAccountAddress1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabc"
+          cid: "UW1ZMTIzNDU2Nzg5MEFCQ0RFRg=="
+          timestamp: 123456
+          read: false
+        id: 1
+
+    GhonityGetReputationScoreRequest:
+      summary: Get reputation score for account
+      value:
+        jsonrpc: "2.0"
+        method: "ghonity_getReputationScore"
+        params: ["GhostAccountAddress1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabc", null]
+        id: 1
+
+    ErrorResponse:
+      summary: Error response
+      value:
+        jsonrpc: "2.0"
+        error:
+          code: -32603
+          message: "Runtime API error"
+          data: "Storage query failed"
+        id: 1
+
+tags:
+  - name: ChainGhost
+    description: |
+      Intent-based execution layer with journey visualization.
+      
+      ChainGhost enables users to express transaction intents and visualize
+      the journey of cross-chain transactions with AI-generated narratives.
+      
+      **Methods:**
+      - `chainghost_getIntent`: Retrieve intent details by ID
+      - `chainghost_getIntentsByAccount`: List all intents for an account
+      - `chainghost_getJourneySteps`: Get journey visualization steps for an intent
+      - `chainghost_getIntentStatus`: Check current status of an intent
+      
+  - name: G3Mail
+    description: |
+      Decentralized messaging with on-chain pointers to encrypted messages.
+      
+      G3Mail stores message pointers on-chain while actual encrypted content
+      resides on IPFS, enabling secure, decentralized communication.
+      
+      **Methods:**
+      - `g3mail_getPublicKey`: Retrieve encryption public key for an account
+      - `g3mail_getMessagesByRecipient`: List all messages for a recipient
+      - `g3mail_getMessage`: Get specific message by ID
+      - `g3mail_getInboxCount`: Get total message count for an account
+      
+  - name: Ghonity
+    description: |
+      Community ecosystem with social graph and reputation system.
+      
+      Ghonity provides on-chain social features including follow relationships,
+      reputation scoring, and community engagement metrics.
+      
+      **Methods:**
+      - `ghonity_isFollowing`: Check if one account follows another
+      - `ghonity_getFollowerCount`: Get number of followers
+      - `ghonity_getFollowingCount`: Get number of accounts followed
+      - `ghonity_getReputationScore`: Get reputation score for an account
+      
+  - name: System
+    description: |
+      System health and node information methods.
+      
+      **Methods:**
+      - `system_health`: Get node health status
+      - `system_peers`: Get connected peer information
+      - `system_syncState`: Get blockchain sync status
+      
+  - name: Chain
+    description: |
+      Blockchain data retrieval methods.
+      
+      **Methods:**
+      - `chain_getBlock`: Get block by hash
+      - `chain_getHeader`: Get block header by hash
+      - `chain_getFinalizedHead`: Get latest finalized block hash
+      
+  - name: TransactionPayment
+    description: |
+      Transaction fee estimation methods.
+      
+      **Methods:**
+      - `transactionPayment_queryInfo`: Get runtime dispatch info for a transaction
+      - `transactionPayment_queryFeeDetails`: Get detailed fee breakdown
+
+x-rpc-methods:
+  chainghost_getIntent:
+    summary: Get intent by ID
+    tags: [ChainGhost]
+    params:
+      - name: intentId
+        type: integer
+        format: uint64
+        required: true
+        description: Intent identifier
+      - name: at
+        type: string
+        required: false
+        description: Block hash to query at (optional, defaults to best block)
+    result:
+      type: object
+      nullable: true
+      schema:
+        $ref: '#/components/schemas/IntentResponse'
+    errors:
+      - code: -32603
+        message: Runtime API error
+
+  chainghost_getIntentsByAccount:
+    summary: Get all intents for an account
+    tags: [ChainGhost]
+    params:
+      - name: account
+        type: string
+        required: true
+        description: Account address
+      - name: at
+        type: string
+        required: false
+        description: Block hash to query at
+    result:
+      type: array
+      items:
+        type: integer
+        format: uint64
+      description: List of intent IDs
+
+  chainghost_getJourneySteps:
+    summary: Get journey steps for an intent
+    tags: [ChainGhost]
+    params:
+      - name: intentId
+        type: integer
+        format: uint64
+        required: true
+        description: Intent identifier
+      - name: at
+        type: string
+        required: false
+        description: Block hash to query at
+    result:
+      type: array
+      items:
+        $ref: '#/components/schemas/JourneyStepResponse'
+
+  chainghost_getIntentStatus:
+    summary: Get current status of an intent
+    tags: [ChainGhost]
+    params:
+      - name: intentId
+        type: integer
+        format: uint64
+        required: true
+        description: Intent identifier
+      - name: at
+        type: string
+        required: false
+        description: Block hash to query at
+    result:
+      type: string
+      nullable: true
+      enum: [pending, executed, failed]
+
+  g3mail_getPublicKey:
+    summary: Get encryption public key for an account
+    tags: [G3Mail]
+    params:
+      - name: account
+        type: string
+        required: true
+        description: Account address
+      - name: at
+        type: string
+        required: false
+        description: Block hash to query at
+    result:
+      type: string
+      format: byte
+      nullable: true
+      description: Base64-encoded public key
+
+  g3mail_getMessagesByRecipient:
+    summary: Get all messages for a recipient
+    tags: [G3Mail]
+    params:
+      - name: recipient
+        type: string
+        required: true
+        description: Recipient account address
+      - name: at
+        type: string
+        required: false
+        description: Block hash to query at
+    result:
+      type: array
+      items:
+        type: array
+        items:
+          oneOf:
+            - type: integer
+              format: uint64
+            - $ref: '#/components/schemas/MessageResponse'
+        description: Tuple of (messageId, MessageResponse)
+
+  g3mail_getMessage:
+    summary: Get specific message by ID
+    tags: [G3Mail]
+    params:
+      - name: recipient
+        type: string
+        required: true
+        description: Recipient account address
+      - name: messageId
+        type: integer
+        format: uint64
+        required: true
+        description: Message identifier
+      - name: at
+        type: string
+        required: false
+        description: Block hash to query at
+    result:
+      type: object
+      nullable: true
+      schema:
+        $ref: '#/components/schemas/MessageResponse'
+
+  g3mail_getInboxCount:
+    summary: Get total message count for an account
+    tags: [G3Mail]
+    params:
+      - name: account
+        type: string
+        required: true
+        description: Account address
+      - name: at
+        type: string
+        required: false
+        description: Block hash to query at
+    result:
+      type: integer
+      format: uint32
+      description: Total message count
+
+  ghonity_isFollowing:
+    summary: Check if one account follows another
+    tags: [Ghonity]
+    params:
+      - name: follower
+        type: string
+        required: true
+        description: Follower account address
+      - name: followee
+        type: string
+        required: true
+        description: Followee account address
+      - name: at
+        type: string
+        required: false
+        description: Block hash to query at
+    result:
+      type: boolean
+      description: True if follower follows followee
+
+  ghonity_getFollowerCount:
+    summary: Get number of followers for an account
+    tags: [Ghonity]
+    params:
+      - name: account
+        type: string
+        required: true
+        description: Account address
+      - name: at
+        type: string
+        required: false
+        description: Block hash to query at
+    result:
+      type: integer
+      format: uint32
+      description: Follower count
+
+  ghonity_getFollowingCount:
+    summary: Get number of accounts followed
+    tags: [Ghonity]
+    params:
+      - name: account
+        type: string
+        required: true
+        description: Account address
+      - name: at
+        type: string
+        required: false
+        description: Block hash to query at
+    result:
+      type: integer
+      format: uint32
+      description: Following count
+
+  ghonity_getReputationScore:
+    summary: Get reputation score for an account
+    tags: [Ghonity]
+    params:
+      - name: account
+        type: string
+        required: true
+        description: Account address
+      - name: at
+        type: string
+        required: false
+        description: Block hash to query at
+    result:
+      type: integer
+      format: uint32
+      description: Reputation score (0-1000)
+
+  system_health:
+    summary: Get node health status
+    tags: [System]
+    params: []
+    result:
+      $ref: '#/components/schemas/SystemHealth'
+
+  system_peers:
+    summary: Get connected peer information
+    tags: [System]
+    params: []
+    result:
+      type: array
+      items:
+        $ref: '#/components/schemas/PeerInfo'
+
+  system_syncState:
+    summary: Get blockchain sync status
+    tags: [System]
+    params: []
+    result:
+      $ref: '#/components/schemas/SyncState'
+
+  chain_getBlock:
+    summary: Get block by hash
+    tags: [Chain]
+    params:
+      - name: hash
+        type: string
+        required: false
+        description: Block hash (optional, defaults to best block)
+    result:
+      type: object
+      description: Block data with header and extrinsics
+
+  chain_getHeader:
+    summary: Get block header by hash
+    tags: [Chain]
+    params:
+      - name: hash
+        type: string
+        required: false
+        description: Block hash (optional, defaults to best block)
+    result:
+      type: object
+      description: Block header
+
+  chain_getFinalizedHead:
+    summary: Get latest finalized block hash
+    tags: [Chain]
+    params: []
+    result:
+      type: string
+      description: Finalized block hash
+
+  transactionPayment_queryInfo:
+    summary: Get runtime dispatch info for a transaction
+    tags: [TransactionPayment]
+    params:
+      - name: extrinsic
+        type: string
+        required: true
+        description: SCALE-encoded extrinsic (hex string)
+      - name: at
+        type: string
+        required: false
+        description: Block hash to query at
+    result:
+      $ref: '#/components/schemas/RuntimeDispatchInfo'
+
+  transactionPayment_queryFeeDetails:
+    summary: Get detailed fee breakdown
+    tags: [TransactionPayment]
+    params:
+      - name: extrinsic
+        type: string
+        required: true
+        description: SCALE-encoded extrinsic (hex string)
+      - name: at
+        type: string
+        required: false
+        description: Block hash to query at
+    result:
+      $ref: '#/components/schemas/FeeDetails'

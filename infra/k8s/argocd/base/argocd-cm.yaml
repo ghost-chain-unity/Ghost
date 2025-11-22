@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  # Application controller configuration
+  application.instanceLabelKey: argocd.argoproj.io/instance
+  
+  # Repository credentials
+  repositories: |
+    - url: https://github.com/your-org/ghost-protocol.git
+      type: git
+      name: ghost-protocol-repo
+  
+  # Resource customizations for health checks
+  resource.customizations: |
+    argoproj.io/Application:
+      health.lua: |
+        hs = {}
+        hs.status = "Progressing"
+        hs.message = ""
+        if obj.status ~= nil then
+          if obj.status.health ~= nil then
+            hs.status = obj.status.health.status
+            if obj.status.health.message ~= nil then
+              hs.message = obj.status.health.message
+            end
+          end
+        end
+        return hs
+  
+  # Diffing customizations
+  resource.compareoptions: |
+    ignoreAggregatedRoles: true
+  
+  # Kustomize build options
+  kustomize.buildOptions: --enable-alpha-plugins
+  
+  # Timeout for operations
+  timeout.reconciliation: 180s
+  timeout.hard.reconciliation: 0
+  
+  # UI customizations
+  ui.cssurl: ""
+  ui.bannercontent: "Ghost Protocol - Web3 Super-App"
+  ui.bannerpermanent: "false"
+  ui.bannerurl: ""
+  
+  # Accounts for local users (future: replace with SSO)
+  accounts.admin: apiKey, login
+  accounts.developer: apiKey, login
+  accounts.readonly: apiKey
+  
+  # Config Management Plugins (for Kustomize replacements)
+  configManagementPlugins: |
+    - name: kustomize-replacements
+      generate:
+        command: ["sh", "-c"]
+        args:
+          - |
+            # Generate .env file if it doesn't exist
+            if [ ! -f .env ]; then
+              echo "WARNING: .env file not found, using .env.example"
+              if [ -f .env.example ]; then
+                cp .env.example .env
+              else
+                echo "ERROR: Neither .env nor .env.example found"
+                exit 1
+              fi
+            fi
+            # Run kustomize build
+            kustomize build --enable-alpha-plugins .

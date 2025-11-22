@@ -1,0 +1,44 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ai-engine-prod
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  labels:
+    app: ai-engine
+    environment: production
+    component: backend
+spec:
+  project: ghost-protocol
+  
+  source:
+    repoURL: https://github.com/your-org/ghost-protocol.git
+    targetRevision: HEAD
+    path: infra/k8s/overlays/production
+    plugin:
+      name: kustomize-replacements
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ghost-protocol-prod
+  
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+  
+  ignoreDifferences:
+  - group: apps
+    kind: Deployment
+    jsonPointers:
+    - /spec/replicas
+  
+  revisionHistoryLimit: 10

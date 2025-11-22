@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: ghost-protocol
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Ghost Protocol Web3 Super-App Project
+  
+  sourceRepos:
+  - https://github.com/your-org/ghost-protocol.git
+  - '*'
+  
+  destinations:
+  - namespace: ghost-protocol-dev
+    server: https://kubernetes.default.svc
+  - namespace: ghost-protocol-staging
+    server: https://kubernetes.default.svc
+  - namespace: ghost-protocol-prod
+    server: https://kubernetes.default.svc
+  - namespace: ghost-protocol-monitoring
+    server: https://kubernetes.default.svc
+  - namespace: argocd
+    server: https://kubernetes.default.svc
+  
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  
+  roles:
+  - name: developer
+    description: Developer role with full access to dev/staging
+    policies:
+    - p, proj:ghost-protocol:developer, applications, *, ghost-protocol/ghost-protocol-dev*, allow
+    - p, proj:ghost-protocol:developer, applications, *, ghost-protocol/ghost-protocol-staging*, allow
+    groups:
+    - github:developer-team
+  
+  - name: prod-operator
+    description: Production operator with sync-only access
+    policies:
+    - p, proj:ghost-protocol:prod-operator, applications, get, ghost-protocol/*, allow
+    - p, proj:ghost-protocol:prod-operator, applications, sync, ghost-protocol/ghost-protocol-prod*, allow
+    groups:
+    - github:ops-team
+  
+  orphanedResources:
+    warn: true

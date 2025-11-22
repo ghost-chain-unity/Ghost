@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-secrets-operator
+  namespace: external-secrets
+  labels:
+    app: external-secrets-operator
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: external-secrets-operator
+  template:
+    metadata:
+      labels:
+        app: external-secrets-operator
+    spec:
+      serviceAccountName: external-secrets-operator
+      containers:
+      - name: external-secrets
+        image: ghcr.io/external-secrets/external-secrets:v0.9.11
+        ports:
+        - containerPort: 8080
+          name: metrics
+        env:
+        - name: POLLER_INTERVAL_MILLISECONDS
+          value: "60000"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - external-secrets-operator
+              topologyKey: kubernetes.io/hostname

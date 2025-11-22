@@ -1,0 +1,20 @@
+# Kustomize patch to inject Terraform IRSA role ARN into Loki ServiceAccount
+#
+# Prerequisites:
+#   1. Apply Terraform first: cd infra/terraform/environments/production && terraform apply
+#   2. Get output: terraform output loki_irsa_role_arn
+#      Example: arn:aws:iam::123456789012:role/ghost-protocol-prod-loki-irsa-role
+#   3. Update the annotation below with actual ARN
+#   4. Apply: kubectl apply -k infra/k8s/overlays/production
+#
+# This patch adds the IAM role annotation to enable IRSA (IAM Roles for Service Accounts)
+# allowing Loki pods to authenticate to AWS S3 without access keys.
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: loki
+  annotations:
+    # TERRAFORM OUTPUT: loki_irsa_role_arn
+    # Replace with: terraform output -raw loki_irsa_role_arn
+    eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/ghost-protocol-prod-loki-irsa-role

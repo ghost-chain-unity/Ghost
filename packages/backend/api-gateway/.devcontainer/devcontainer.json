@@ -1,0 +1,41 @@
+{
+  "name": "Ghost Protocol - Backend (API Gateway)",
+  "dockerComposeFile": "../../../docker-compose.yml",
+  "service": "devcontainer",
+  "workspaceFolder": "/workspace/packages/backend/api-gateway",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20",
+      "nodeGypDependencies": true
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "prisma.prisma",
+        "ms-vscode.vscode-typescript-next",
+        "firsttris.vscode-jest-runner",
+        "ms-vsliveshare.vsliveshare"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": true
+        },
+        "typescript.tsdk": "node_modules/typescript/lib"
+      }
+    }
+  },
+  "postCreateCommand": "cd /workspace/packages/backend/api-gateway && pnpm install && pnpx prisma generate",
+  "remoteUser": "node",
+  "containerEnv": {
+    "DATABASE_URL": "postgresql://ghost:development@postgres:5432/ghost_dev",
+    "DATABASE_URL_TEST": "postgresql://ghost:test@postgres-test:5432/ghost_test",
+    "REDIS_URL": "redis://redis:6379",
+    "ELASTICSEARCH_URL": "http://elasticsearch:9200"
+  }
+}

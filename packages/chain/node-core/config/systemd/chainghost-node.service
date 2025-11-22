@@ -1,0 +1,219 @@
+[Unit]
+Description=ChainGhost Blockchain Node
+Documentation=https://github.com/your-org/chainghost
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+# Service type
+Type=simple
+
+# User and group to run the service
+# Create dedicated user for security: sudo useradd -m -s /bin/bash chainghost
+User=chainghost
+Group=chainghost
+
+# Working directory
+WorkingDirectory=/var/lib/ghost-node
+
+# Environment variables
+Environment="RUST_LOG=info"
+Environment="RUST_BACKTRACE=1"
+
+# Binary location and arguments
+# Modify these according to your deployment needs
+ExecStart=/usr/local/bin/ghost-node \
+  --base-path /var/lib/ghost-node \
+  --chain mainnet \
+  --name "MyNode" \
+  --port 30333 \
+  --rpc-port 9944 \
+  --rpc-methods Safe \
+  --rpc-cors https://polkadot.js.org \
+  --prometheus-external \
+  --prometheus-port 9615 \
+  --telemetry-url "wss://telemetry.polkadot.io/submit/ 0"
+
+# For validator nodes, add --validator flag:
+# ExecStart=/usr/local/bin/ghost-node \
+#   --base-path /var/lib/ghost-validator \
+#   --chain mainnet \
+#   --validator \
+#   --name "MyValidator" \
+#   --port 30333 \
+#   --rpc-port 9944 \
+#   --rpc-methods Safe \
+#   --prometheus-external \
+#   --prometheus-port 9615 \
+#   --telemetry-url "wss://telemetry.polkadot.io/submit/ 0"
+
+# Restart policy
+Restart=always
+RestartSec=10
+
+# Resource limits
+# Adjust based on your hardware and node type
+
+# Memory limits (example: 8GB for validator, 4GB for full node)
+MemoryMax=8G
+MemoryHigh=7G
+
+# CPU limits (optional, remove if you want unlimited)
+# CPUQuota=200%
+
+# File descriptor limit (Substrate needs many open files)
+LimitNOFILE=65536
+
+# Process limits
+LimitNPROC=4096
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=ghost-node
+
+# Security hardening options
+# These improve security but may need adjustment for your environment
+
+# Filesystem protections
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/ghost-node
+
+# No new privileges
+NoNewPrivileges=true
+
+# Private temp
+PrivateTmp=true
+
+# Namespace isolation (may conflict with some setups, disable if issues)
+# PrivateDevices=true
+# ProtectKernelTunables=true
+# ProtectControlGroups=true
+
+# Network
+# RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+
+# Syscall filtering (advanced security, test before production)
+# SystemCallFilter=@system-service
+# SystemCallErrorNumber=EPERM
+
+# Kill mode
+KillMode=mixed
+KillSignal=SIGTERM
+TimeoutStopSec=120
+
+[Install]
+WantedBy=multi-user.target
+
+# Installation and Usage Instructions:
+# ===================================
+#
+# 1. INSTALLATION:
+#    sudo cp chainghost-node.service /etc/systemd/system/
+#    sudo systemctl daemon-reload
+#
+# 2. CREATE USER (if not exists):
+#    sudo useradd -m -s /bin/bash chainghost
+#    sudo mkdir -p /var/lib/ghost-node
+#    sudo chown -R chainghost:chainghost /var/lib/ghost-node
+#
+# 3. INSTALL BINARY:
+#    sudo cp target/release/ghost-node /usr/local/bin/
+#    sudo chmod +x /usr/local/bin/ghost-node
+#
+# 4. ENABLE SERVICE:
+#    sudo systemctl enable chainghost-node
+#
+# 5. START SERVICE:
+#    sudo systemctl start chainghost-node
+#
+# 6. CHECK STATUS:
+#    sudo systemctl status chainghost-node
+#
+# 7. VIEW LOGS:
+#    sudo journalctl -u chainghost-node -f
+#
+# 8. RESTART SERVICE:
+#    sudo systemctl restart chainghost-node
+#
+# 9. STOP SERVICE:
+#    sudo systemctl stop chainghost-node
+#
+# 10. DISABLE SERVICE:
+#     sudo systemctl disable chainghost-node
+#
+# MAINTENANCE:
+# ===================================
+#
+# Update node binary:
+#   sudo systemctl stop chainghost-node
+#   sudo cp new-ghost-node /usr/local/bin/ghost-node
+#   sudo systemctl start chainghost-node
+#
+# Change configuration:
+#   sudo systemctl edit chainghost-node
+#   (or edit /etc/systemd/system/chainghost-node.service)
+#   sudo systemctl daemon-reload
+#   sudo systemctl restart chainghost-node
+#
+# Backup:
+#   sudo systemctl stop chainghost-node
+#   sudo tar -czf ghost-backup.tar.gz /var/lib/ghost-node
+#   sudo systemctl start chainghost-node
+#
+# MONITORING:
+# ===================================
+#
+# Service status:
+#   systemctl status chainghost-node
+#
+# Logs (real-time):
+#   journalctl -u chainghost-node -f
+#
+# Logs (last 100 lines):
+#   journalctl -u chainghost-node -n 100 --no-pager
+#
+# Logs (since boot):
+#   journalctl -u chainghost-node -b
+#
+# Resource usage:
+#   systemctl status chainghost-node
+#   (shows memory and CPU usage)
+#
+# TROUBLESHOOTING:
+# ===================================
+#
+# Service won't start:
+#   - Check logs: journalctl -u chainghost-node -n 50
+#   - Verify binary exists: ls -l /usr/local/bin/ghost-node
+#   - Check permissions: ls -ld /var/lib/ghost-node
+#   - Verify user exists: id chainghost
+#
+# High resource usage:
+#   - Adjust MemoryMax and CPUQuota in service file
+#   - Check for disk space issues
+#   - Monitor with: systemctl status chainghost-node
+#
+# Connection issues:
+#   - Verify firewall rules: sudo ufw status
+#   - Check if ports are open: sudo netstat -tlnp | grep ghost-node
+#   - Review network configuration
+#
+# Permission denied:
+#   - Check file ownership: ls -la /var/lib/ghost-node
+#   - Fix: sudo chown -R chainghost:chainghost /var/lib/ghost-node
+#
+# SECURITY BEST PRACTICES:
+# ===================================
+#
+# 1. Run as dedicated user (not root)
+# 2. Enable security hardening options
+# 3. Restrict filesystem access
+# 4. Use firewall rules (ufw/iptables)
+# 5. Keep binary updated
+# 6. Monitor logs for anomalies
+# 7. Limit RPC access (never expose unsafely)
+# 8. Use HTTPS for external RPC
+# 9. Regular security audits
+# 10. Backup keys and data

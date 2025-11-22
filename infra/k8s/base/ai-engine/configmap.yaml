@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ai-engine-config
+data:
+  model-path: "s3://ghost-protocol-models/inference-model-v1"
+  inference-batch-size: "32"
+  max-concurrent-requests: "50"
+  log-level: "info"
+  model-timeout-ms: "30000"
+  enable-gpu: "false"
+  precision: "fp16"

@@ -1,0 +1,97 @@
+name: Frontend CI
+
+# Workflow triggers: Manual trigger only (workflow_dispatch)
+# User can activate workflow manually from GitHub Actions tab
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-test-build:
+    name: Frontend - ${{ matrix.package }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [web, admin, components]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.15.0
+      
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      
+      - name: Install dependencies
+        run: |
+          cd packages/frontend/${{ matrix.package }}
+          pnpm install --frozen-lockfile
+      
+      - name: Run ESLint
+        run: |
+          cd packages/frontend/${{ matrix.package }}
+          pnpm run lint
+      
+      - name: Run TypeScript type check
+        run: |
+          cd packages/frontend/${{ matrix.package }}
+          if grep -q '"type-check"' package.json; then
+            pnpm run type-check
+          else
+            echo "Type check script not found in package.json, skipping"
+          fi
+      
+      - name: Run tests with coverage
+        run: |
+          cd packages/frontend/${{ matrix.package }}
+          pnpm test -- --coverage --passWithNoTests
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: packages/frontend/${{ matrix.package }}/coverage/coverage-final.json
+          flags: frontend-${{ matrix.package }}
+          name: frontend-${{ matrix.package }}
+        if: always()
+      
+      - name: Build package
+        run: |
+          cd packages/frontend/${{ matrix.package }}
+          pnpm run build
+        env:
+          NODE_ENV: production
+      
+      - name: Run Lighthouse CI (web only)
+        if: matrix.package == 'web'
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            http://localhost:5000
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+        continue-on-error: true

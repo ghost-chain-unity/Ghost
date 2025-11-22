@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: argocd
+
+resources:
+# AppProject
+- appproject-ghost-protocol.yaml
+
+# Development Applications
+- api-gateway-dev.yaml
+- indexer-dev.yaml
+- rpc-orchestrator-dev.yaml
+- ai-engine-dev.yaml
+
+# Staging Applications
+- api-gateway-staging.yaml
+- indexer-staging.yaml
+- rpc-orchestrator-staging.yaml
+- ai-engine-staging.yaml
+
+# Production Applications
+- api-gateway-prod.yaml
+- indexer-prod.yaml
+- rpc-orchestrator-prod.yaml
+- ai-engine-prod.yaml

@@ -1,0 +1,48 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: external-secrets-operator
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["create", "patch"]
+- apiGroups: ["external-secrets.io"]
+  resources: ["externalsecrets"]
+  verbs: ["get", "list", "watch", "update", "patch"]
+- apiGroups: ["external-secrets.io"]
+  resources: ["externalsecrets/status"]
+  verbs: ["get", "update", "patch"]
+- apiGroups: ["external-secrets.io"]
+  resources: ["externalsecrets/finalizers"]
+  verbs: ["update"]
+- apiGroups: ["external-secrets.io"]
+  resources: ["secretstores"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["external-secrets.io"]
+  resources: ["secretstores/status"]
+  verbs: ["get", "update", "patch"]
+- apiGroups: ["external-secrets.io"]
+  resources: ["clustersecretstores"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["external-secrets.io"]
+  resources: ["clustersecretstores/status"]
+  verbs: ["get", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: external-secrets-operator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: external-secrets-operator
+subjects:
+- kind: ServiceAccount
+  name: external-secrets-operator
+  namespace: external-secrets

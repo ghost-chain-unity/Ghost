@@ -1,0 +1,225 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: ghost-protocol-dev
+
+bases:
+- ../../base
+
+namePrefix: dev-
+
+commonLabels:
+  environment: development
+
+# ConfigMap Generator - Creates ConfigMap from .env file for dynamic value injection
+configMapGenerator:
+- name: kustomize-values
+  envs:
+  - .env
+  options:
+    disableNameSuffixHash: true
+
+# NOTE: Development secrets are created via script, not committed to Git
+# Run ./create-dev-secrets.sh to generate secrets for the dev environment
+# See README.md for deployment instructions
+
+# Environment-specific deployment configurations
+patches:
+# API Gateway Configuration
+- target:
+    kind: Deployment
+    name: api-gateway
+  patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 2
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/requests/cpu
+      value: 100m
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/requests/memory
+      value: 256Mi
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/limits/cpu
+      value: 500m
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/limits/memory
+      value: 512Mi
+
+# Indexer Configuration
+- target:
+    kind: Deployment
+    name: indexer
+  patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 1
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/requests/cpu
+      value: 200m
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/requests/memory
+      value: 384Mi
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/limits/cpu
+      value: 800m
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/limits/memory
+      value: 768Mi
+
+# RPC Orchestrator Configuration
+- target:
+    kind: Deployment
+    name: rpc-orchestrator
+  patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 1
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/requests/cpu
+      value: 150m
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/requests/memory
+      value: 256Mi
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/limits/cpu
+      value: 600m
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/limits/memory
+      value: 512Mi
+
+# AI Engine Configuration
+- target:
+    kind: Deployment
+    name: ai-engine
+  patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 1
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/requests/cpu
+      value: 250m
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/requests/memory
+      value: 1Gi
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/limits/cpu
+      value: 1000m
+    - op: replace
+      path: /spec/template/spec/containers/0/resources/limits/memory
+      value: 2Gi
+
+# HPA Configurations
+- target:
+    kind: HorizontalPodAutoscaler
+    name: api-gateway
+  patch: |-
+    - op: replace
+      path: /spec/minReplicas
+      value: 2
+    - op: replace
+      path: /spec/maxReplicas
+      value: 4
+
+- target:
+    kind: HorizontalPodAutoscaler
+    name: indexer
+  patch: |-
+    - op: replace
+      path: /spec/minReplicas
+      value: 1
+    - op: replace
+      path: /spec/maxReplicas
+      value: 3
+
+- target:
+    kind: HorizontalPodAutoscaler
+    name: rpc-orchestrator
+  patch: |-
+    - op: replace
+      path: /spec/minReplicas
+      value: 1
+    - op: replace
+      path: /spec/maxReplicas
+      value: 3
+
+- target:
+    kind: HorizontalPodAutoscaler
+    name: ai-engine
+  patch: |-
+    - op: replace
+      path: /spec/minReplicas
+      value: 1
+    - op: replace
+      path: /spec/maxReplicas
+      value: 2
+
+# Kustomize Replacements - Dynamic value injection from .env ConfigMap
+replacements:
+# 1. IRSA ARN Replacements - Inject IAM role ARNs into ServiceAccounts
+- source:
+    kind: ConfigMap
+    name: kustomize-values
+    fieldPath: data.API_GATEWAY_ROLE_ARN
+  targets:
+  - select:
+      kind: ServiceAccount
+      name: api-gateway
+    fieldPaths:
+    - metadata.annotations.[eks.amazonaws.com/role-arn]
+    options:
+      create: true
+
+- source:
+    kind: ConfigMap
+    name: kustomize-values
+    fieldPath: data.INDEXER_ROLE_ARN
+  targets:
+  - select:
+      kind: ServiceAccount
+      name: indexer
+    fieldPaths:
+    - metadata.annotations.[eks.amazonaws.com/role-arn]
+    options:
+      create: true
+
+- source:
+    kind: ConfigMap
+    name: kustomize-values
+    fieldPath: data.RPC_ORCHESTRATOR_ROLE_ARN
+  targets:
+  - select:
+      kind: ServiceAccount
+      name: rpc-orchestrator
+    fieldPaths:
+    - metadata.annotations.[eks.amazonaws.com/role-arn]
+    options:
+      create: true
+
+- source:
+    kind: ConfigMap
+    name: kustomize-values
+    fieldPath: data.AI_ENGINE_ROLE_ARN
+  targets:
+  - select:
+      kind: ServiceAccount
+      name: ai-engine
+    fieldPaths:
+    - metadata.annotations.[eks.amazonaws.com/role-arn]
+    options:
+      create: true
+
+# External Secrets Operator IRSA
+- source:
+    kind: ConfigMap
+    name: kustomize-values
+    fieldPath: data.EXTERNAL_SECRETS_OPERATOR_ROLE_ARN
+  targets:
+  - select:
+      kind: ServiceAccount
+      name: external-secrets-operator
+      namespace: external-secrets
+    fieldPaths:
+    - metadata.annotations.[eks.amazonaws.com/role-arn]
+    options:
+      create: false

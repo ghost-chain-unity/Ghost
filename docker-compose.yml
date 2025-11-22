@@ -1,0 +1,125 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: ghost-postgres
+    environment:
+      POSTGRES_USER: ghost
+      POSTGRES_PASSWORD: development
+      POSTGRES_DB: ghost_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ghost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ghost-network
+
+  postgres-test:
+    image: postgres:15-alpine
+    container_name: ghost-postgres-test
+    environment:
+      POSTGRES_USER: ghost
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: ghost_test
+    ports:
+      - "5433:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ghost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ghost-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: ghost-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ghost-network
+
+  elasticsearch:
+    image: elasticsearch:8.11.0
+    container_name: ghost-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - ghost-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: ghost-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@ghostprotocol.io
+      PGADMIN_DEFAULT_PASSWORD: development
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ghost-network
+
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/base:ubuntu
+    container_name: ghost-devcontainer
+    volumes:
+      - .:/workspace:cached
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: sleep infinity
+    working_dir: /workspace
+    environment:
+      - DATABASE_URL=postgresql://ghost:development@postgres:5432/ghost_dev
+      - DATABASE_URL_TEST=postgresql://ghost:test@postgres-test:5432/ghost_test
+      - REDIS_URL=redis://redis:6379
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    networks:
+      - ghost-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+  elasticsearch-data:
+    driver: local
+  pgadmin-data:
+    driver: local
+
+networks:
+  ghost-network:
+    driver: bridge

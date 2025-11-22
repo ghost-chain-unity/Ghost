@@ -1,0 +1,307 @@
+# NOTE: Application-level alerts (error rate, latency, availability, database metrics, 
+# indexer metrics, RPC metrics, AI metrics) require service instrumentation with Prometheus 
+# client libraries, which will be added in Phase 1.
+#
+# Infrastructure alerts (pod status, resource usage) use kube-state-metrics and 
+# container metrics that are available immediately in a default EKS cluster.
+#
+# The commented-out alert groups below will be enabled in Phase 1 after services
+# are instrumented to emit the required metrics.
+
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: ghost-protocol-alerts
+  labels:
+    app.kubernetes.io/part-of: ghost-protocol
+    prometheus: ghost-protocol
+spec:
+  groups:
+  - name: infrastructure_alerts
+    interval: 30s
+    rules:
+    - alert: InstanceDown
+      expr: up{job=~"api-gateway|indexer|rpc-orchestrator|ai-engine"} == 0
+      for: 2m
+      labels:
+        severity: critical
+        component: infrastructure
+      annotations:
+        summary: "Instance {{ $labels.job }} is down"
+        description: "{{ $labels.job }} instance {{ $labels.instance }} has been down for more than 2 minutes."
+        
+    - alert: PodCrashLooping
+      expr: rate(kube_pod_container_status_restarts_total{namespace=~"ghost-protocol.*"}[15m]) > 0.1
+      for: 5m
+      labels:
+        severity: warning
+        component: infrastructure
+      annotations:
+        summary: "Pod {{ $labels.pod }} is crash looping"
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} is restarting frequently ({{ $value }} restarts/sec)."
+
+    - alert: HighMemoryUsage
+      expr: |
+        (container_memory_working_set_bytes{namespace=~"ghost-protocol.*", container!="", container!="POD"} 
+        / container_spec_memory_limit_bytes{namespace=~"ghost-protocol.*", container!="", container!="POD"}) > 0.8
+      for: 5m
+      labels:
+        severity: warning
+        component: infrastructure
+      annotations:
+        summary: "High memory usage for {{ $labels.pod }}"
+        description: "Container {{ $labels.container }} in pod {{ $labels.pod }} is using {{ $value | humanizePercentage }} of its memory limit."
+
+    - alert: CriticalMemoryUsage
+      expr: |
+        (container_memory_working_set_bytes{namespace=~"ghost-protocol.*", container!="", container!="POD"} 
+        / container_spec_memory_limit_bytes{namespace=~"ghost-protocol.*", container!="", container!="POD"}) > 0.95
+      for: 2m
+      labels:
+        severity: critical
+        component: infrastructure
+      annotations:
+        summary: "Critical memory usage for {{ $labels.pod }}"
+        description: "Container {{ $labels.container }} in pod {{ $labels.pod }} is using {{ $value | humanizePercentage }} of its memory limit. OOM kill imminent!"
+
+    - alert: HighCPUUsage
+      expr: |
+        rate(container_cpu_usage_seconds_total{namespace=~"ghost-protocol.*", container!="", container!="POD"}[5m]) 
+        / container_spec_cpu_quota{namespace=~"ghost-protocol.*", container!="", container!="POD"} 
+        * container_spec_cpu_period{namespace=~"ghost-protocol.*", container!="", container!="POD"} > 0.8
+      for: 10m
+      labels:
+        severity: warning
+        component: infrastructure
+      annotations:
+        summary: "High CPU usage for {{ $labels.pod }}"
+        description: "Container {{ $labels.container }} in pod {{ $labels.pod }} is using {{ $value | humanizePercentage }} of its CPU limit."
+
+    - alert: PodNotReady
+      expr: kube_pod_status_ready{condition="false", namespace=~"ghost-protocol.*"} == 1
+      for: 5m
+      labels:
+        severity: warning
+        component: infrastructure
+      annotations:
+        summary: "Pod {{ $labels.pod }} not ready"
+        description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has been in not-ready state for more than 5 minutes."
+
+  # COMMENTED OUT: Application-level alerts requiring Phase 1 instrumentation
+  # Uncomment after adding Prometheus client libraries to services
+  
+  # - name: application_performance_alerts
+  #   interval: 30s
+  #   rules:
+  #   - alert: HighErrorRate
+  #     expr: |
+  #       (sum(rate(http_requests_total{status=~"5..", namespace=~"ghost-protocol.*"}[5m])) by (service)
+  #       / sum(rate(http_requests_total{namespace=~"ghost-protocol.*"}[5m])) by (service)) > 0.01
+  #     for: 5m
+  #     labels:
+  #       severity: critical
+  #       component: application
+  #     annotations:
+  #       summary: "High error rate for {{ $labels.service }}"
+  #       description: "Service {{ $labels.service }} is experiencing {{ $value | humanizePercentage }} error rate (5xx responses)."
+  #
+  #   - alert: HighLatency
+  #     expr: |
+  #       histogram_quantile(0.99, 
+  #         sum(rate(http_request_duration_seconds_bucket{namespace=~"ghost-protocol.*"}[5m])) by (le, service)
+  #       ) > 1
+  #     for: 5m
+  #     labels:
+  #       severity: warning
+  #       component: application
+  #     annotations:
+  #       summary: "High latency for {{ $labels.service }}"
+  #       description: "Service {{ $labels.service }} p99 latency is {{ $value }}s (threshold: 1s)."
+  #
+  #   - alert: VeryHighLatency
+  #     expr: |
+  #       histogram_quantile(0.99, 
+  #         sum(rate(http_request_duration_seconds_bucket{namespace=~"ghost-protocol.*"}[5m])) by (le, service)
+  #       ) > 3
+  #     for: 2m
+  #     labels:
+  #       severity: critical
+  #       component: application
+  #     annotations:
+  #       summary: "Very high latency for {{ $labels.service }}"
+  #       description: "Service {{ $labels.service }} p99 latency is {{ $value }}s (critical threshold: 3s)."
+  #
+  #   - alert: LowAvailability
+  #     expr: |
+  #       (sum(rate(http_requests_total{status!~"5..", namespace=~"ghost-protocol.*"}[10m])) by (service)
+  #       / sum(rate(http_requests_total{namespace=~"ghost-protocol.*"}[10m])) by (service)) < 0.99
+  #     for: 5m
+  #     labels:
+  #       severity: critical
+  #       component: application
+  #     annotations:
+  #       summary: "Low availability for {{ $labels.service }}"
+  #       description: "Service {{ $labels.service }} availability is {{ $value | humanizePercentage }} (SLA: 99%)."
+  #
+  #   - alert: HighRequestRate
+  #     expr: sum(rate(http_requests_total{namespace=~"ghost-protocol.*"}[5m])) by (service) > 1000
+  #     for: 5m
+  #     labels:
+  #       severity: info
+  #       component: application
+  #     annotations:
+  #       summary: "High request rate for {{ $labels.service }}"
+  #       description: "Service {{ $labels.service }} is receiving {{ $value }} requests/sec. Consider scaling."
+  #
+  # - name: database_alerts
+  #   interval: 30s
+  #   rules:
+  #   - alert: DatabaseConnectionPoolExhausted
+  #     expr: |
+  #       (db_connection_pool_active{namespace=~"ghost-protocol.*"} 
+  #       / db_connection_pool_max{namespace=~"ghost-protocol.*"}) > 0.9
+  #     for: 5m
+  #     labels:
+  #       severity: critical
+  #       component: database
+  #     annotations:
+  #       summary: "Database connection pool nearly exhausted for {{ $labels.service }}"
+  #       description: "Service {{ $labels.service }} is using {{ $value | humanizePercentage }} of its database connection pool."
+  #
+  #   - alert: HighDatabaseQueryLatency
+  #     expr: |
+  #       histogram_quantile(0.95, 
+  #         sum(rate(db_query_duration_seconds_bucket{namespace=~"ghost-protocol.*"}[5m])) by (le, service)
+  #       ) > 0.5
+  #     for: 5m
+  #     labels:
+  #       severity: warning
+  #       component: database
+  #     annotations:
+  #       summary: "High database query latency for {{ $labels.service }}"
+  #       description: "Service {{ $labels.service }} database p95 query latency is {{ $value }}s."
+  #
+  #   - alert: DatabaseConnectionErrors
+  #     expr: sum(rate(db_connection_errors_total{namespace=~"ghost-protocol.*"}[5m])) by (service) > 0.1
+  #     for: 2m
+  #     labels:
+  #       severity: critical
+  #       component: database
+  #     annotations:
+  #       summary: "Database connection errors for {{ $labels.service }}"
+  #       description: "Service {{ $labels.service }} is experiencing {{ $value }} database connection errors/sec."
+  #
+  # - name: indexer_alerts
+  #   interval: 30s
+  #   rules:
+  #   - alert: IndexerLaggingBehind
+  #     expr: (latest_block_number - indexer_last_indexed_block{namespace=~"ghost-protocol.*"}) > 100
+  #     for: 10m
+  #     labels:
+  #       severity: warning
+  #       component: indexer
+  #     annotations:
+  #       summary: "Indexer is lagging behind blockchain"
+  #       description: "Indexer is {{ $value }} blocks behind the latest block."
+  #
+  #   - alert: IndexerStopped
+  #     expr: rate(indexer_blocks_indexed_total{namespace=~"ghost-protocol.*"}[5m]) == 0
+  #     for: 5m
+  #     labels:
+  #       severity: critical
+  #       component: indexer
+  #     annotations:
+  #       summary: "Indexer has stopped processing blocks"
+  #       description: "Indexer has not processed any blocks in the last 5 minutes."
+  #
+  #   - alert: HighIndexingErrorRate
+  #     expr: |
+  #       (sum(rate(indexer_errors_total{namespace=~"ghost-protocol.*"}[5m]))
+  #       / sum(rate(indexer_blocks_processed_total{namespace=~"ghost-protocol.*"}[5m]))) > 0.05
+  #     for: 5m
+  #     labels:
+  #       severity: warning
+  #       component: indexer
+  #     annotations:
+  #       summary: "High indexing error rate"
+  #       description: "Indexer is experiencing {{ $value | humanizePercentage }} error rate while processing blocks."
+  #
+  # - name: rpc_orchestrator_alerts
+  #   interval: 30s
+  #   rules:
+  #   - alert: HighRPCFailoverRate
+  #     expr: sum(rate(rpc_failover_total{namespace=~"ghost-protocol.*"}[5m])) > 5
+  #     for: 5m
+  #     labels:
+  #       severity: warning
+  #       component: rpc-orchestrator
+  #     annotations:
+  #       summary: "High RPC failover rate"
+  #       description: "RPC orchestrator is experiencing {{ $value }} failovers/sec. Primary RPC provider may be unhealthy."
+  #
+  #   - alert: AllRPCProvidersDown
+  #     expr: up{job="rpc-orchestrator", namespace=~"ghost-protocol.*"} == 0
+  #     for: 2m
+  #     labels:
+  #       severity: critical
+  #       component: rpc-orchestrator
+  #     annotations:
+  #       summary: "All RPC providers are down"
+  #       description: "RPC orchestrator cannot reach any RPC providers."
+  #
+  #   - alert: RateLimitApproaching
+  #     expr: (rpc_requests_total{namespace=~"ghost-protocol.*"} / rpc_rate_limit{namespace=~"ghost-protocol.*"}) > 0.8
+  #     for: 5m
+  #     labels:
+  #       severity: warning
+  #       component: rpc-orchestrator
+  #     annotations:
+  #       summary: "RPC rate limit approaching for {{ $labels.provider }}"
+  #       description: "RPC provider {{ $labels.provider }} is at {{ $value | humanizePercentage }} of its rate limit."
+  #
+  # - name: ai_engine_alerts
+  #   interval: 30s
+  #   rules:
+  #   - alert: AIInferenceQueueBackup
+  #     expr: ai_inference_queue_length{namespace=~"ghost-protocol.*"} > 100
+  #     for: 5m
+  #     labels:
+  #       severity: warning
+  #       component: ai-engine
+  #     annotations:
+  #       summary: "AI inference queue is backing up"
+  #       description: "AI engine has {{ $value }} requests queued. Consider scaling."
+  #
+  #   - alert: HighInferenceLatency
+  #     expr: |
+  #       histogram_quantile(0.95, 
+  #         sum(rate(ai_inference_duration_seconds_bucket{namespace=~"ghost-protocol.*"}[5m])) by (le)
+  #       ) > 5
+  #     for: 5m
+  #     labels:
+  #       severity: warning
+  #       component: ai-engine
+  #     annotations:
+  #       summary: "High AI inference latency"
+  #       description: "AI engine p95 inference latency is {{ $value }}s."
+  #
+  #   - alert: ModelLoadingFailed
+  #     expr: ai_model_loading_failures_total{namespace=~"ghost-protocol.*"} > 0
+  #     for: 1m
+  #     labels:
+  #       severity: critical
+  #       component: ai-engine
+  #     annotations:
+  #       summary: "AI model loading failed"
+  #       description: "AI engine failed to load model {{ $labels.model }}."
+
+# NOTE: Recording Rules for Phase 1
+# 
+# Recording rules have been moved to prometheus-recording-rules-phase1.yaml
+# to avoid referencing metrics that don't exist until services are instrumented
+# with Prometheus client libraries in Phase 1.
+#
+# The recording rules file is intentionally NOT included in kustomization.yaml
+# and should be applied manually after Phase 1 service instrumentation is complete.
+#
+# Location: infra/k8s/base/monitoring/prometheus-recording-rules-phase1.yaml

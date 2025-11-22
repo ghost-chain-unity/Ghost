@@ -1,0 +1,264 @@
+# AlertManager Inhibition Rules - Test Cases
+# Purpose: Validate that inhibition rules correctly suppress lower-severity alerts
+# when higher-severity alerts are firing for the same service/namespace
+#
+# Usage:
+#   1. Deploy test alerts to Prometheus
+#   2. Verify AlertManager inhibits expected alerts
+#   3. Check only appropriate alerts reach receivers
+#
+# Test Execution:
+#   kubectl apply -f inhibition-test-cases.yaml
+#   curl -X POST http://alertmanager:9093/api/v2/alerts -d @test-alerts.json
+
+---
+# TEST CASE 1: Critical suppresses Warning
+# Expected: Only critical alert fires, warning is inhibited
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-test-case-1
+  namespace: ghost-protocol-monitoring
+  labels:
+    test: inhibition
+    case: critical-suppresses-warning
+data:
+  description: |
+    Scenario: DatabaseDown (critical) + DatabaseSlowQueries (warning) for same DB
+    Expected Behavior: 
+      - DatabaseDown alert fires → reaches pagerduty-critical + slack-critical
+      - DatabaseSlowQueries alert inhibited → does NOT reach email-team or slack-warnings
+    Validation:
+      - Check AlertManager UI: DatabaseSlowQueries should show "Inhibited"
+      - Check receivers: Only critical channels receive alerts
+  
+  test-alerts.json: |
+    [
+      {
+        "labels": {
+          "alertname": "DatabaseDown",
+          "severity": "critical",
+          "service": "postgresql",
+          "namespace": "ghost-protocol-prod"
+        },
+        "annotations": {
+          "summary": "Database is completely down",
+          "description": "PostgreSQL database is unreachable"
+        }
+      },
+      {
+        "labels": {
+          "alertname": "DatabaseSlowQueries",
+          "severity": "warning",
+          "service": "postgresql",
+          "namespace": "ghost-protocol-prod"
+        },
+        "annotations": {
+          "summary": "Database queries are slow",
+          "description": "Query latency above threshold"
+        }
+      }
+    ]
+
+---
+# TEST CASE 2: Critical suppresses Info
+# Expected: Only critical alert fires, info is inhibited
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-test-case-2
+  namespace: ghost-protocol-monitoring
+  labels:
+    test: inhibition
+    case: critical-suppresses-info
+data:
+  description: |
+    Scenario: APIGatewayDown (critical) + APIGatewayHighLatency (info) for same service
+    Expected Behavior:
+      - APIGatewayDown fires → reaches pagerduty-critical + slack-critical
+      - APIGatewayHighLatency inhibited → does NOT reach slack-info
+    Validation:
+      - Check AlertManager UI: APIGatewayHighLatency should show "Inhibited"
+
+  test-alerts.json: |
+    [
+      {
+        "labels": {
+          "alertname": "APIGatewayDown",
+          "severity": "critical",
+          "service": "api-gateway",
+          "namespace": "ghost-protocol-prod"
+        },
+        "annotations": {
+          "summary": "API Gateway is down",
+          "description": "All API endpoints unreachable"
+        }
+      },
+      {
+        "labels": {
+          "alertname": "APIGatewayHighLatency",
+          "severity": "info",
+          "service": "api-gateway",
+          "namespace": "ghost-protocol-prod"
+        },
+        "annotations": {
+          "summary": "API latency elevated",
+          "description": "P95 latency above baseline"
+        }
+      }
+    ]
+
+---
+# TEST CASE 3: High suppresses Warning and Info
+# Expected: Only high alert fires, warning and info are inhibited
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-test-case-3
+  namespace: ghost-protocol-monitoring
+  labels:
+    test: inhibition
+    case: high-suppresses-warning-info
+data:
+  description: |
+    Scenario: PodCrashLooping (high) + PodRestartCount (warning) + PodMemoryUsage (info)
+    Expected Behavior:
+      - PodCrashLooping fires → reaches pagerduty-high + slack-high
+      - PodRestartCount inhibited → does NOT reach email-team or slack-warnings
+      - PodMemoryUsage inhibited → does NOT reach slack-info
+
+  test-alerts.json: |
+    [
+      {
+        "labels": {
+          "alertname": "PodCrashLooping",
+          "severity": "high",
+          "service": "indexer",
+          "namespace": "ghost-protocol-prod"
+        },
+        "annotations": {
+          "summary": "Pod is crash looping",
+          "description": "Indexer pod restarting continuously"
+        }
+      },
+      {
+        "labels": {
+          "alertname": "PodRestartCount",
+          "severity": "warning",
+          "service": "indexer",
+          "namespace": "ghost-protocol-prod"
+        },
+        "annotations": {
+          "summary": "Pod restart count high",
+          "description": "Indexer has restarted 10 times"
+        }
+      },
+      {
+        "labels": {
+          "alertname": "PodMemoryUsage",
+          "severity": "info",
+          "service": "indexer",
+          "namespace": "ghost-protocol-prod"
+        },
+        "annotations": {
+          "summary": "Pod memory usage elevated",
+          "description": "Memory at 75% of limit"
+        }
+      }
+    ]
+
+---
+# TEST CASE 4: Warning suppresses Info
+# Expected: Only warning alert fires, info is inhibited
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-test-case-4
+  namespace: ghost-protocol-monitoring
+  labels:
+    test: inhibition
+    case: warning-suppresses-info
+data:
+  description: |
+    Scenario: DiskSpaceWarning (warning) + DiskIOInfo (info) for same node
+    Expected Behavior:
+      - DiskSpaceWarning fires → reaches email-team + slack-warnings
+      - DiskIOInfo inhibited → does NOT reach slack-info
+
+  test-alerts.json: |
+    [
+      {
+        "labels": {
+          "alertname": "DiskSpaceWarning",
+          "severity": "warning",
+          "service": "kubernetes-node",
+          "namespace": "ghost-protocol-prod"
+        },
+        "annotations": {
+          "summary": "Disk space low",
+          "description": "Disk usage at 80%"
+        }
+      },
+      {
+        "labels": {
+          "alertname": "DiskIOInfo",
+          "severity": "info",
+          "service": "kubernetes-node",
+          "namespace": "ghost-protocol-prod"
+        },
+        "annotations": {
+          "summary": "Disk I/O elevated",
+          "description": "I/O wait time increased"
+        }
+      }
+    ]
+
+---
+# TEST CASE 5: No Inhibition - Different Services
+# Expected: Both alerts fire (different services, inhibition doesn't apply)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-test-case-5
+  namespace: ghost-protocol-monitoring
+  labels:
+    test: inhibition
+    case: no-inhibition-different-services
+data:
+  description: |
+    Scenario: DatabaseDown (critical, service=postgresql) + APISlowResponse (warning, service=api-gateway)
+    Expected Behavior:
+      - DatabaseDown fires → reaches pagerduty-critical + slack-critical
+      - APISlowResponse ALSO fires → reaches email-team + slack-warnings
+      - NO inhibition because services are different
+    Validation:
+      - Both alerts should be "Active" in AlertManager UI
+      - Both should reach their respective receivers
+
+  test-alerts.json: |
+    [
+      {
+        "labels": {
+          "alertname": "DatabaseDown",
+          "severity": "critical",
+          "service": "postgresql",
+          "namespace": "ghost-protocol-prod"
+        },
+        "annotations": {
+          "summary": "Database is down",
+          "description": "PostgreSQL unreachable"
+        }
+      },
+      {
+        "labels": {
+          "alertname": "APISlowResponse",
+          "severity": "warning",
+          "service": "api-gateway",
+          "namespace": "ghost-protocol-prod"
+        },
+        "annotations": {
+          "summary": "API response time high",
+          "description": "P99 latency above threshold"
+        }
+      }
+    ]
