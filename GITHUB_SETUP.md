@@ -77,8 +77,11 @@ All CI/CD workflows have been configured for **manual trigger only** (no auto-tr
 ### Available Workflows
 
 1. **Blockchain Node CI** (`blockchain-node-ci.yml`)
-   - Runs: `cargo check`, `cargo fmt`, `cargo clippy`, `cargo test`
-   - Trigger: Manual from GitHub Actions tab
+   - **Pipeline:**
+     - `check` (Manual trigger) → `test` (Auto) → `build` (Auto) → `build-docker` (Auto) → `release` (Auto)
+   - **Runs:** `cargo check`, `cargo fmt`, `cargo clippy`, `cargo test`, build binaries, build Docker image, create GitHub release
+   - **Trigger:** Manual from GitHub Actions tab
+   - **Release Behavior:** Automatically creates GitHub release with artifacts after build-docker completes
 
 2. **Smart Contracts CI** (`contracts-ci.yml`)
    - Runs: Contract tests, analysis
@@ -104,6 +107,27 @@ All CI/CD workflows have been configured for **manual trigger only** (no auto-tr
 4. Click **Run workflow** button
 5. Select branch (default: `main`)
 6. Click **Run workflow**
+
+### Blockchain Node CI - Auto Pipeline
+
+When you trigger **Blockchain Node CI** manually:
+
+```
+1. check job (manual trigger) ✓ Starts
+   ↓ (auto)
+2. test job ✓ Automatically runs
+   ↓ (auto)
+3. build job ✓ Automatically runs
+   ↓ (auto)
+4. build-docker job ✓ Automatically runs (NEW)
+   ↓ (auto)
+5. release job ✓ Automatically creates GitHub release (NEW)
+```
+
+**You only need to click "Run workflow" once.** The entire pipeline runs automatically:
+- Check → Test → Build → Build Docker → Create Release
+- Release is created automatically after docker build completes
+- Artifacts are uploaded to GitHub Releases automatically
 
 ---
 

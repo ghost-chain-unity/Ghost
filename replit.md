@@ -61,6 +61,21 @@ Preferred communication style: Simple, everyday language.
 
 **Status:** 🚀 **READY FOR GITHUB PUSH** - All compilation errors fixed, workflows configured, setup instructions provided
 
+**November 22, 2025 - CI/CD Pipeline Auto-Flow Configuration:**
+- ✅ **UPDATED:** Blockchain Node CI workflow pipeline now auto-flows:
+  - User manually triggers "Blockchain Node CI" workflow (1 click)
+  - Pipeline automatically cascades: check → test → build → build-docker → release
+  - **build-docker job** - Now auto-runs when manual trigger (not just on push)
+  - **release job** - Now auto-creates GitHub release after docker build completes
+  - Only 1 manual trigger needed, rest of pipeline is fully automatic
+  
+- ✅ **Documentation Updated:**
+  - GITHUB_SETUP.md - Added "Blockchain Node CI - Auto Pipeline" section
+  - Clear visualization: check (manual) → test/build/docker/release (all auto)
+  - Explained one-click workflow: "You only need to click Run workflow once"
+
+**Status:** ✅ **Complete - Ready for GitHub Push** - All workflows configured, pipeline auto-flows, documentation updated
+
 ## System Architecture
 
 ### Repository Structure
