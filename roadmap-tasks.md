@@ -502,7 +502,7 @@ This document provides a **complete task breakdown** for all phases of Ghost Pro
 - **Description:** Build consensus, storage, and P2P networking
 - **Acceptance Criteria:**
   - [x] Consensus module (PoA) with validator rotation - Aura + GRANDPA from Substrate framework
-  - [x] Storage module (RocksDB for on-chain state, DuckDB/LMDB for off-chain events) - Integrated via Substrate framework
+  - [ ] Storage module (RocksDB for on-chain state, DuckDB/LMDB for off-chain events) - Integrated via Substrate framework
   - [x] P2P networking (libp2p) with peer discovery - Implemented in service.rs using Substrate's network stack
   - [x] Block production and validation - Configured with Aura consensus in runtime
   - [x] Unit tests >95% coverage - Custom pallets (chainghost, g3mail, ghonity) have comprehensive tests
