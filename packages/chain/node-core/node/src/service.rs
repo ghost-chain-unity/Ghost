@@ -2,6 +2,7 @@
 
 use futures::FutureExt;
 use sc_client_api::{Backend, BlockBackend};
+use crate::storage::{StorageConfig, init as storage_init};
 use sc_consensus_aura::{ImportQueueParams, SlotProportion, StartAuraParams};
 use sc_consensus_grandpa::SharedVoterState;
 use sc_service::{error::Error as ServiceError, Configuration, TaskManager, WarpSyncConfig};
@@ -214,6 +215,18 @@ pub fn new_full<
                 .boxed(),
         );
     }
+
+    // Initialize storage module
+    let storage_config = if config.chain_spec.is_known_substrate() {
+        StorageConfig::default_for_testnet(&config.database.path())
+    } else {
+        StorageConfig::default_for_production(&config.database.path())
+    };
+    
+    if let Err(e) = storage_init::ensure_directories(&storage_config) {
+        eprintln!("⚠ Warning: Failed to create storage directories: {}", e);
+    }
+    storage_init::print_summary(&storage_config);
 
     let role = config.role;
     let force_authoring = config.force_authoring;

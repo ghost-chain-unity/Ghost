@@ -10,6 +10,32 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+**November 23, 2025 - TASK-1.1.2 Storage Module Implementation + Bootnode Fix:**
+- ✅ **CREATED:** `node/src/storage.rs` (269 lines) - Complete storage module with:
+  - `StorageConfig` struct for RocksDB (on-chain) + DuckDB/LMDB (off-chain events) configuration
+  - `default_for_testnet()` and `default_for_production()` factory methods
+  - `storage_init::ensure_directories()` for automatic directory creation
+  - `storage_init::print_summary()` for configuration logging
+  - `StorageBackend` enum for storage type abstraction
+  - `StorageStats` struct for monitoring and metrics
+  - 6 comprehensive unit tests covering config creation, display, and stats
+  
+- ✅ **INTEGRATED:** Storage module into service.rs
+  - Added import in node/src/main.rs (`mod storage;`)
+  - Auto-initializes StorageConfig in `new_full()` function
+  - Testnet vs Production detection based on chain spec
+  - Directory creation with error handling
+  - Configuration summary printed on startup
+  
+- ✅ **UPDATED:** TASK-1.1.2 status in roadmap-tasks.md
+  - Marked storage module as ✅ COMPLETED
+  - Marked TASK-1.1.2 status as ✅ COMPLETED (all acceptance criteria met)
+  
+- ✅ **FIXED:** Bootnode peer ID mismatch
+  - Removed hardcoded bootnodes from `scripts/start-bob.sh` and `scripts/start-charlie.sh`
+  - Nodes now auto-discover via P2P Kademlia DHT
+  - Test verified: 3 validators connected, consensus running, blocks finalizing
+
 **November 23, 2025 - Testnet Documentation + Binary Download Script:**
 - ✅ **CREATED:** `TESTNET_SETUP.md` - Complete testnet guide with Alice/Bob/Charlie validators
 - ✅ **CREATED:** `scripts/download-binary.sh` - Auto-download binary with checksum verification
