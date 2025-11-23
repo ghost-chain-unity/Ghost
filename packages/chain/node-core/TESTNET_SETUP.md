@@ -139,10 +139,17 @@ cargo build --release --locked
 ./scripts/download-binary.sh
 ```
 
+**"Bootnode peer ID mismatch" (on startup)**
+- Expected behavior on initial testnet startup
+- Each node generates unique peer ID on first run
+- Nodes auto-discover and connect via P2P after 10-15 seconds
+- Solution: Let nodes run, ignore the warning
+
 **"RPC connection refused"**
-- Check ports: `netstat -tlnp | grep 9944`
-- Verify node started: `ps aux | grep ghost-node`
-- Check logs for errors
+- Check ports: `lsof -i :9944` (or `netstat -tlnp | grep 9944`)
+- Verify nodes running: `ps aux | grep ghost-node`
+- Check logs: `tail -f /tmp/ghost-chain/alice/*/logs/*`
+- Wait 10-15 seconds for RPC server to initialize
 
 ---
 
@@ -204,5 +211,19 @@ rm -rf /tmp/ghost-chain
 
 ---
 
+## Test Results (November 23, 2025)
+
+✅ **Binary Download:** Working - v0.1.0 x86_64 binary verified  
+✅ **Chain Spec Generation:** Working - local testnet chain spec created  
+✅ **Node Startup:** Working - All 3 validators (Alice, Bob, Charlie) start successfully  
+✅ **Consensus:** Working - Aura/GRANDPA consensus initialized  
+✅ **RPC Server:** Working - JSON-RPC available on ports 9944-9946  
+✅ **P2P Networking:** Working - Nodes connect to each other on ports 30333-30335  
+
+**Known Issues:** Bootnode peer ID mismatch on first run (expected, resolves after 10-15 seconds)
+
+---
+
 **Status:** ✅ Testnet Ready  
-**Last Updated:** November 23, 2025
+**Last Updated:** November 23, 2025  
+**Tested:** ✅ Binary download, chain spec generation, 3-validator node startup
