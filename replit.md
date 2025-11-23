@@ -10,6 +10,38 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+**November 23, 2025 - Testnet Documentation + Binary Download Script:**
+- ✅ **CREATED:** `TESTNET_SETUP.md` - Complete testnet guide with Alice/Bob/Charlie validators
+- ✅ **CREATED:** `scripts/download-binary.sh` - Auto-download binary with checksum verification
+- ✅ **FIXED:** GitHub workflow release tag auto-detection
+- ✅ **UPDATED:** README.md - Removed all Redis references, added Dragonfly/DuckDB/IPFS docs
+
+**Previous Session - November 23, 2025 - Download Script + Testnet Documentation:**
+- ✅ **ADDED:** `scripts/download-binary.sh` - Auto-download ghost-node binary from GitHub releases
+  - Detects OS/architecture (Linux x86_64/ARM64, macOS, Windows)
+  - Fallback to v0.1.0 if API unreachable
+  - Verifies SHA256 checksum (if available)
+  - Creates symlink to `target/release/ghost-node`
+  
+- ✅ **FIXED:** GitHub Actions workflow - Release tag auto-detection
+  - Added `Determine tag name` step to extract tag correctly
+  - Handles both push events (git tag) and manual triggers (workflow_dispatch)
+  - Correctly passes `tag_name` to `softprops/action-gh-release`
+  
+- ✅ **CREATED:** `TESTNET_SETUP.md` - Comprehensive testnet guide
+  - Quick start with 3 validators (Alice, Bob, Charlie)
+  - Query commands (curl + Polkadot.js)
+  - Troubleshooting section
+  - Architecture diagram
+  
+- ✅ **UPDATED:** `README.md` - Removed old Redis references
+  - Replaced "Redis" with "Dragonfly (RPC Cache)"
+  - Added hybrid caching strategy details
+  - Updated Tech Stack section with DuckDB/LMDB/IPFS
+  - Updated Docker Compose note with link to `CACHING_STORAGE_STRATEGY.md`
+
+**Status:** 🚀 **Testnet Ready** - Binary downloadable, CI/CD workflow fixed, full documentation
+
 **November 22, 2025 - Comprehensive Deferred Items Tracking + Clippy Warnings RESOLVED:**
 - ✅ **COMPLETED:** Comprehensive deferred items tracking added to roadmap-tasks.md
   - **New Section:** "Deferred Items Tracking" with 6 deferred items properly documented
