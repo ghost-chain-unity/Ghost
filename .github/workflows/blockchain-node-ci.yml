@@ -293,6 +293,29 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Determine tag name
+        id: tag
+        run: |
+          if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == refs/tags/* ]]; then
+            # Tag push: extract tag from github.ref
+            TAG_NAME="${{ github.ref }}"
+            TAG_NAME="${TAG_NAME#refs/tags/}"
+            echo "name=${TAG_NAME}" >> $GITHUB_OUTPUT
+            echo "✅ Using tag from push: ${TAG_NAME}"
+          else
+            # Manual trigger: use latest tag
+            TAG_NAME=$(git describe --tags --abbrev=0 2>/dev/null)
+            if [ -z "$TAG_NAME" ]; then
+              echo "❌ No tags found in repository"
+              exit 1
+            fi
+            echo "name=${TAG_NAME}" >> $GITHUB_OUTPUT
+            echo "✅ Using latest tag: ${TAG_NAME}"
+          fi
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4
@@ -318,6 +341,7 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ steps.tag.outputs.name }}
           files: release-artifacts/**/*
           draft: false
           prerelease: false
