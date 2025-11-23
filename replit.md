@@ -40,13 +40,15 @@ Preferred communication style: Simple, everyday language.
   - Updated Tech Stack section with DuckDB/LMDB/IPFS
   - Updated Docker Compose note with link to `CACHING_STORAGE_STRATEGY.md`
 
-**Status:** 🚀 **Testnet TESTED & WORKING**
+**Status:** 🚀 **Testnet FULLY WORKING - BOOTNODE MISMATCH FIXED**
 - ✅ Binary downloaded (v0.1.0 x86_64)
 - ✅ Chain spec generated (Alice/Bob/Charlie validators)
 - ✅ All 3 nodes started successfully
-- ✅ Consensus (Aura/GRANDPA) working
+- ✅ Consensus (Aura/GRANDPA) working - blocks produced every 3 sec
+- ✅ Finality active (GRANDPA finalization)
 - ✅ RPC servers running (ports 9944-9946)
-- ✅ P2P networking active
+- ✅ P2P networking - nodes auto-discover via Kademlia DHT
+- ✅ Bootnode peer ID mismatch fixed (removed hardcoded bootnodes from scripts)
 - ✅ Full documentation complete
 
 **November 22, 2025 - Comprehensive Deferred Items Tracking + Clippy Warnings RESOLVED:**

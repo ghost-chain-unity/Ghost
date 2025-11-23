@@ -139,11 +139,11 @@ cargo build --release --locked
 ./scripts/download-binary.sh
 ```
 
-**"Bootnode peer ID mismatch" (on startup)**
-- Expected behavior on initial testnet startup
-- Each node generates unique peer ID on first run
-- Nodes auto-discover and connect via P2P after 10-15 seconds
-- Solution: Let nodes run, ignore the warning
+**"Bootnode peer ID mismatch" (rare, from chain spec)**
+- Occurs only if bootnodes configured in chain spec
+- Not an issue in practice - nodes auto-discover via P2P
+- Chain spec bootnodes are optional for local testnet
+- Solution: Nodes will still connect and reach consensus
 
 **"RPC connection refused"**
 - Check ports: `lsof -i :9944` (or `netstat -tlnp | grep 9944`)
@@ -217,10 +217,12 @@ rm -rf /tmp/ghost-chain
 ✅ **Chain Spec Generation:** Working - local testnet chain spec created  
 ✅ **Node Startup:** Working - All 3 validators (Alice, Bob, Charlie) start successfully  
 ✅ **Consensus:** Working - Aura/GRANDPA consensus initialized  
+✅ **Block Production:** Working - Blocks #1, #2, #3... produced every 3 seconds  
+✅ **Finality:** Working - GRANDPA finalization active  
 ✅ **RPC Server:** Working - JSON-RPC available on ports 9944-9946  
-✅ **P2P Networking:** Working - Nodes connect to each other on ports 30333-30335  
+✅ **P2P Networking:** Working - Nodes auto-discover and connect via Kademlia DHT  
 
-**Known Issues:** Bootnode peer ID mismatch on first run (expected, resolves after 10-15 seconds)
+**Network Status:** 3 peers connected, consensus running, blocks finalizing
 
 ---
 

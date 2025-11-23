@@ -35,7 +35,6 @@ $BINARY \
   --rpc-port 9946 \
   --node-key 0000000000000000000000000000000000000000000000000000000000000003 \
   --validator \
-  --bootnodes /ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp \
   --rpc-methods Unsafe \
   --rpc-cors all \
   --name "Charlie-Validator"
