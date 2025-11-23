@@ -108,7 +108,7 @@ ghost-protocol/
 **Step 1: Start Docker Services**
 
 ```bash
-# Start all development services (PostgreSQL, Redis, Elasticsearch, pgAdmin)
+# Start all development services (PostgreSQL, Dragonfly, Elasticsearch, pgAdmin)
 docker-compose up -d
 
 # View logs
@@ -121,9 +121,11 @@ docker-compose down
 docker-compose down -v
 ```
 
+> **Note:** Docker Compose includes Dragonfly (Redis-compatible cache layer) instead of Redis for hybrid caching strategy. See [CACHING_STORAGE_STRATEGY.md](./CACHING_STORAGE_STRATEGY.md) for details.
+
 **Services Running:**
 - PostgreSQL: `localhost:5432` (dev) / `localhost:5433` (test)
-- Redis: `localhost:6379`
+- Dragonfly (RPC Cache): `localhost:6379` (Redis-compatible)
 - Elasticsearch: `localhost:9200` (optional)
 - pgAdmin: `localhost:5050` (admin@ghostprotocol.io / development)
 
@@ -208,9 +210,13 @@ All major architectural decisions are documented in `docs/adr/`. See [ADR README
 - **Runtime:** Node.js 20
 - **Database:** PostgreSQL 15 + TimescaleDB (time-series)
 - **ORM:** Prisma
-- **Caching:** Redis
+- **Caching Strategy (Hybrid):**
+  - **RPC Calls:** Dragonfly (Redis-compatible, opensource alternative)
+  - **Event Indexing:** DuckDB / LMDB (high-performance analytics)
+  - **Decentralized Storage:** IPFS (messages, metadata)
+  - **Rate Limiting:** PostgreSQL (Guards & Middleware)
 - **Search:** Elasticsearch (optional)
-- **Message Queue:** Bull (Redis-based)
+- **Message Queue:** Bull (PostgreSQL-based alternative to Redis)
 - **API:** RESTful + GraphQL
 - **AI/ML:** Hugging Face Inference API, LLM orchestration
 
@@ -267,8 +273,9 @@ All architectural decisions MUST be documented in `docs/adr/` before implementat
   - ✅ All 4 ADRs created and accepted
   - ✅ Mono-repo structure with pnpm workspace
   - ✅ Complete documentation framework
-- 🔄 Phase 0.2: Development Environment (In Progress)
-  - ✅ Docker Compose configuration (PostgreSQL, Redis, Elasticsearch, pgAdmin)
+- ✅ Phase 0.2: Development Environment (Completed)
+  - ✅ Docker Compose configuration (PostgreSQL, Dragonfly, Elasticsearch, pgAdmin)
+  - ✅ Hybrid caching strategy (Dragonfly RPC, DuckDB/LMDB indexing, IPFS storage)
   - ✅ DevContainers for VS Code
   - ✅ ESLint & Prettier for Frontend (with emoji detection)
   - ✅ ESLint & Prettier for Backend (NestJS)
@@ -354,5 +361,13 @@ test: Add integration tests for indexer
 
 ---
 
-**Last Updated:** November 15, 2025  
+**Last Updated:** November 23, 2025  
 **Maintained by:** Ghost Protocol Development Team
+
+---
+
+## 📖 Additional Resources
+
+- **[CACHING_STORAGE_STRATEGY.md](./CACHING_STORAGE_STRATEGY.md)** - Hybrid caching & storage architecture (Dragonfly, DuckDB, LMDB, IPFS)
+- **[roadmap-tasks.md](./roadmap-tasks.md)** - Detailed task breakdown with deferred items tracking
+- **[docs/adr/](./docs/adr/)** - Architecture Decision Records (all major decisions)
