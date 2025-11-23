@@ -122,6 +122,7 @@ impl StorageConfig {
 }
 
 /// Storage backend abstraction (for future extensibility)
+#[allow(dead_code, clippy::upper_case_acronyms)]
 pub enum StorageBackend {
     /// RocksDB (on-chain state) - automatically managed by Substrate
     RocksDB,
@@ -178,6 +179,7 @@ pub mod init {
 
 /// Storage statistics and monitoring
 #[derive(Debug, Clone, Default)]
+#[allow(dead_code)]
 pub struct StorageStats {
     /// Total blocks processed
     pub blocks_processed: u64,
