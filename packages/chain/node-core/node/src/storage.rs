@@ -96,28 +96,26 @@ pub struct StorageConfig {
 }
 
 impl StorageConfig {
-    /// Creates default storage config
-    /// - RocksDB in `$BASE_PATH/chains/local_testnet/db/full`
-    /// - Event index in `$BASE_PATH/chains/local_testnet/event_index`
-    pub fn default_for_testnet(base_path: &PathBuf) -> Self {
+    /// Creates default storage config for testnet
+    pub fn default_for_testnet(base_path: &std::path::Path) -> Self {
         let chains_path = base_path.join("chains").join("local_testnet");
         
         Self {
             rocksdb_path: chains_path.join("db").join("full"),
             event_index_path: Some(chains_path.join("event_index")),
-            max_offchain_size: 100, // 100 MB
+            max_offchain_size: 100,
             enable_event_indexing: true,
         }
     }
 
-    /// Creates storage config for production
-    pub fn default_for_production(base_path: &PathBuf) -> Self {
+    /// Creates default storage config for production
+    pub fn default_for_production(base_path: &std::path::Path) -> Self {
         let chains_path = base_path.join("chains").join("main");
         
         Self {
             rocksdb_path: chains_path.join("db").join("full"),
             event_index_path: Some(chains_path.join("event_index")),
-            max_offchain_size: 1000, // 1 GB
+            max_offchain_size: 1000,
             enable_event_indexing: true,
         }
     }

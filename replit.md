@@ -10,22 +10,30 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-**November 23, 2025 - TASK-1.1.2 Storage Module Implementation + Bootnode Fix:**
-- ✅ **CREATED:** `node/src/storage.rs` (269 lines) - Complete storage module with:
+**November 23, 2025 - TASK-1.1.2 Storage Module Implementation + Bootnode Fix + Compilation Fixed:**
+- ✅ **CREATED:** `node/src/storage.rs` (265 lines) - Complete storage module with:
   - `StorageConfig` struct for RocksDB (on-chain) + DuckDB/LMDB (off-chain events) configuration
-  - `default_for_testnet()` and `default_for_production()` factory methods
+  - `default_for_testnet()` and `default_for_production()` factory methods accepting `&Path`
   - `storage_init::ensure_directories()` for automatic directory creation
   - `storage_init::print_summary()` for configuration logging
   - `StorageBackend` enum for storage type abstraction
   - `StorageStats` struct for monitoring and metrics
   - 6 comprehensive unit tests covering config creation, display, and stats
   
-- ✅ **INTEGRATED:** Storage module into service.rs
+- ✅ **INTEGRATED:** Storage module into service.rs with proper type handling
   - Added import in node/src/main.rs (`mod storage;`)
   - Auto-initializes StorageConfig in `new_full()` function
-  - Testnet vs Production detection based on chain spec
+  - Testnet vs Production detection based on chain name ("local"/"dev")
+  - Safe path handling with Option unwrapping
   - Directory creation with error handling
   - Configuration summary printed on startup
+  
+- ✅ **FIXED COMPILATION ERRORS:**
+  - Removed non-existent `is_known_substrate()` method call
+  - Fixed `Option<&Path>` type handling in config initialization
+  - Updated storage module signatures to accept `&Path` instead of `&PathBuf`
+  - Resolved all type mismatches
+  - ✓ Compilation successful: ghost-node + all pallets
   
 - ✅ **UPDATED:** TASK-1.1.2 status in roadmap-tasks.md
   - Marked storage module as ✅ COMPLETED

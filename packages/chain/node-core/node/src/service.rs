@@ -217,10 +217,21 @@ pub fn new_full<
     }
 
     // Initialize storage module
-    let storage_config = if config.chain_spec.is_known_substrate() {
-        StorageConfig::default_for_testnet(&config.database.path())
-    } else {
-        StorageConfig::default_for_production(&config.database.path())
+    let storage_config = {
+        let chain_name = config.chain_spec.name();
+        let is_testnet = chain_name.contains("local") || chain_name.contains("dev");
+        
+        let base_path = config
+            .database
+            .path()
+            .map(|p| p.to_path_buf())
+            .unwrap_or_else(|| std::path::PathBuf::from("/tmp/ghost-chain"));
+        
+        if is_testnet {
+            StorageConfig::default_for_testnet(&base_path)
+        } else {
+            StorageConfig::default_for_production(&base_path)
+        }
     };
     
     if let Err(e) = storage_init::ensure_directories(&storage_config) {
