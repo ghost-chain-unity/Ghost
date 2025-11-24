@@ -35,11 +35,11 @@ pallet-ghonity.workspace = true
 
 # Frontier pallets for EVM compatibility (Moonbeam fork stable2503)
 # Must match node/Cargo.toml Frontier branch to avoid duplicate sp_io lang item in WASM
-pallet-evm = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2503", default-features = false }
-pallet-ethereum = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2503", default-features = false }
-pallet-base-fee = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2503", default-features = false }
-fp-evm = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2503", default-features = false }
-fp-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2503", default-features = false }
+pallet-evm = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2412", default-features = false }
+pallet-ethereum = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2412", default-features = false }
+pallet-base-fee = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2412", default-features = false }
+fp-evm = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2412", default-features = false }
+fp-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2412", default-features = false }
 pallet-transaction-payment-rpc-runtime-api.workspace = true
 pallet-transaction-payment.workspace = true
 scale-info = { features = ["derive", "serde"], workspace = true }
