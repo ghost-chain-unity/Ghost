@@ -14,7 +14,7 @@ cd "$NODE_CORE_DIR"
 echo "Working directory: $(pwd)"
 echo ""
 
-cargo test --all-features 2>&1 | tee /tmp/cargo-test.log
+cargo test --all-features --locked 2>&1 | tee /tmp/cargo-test.log
 
 echo ""
 echo "✅ Cargo test completed successfully!"

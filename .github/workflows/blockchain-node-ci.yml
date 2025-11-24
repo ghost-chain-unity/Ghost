@@ -57,6 +57,16 @@ jobs:
           cache-on-failure: true
           key: check-${{ hashFiles('packages/chain/node-core/Cargo.lock') }}
 
+      - name: Generate or update Cargo.lock
+        run: |
+          cd packages/chain/node-core
+          if [ ! -f Cargo.lock ] || [ node/Cargo.toml -nt Cargo.lock ] || [ runtime/Cargo.toml -nt Cargo.lock ]; then
+            echo "Cargo.toml changed or Cargo.lock missing - regenerating..."
+            cargo update --workspace
+          else
+            echo "Cargo.lock is up-to-date"
+          fi
+
       - name: Run cargo check
         run: bash packages/chain/node-core/scripts/cargo-check.sh
 
@@ -111,6 +121,16 @@ jobs:
           workspaces: packages/chain/node-core
           cache-on-failure: true
           key: test-${{ hashFiles('packages/chain/node-core/Cargo.lock') }}
+
+      - name: Generate or update Cargo.lock
+        run: |
+          cd packages/chain/node-core
+          if [ ! -f Cargo.lock ] || [ node/Cargo.toml -nt Cargo.lock ] || [ runtime/Cargo.toml -nt Cargo.lock ]; then
+            echo "Cargo.toml changed or Cargo.lock missing - regenerating..."
+            cargo update --workspace
+          else
+            echo "Cargo.lock is up-to-date"
+          fi
 
       - name: Run all tests
         run: bash packages/chain/node-core/scripts/cargo-test.sh
@@ -195,6 +215,16 @@ jobs:
           shared-key: build-${{ matrix.target }}-${{ hashFiles('packages/chain/node-core/Cargo.lock') }}
           save-if: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' }}
         continue-on-error: true
+
+      - name: Generate or update Cargo.lock
+        run: |
+          cd packages/chain/node-core
+          if [ ! -f Cargo.lock ] || [ node/Cargo.toml -nt Cargo.lock ] || [ runtime/Cargo.toml -nt Cargo.lock ]; then
+            echo "Cargo.toml changed or Cargo.lock missing - regenerating..."
+            cargo update --workspace
+          else
+            echo "Cargo.lock is up-to-date"
+          fi
 
       - name: Build release binary
         working-directory: packages/chain/node-core
