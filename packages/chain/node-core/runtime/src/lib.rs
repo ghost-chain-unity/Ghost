@@ -207,6 +207,11 @@ pub use runtime::{Runtime, RuntimeCall, RuntimeEvent, RuntimeOrigin, RuntimeTask
 pub use runtime::{Aura, Grandpa, Balances, System, Timestamp, TransactionPayment, Sudo};
 pub use runtime::{ChainGhost, G3Mail, Ghonity};
 pub use runtime::{EVM, Ethereum, BaseFee};
+pub use runtime::{RuntimeGenesisConfig, AllPalletsWithSystem};
+
+// Re-export pallet config types for genesis config presets
+pub use pallet_balances::GenesisConfig as BalancesConfig;
+pub use pallet_sudo::GenesisConfig as SudoConfig;
 
 // Define SessionKeys after runtime types are available
 impl_opaque_keys! {

@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::AccountId;
+use crate::{AccountId, RuntimeGenesisConfig, BalancesConfig, SudoConfig};
 use alloc::{vec, vec::Vec};
 use frame_support::build_struct_json_patch;
 use serde_json::Value;
@@ -25,9 +25,6 @@ use sp_genesis_builder::{self, PresetId};
 use sp_keyring::Sr25519Keyring;
 use sp_core::{H160, U256};
 use alloc::collections::BTreeMap;
-
-// Runtime config types
-use crate::runtime::{RuntimeGenesisConfig, BalancesConfig, SudoConfig};
 
 // Helper function to convert AccountId to EVM H160 address
 // Strategy: Take first 20 bytes of the 32-byte AccountId
