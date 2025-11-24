@@ -59,6 +59,17 @@ sc-transaction-pool-api.workspace = true
 sc-transaction-pool.default-features = true
 sc-transaction-pool.workspace = true
 ghost-runtime.workspace = true
+
+# Frontier RPC dependencies for Ethereum compatibility (stable2412 branch)
+fc-rpc = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412" }
+fc-rpc-core = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412" }
+fc-db = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412" }
+fc-mapping-sync = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412" }
+fc-storage = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412" }
+fc-consensus = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412" }
+fp-rpc = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412" }
+fp-consensus = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412", default-features = false }
+
 sp-api.default-features = true
 sp-api.workspace = true
 sp-block-builder.default-features = true

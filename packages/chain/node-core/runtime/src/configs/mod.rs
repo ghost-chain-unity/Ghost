@@ -23,6 +23,9 @@
 //
 // For more information, please refer to <http://unlicense.org>
 
+// Frontier (EVM) configuration module
+pub mod frontier;
+
 // Substrate and Polkadot dependencies
 use frame_support::{
     derive_impl, parameter_types,

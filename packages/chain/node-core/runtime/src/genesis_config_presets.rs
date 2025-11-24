@@ -23,6 +23,48 @@ use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_consensus_grandpa::AuthorityId as GrandpaId;
 use sp_genesis_builder::{self, PresetId};
 use sp_keyring::Sr25519Keyring;
+use sp_core::{H160, U256};
+use alloc::collections::BTreeMap;
+
+// Helper function to convert AccountId to EVM H160 address
+// Strategy: Take first 20 bytes of the 32-byte AccountId
+fn account_id_to_h160(account_id: &AccountId) -> H160 {
+    let account_bytes: &[u8; 32] = account_id.as_ref();
+    H160::from_slice(&account_bytes[0..20])
+}
+
+// Helper function to create EVM genesis accounts for well-known test accounts
+fn get_evm_genesis_accounts() -> BTreeMap<H160, fp_evm::GenesisAccount> {
+    let mut accounts = BTreeMap::new();
+    
+    // Pre-fund Alice's EVM account
+    let alice_account_id = Sr25519Keyring::Alice.to_account_id();
+    let alice_evm_address = account_id_to_h160(&alice_account_id);
+    accounts.insert(
+        alice_evm_address,
+        fp_evm::GenesisAccount {
+            balance: U256::from(1u128 << 60), // Same as Substrate balance
+            code: Default::default(),
+            nonce: Default::default(),
+            storage: Default::default(),
+        },
+    );
+    
+    // Pre-fund Bob's EVM account
+    let bob_account_id = Sr25519Keyring::Bob.to_account_id();
+    let bob_evm_address = account_id_to_h160(&bob_account_id);
+    accounts.insert(
+        bob_evm_address,
+        fp_evm::GenesisAccount {
+            balance: U256::from(1u128 << 60),
+            code: Default::default(),
+            nonce: Default::default(),
+            storage: Default::default(),
+        },
+    );
+    
+    accounts
+}
 
 // Returns the genesis config presets populated with given parameters.
 fn testnet_genesis(
@@ -51,6 +93,10 @@ fn testnet_genesis(
                 .collect::<Vec<_>>(),
         },
         sudo: SudoConfig { key: Some(root) },
+        evm: pallet_evm::GenesisConfig {
+            accounts: get_evm_genesis_accounts(),
+            _config: Default::default(),
+        },
     })
 }
 

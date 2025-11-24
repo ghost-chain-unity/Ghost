@@ -881,3 +881,205 @@ x-rpc-methods:
         description: Block hash to query at
     result:
       $ref: '#/components/schemas/FeeDetails'
+
+  # ============================================================================
+  # Ethereum-Compatible RPC Methods (Frontier Integration)
+  # ============================================================================
+  # These methods provide Ethereum compatibility via Frontier pallets
+  # (pallet-evm, pallet-ethereum, pallet-base-fee) for wallet integration
+  # (MetaMask, ethers.js, web3.js, etc.)
+  #
+  # Chain ID: 200 (Ghost Protocol)
+  # Block Gas Limit: 15,000,000
+  # Block Time: 3 seconds
+  # Account Mapping: SS58 ↔ H160 (first 20 bytes of AccountId32)
+  # ============================================================================
+
+  eth_chainId:
+    summary: Get the current chain ID
+    tags: [Ethereum]
+    params: []
+    result:
+      type: string
+      description: Chain ID in hexadecimal (0xC8 = 200 for Ghost Protocol)
+      example: "0xC8"
+
+  eth_blockNumber:
+    summary: Get the latest block number
+    tags: [Ethereum]
+    params: []
+    result:
+      type: string
+      description: Latest block number in hexadecimal
+      example: "0x1234"
+
+  eth_getBalance:
+    summary: Get account balance
+    tags: [Ethereum]
+    params:
+      - name: address
+        type: string
+        required: true
+        description: Ethereum address (0x-prefixed hex)
+        example: "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+      - name: block
+        type: string
+        required: false
+        description: Block number or "latest", "earliest", "pending"
+        example: "latest"
+    result:
+      type: string
+      description: Account balance in wei (hexadecimal)
+      example: "0x0de0b6b3a7640000"
+
+  eth_getTransactionCount:
+    summary: Get account nonce (transaction count)
+    tags: [Ethereum]
+    params:
+      - name: address
+        type: string
+        required: true
+        description: Ethereum address
+      - name: block
+        type: string
+        required: false
+        description: Block number or tag
+    result:
+      type: string
+      description: Transaction count (nonce) in hexadecimal
+
+  eth_call:
+    summary: Execute a call without creating a transaction
+    tags: [Ethereum]
+    params:
+      - name: transaction
+        type: object
+        required: true
+        description: Transaction object
+      - name: block
+        type: string
+        required: false
+        description: Block number or tag
+    result:
+      type: string
+      description: Return data in hexadecimal
+
+  eth_sendRawTransaction:
+    summary: Submit a signed transaction
+    tags: [Ethereum]
+    params:
+      - name: data
+        type: string
+        required: true
+        description: Signed transaction data (RLP-encoded)
+    result:
+      type: string
+      description: Transaction hash
+
+  eth_getTransactionReceipt:
+    summary: Get transaction receipt
+    tags: [Ethereum]
+    params:
+      - name: hash
+        type: string
+        required: true
+        description: Transaction hash
+    result:
+      type: object
+      description: Transaction receipt with status, gas used, logs, etc.
+
+  eth_getTransactionByHash:
+    summary: Get transaction by hash
+    tags: [Ethereum]
+    params:
+      - name: hash
+        type: string
+        required: true
+        description: Transaction hash
+    result:
+      type: object
+      description: Transaction object
+
+  eth_estimateGas:
+    summary: Estimate gas for a transaction
+    tags: [Ethereum]
+    params:
+      - name: transaction
+        type: object
+        required: true
+        description: Transaction object
+      - name: block
+        type: string
+        required: false
+        description: Block number or tag
+    result:
+      type: string
+      description: Estimated gas in hexadecimal
+
+  eth_gasPrice:
+    summary: Get current gas price
+    tags: [Ethereum]
+    params: []
+    result:
+      type: string
+      description: Gas price in wei (hexadecimal)
+
+  eth_getCode:
+    summary: Get contract code at an address
+    tags: [Ethereum]
+    params:
+      - name: address
+        type: string
+        required: true
+        description: Contract address
+      - name: block
+        type: string
+        required: false
+        description: Block number or tag
+    result:
+      type: string
+      description: Contract bytecode (hexadecimal)
+
+  eth_getBlockByNumber:
+    summary: Get block by number
+    tags: [Ethereum]
+    params:
+      - name: blockNumber
+        type: string
+        required: true
+        description: Block number or tag ("latest", "earliest", "pending")
+      - name: fullTransactions
+        type: boolean
+        required: true
+        description: If true, returns full transaction objects
+    result:
+      type: object
+      description: Block object
+
+  eth_getBlockByHash:
+    summary: Get block by hash
+    tags: [Ethereum]
+    params:
+      - name: blockHash
+        type: string
+        required: true
+        description: Block hash
+      - name: fullTransactions
+        type: boolean
+        required: true
+        description: If true, returns full transaction objects
+    result:
+      type: object
+      description: Block object
+
+  eth_getLogs:
+    summary: Get logs matching a filter
+    tags: [Ethereum]
+    params:
+      - name: filter
+        type: object
+        required: true
+        description: Filter object with fromBlock, toBlock, address, topics
+    result:
+      type: array
+      description: Array of log objects

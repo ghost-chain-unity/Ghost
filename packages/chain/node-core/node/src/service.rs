@@ -24,6 +24,9 @@ type FullSelectChain = sc_consensus::LongestChain<FullBackend, Block>;
 /// imported and generated.
 const GRANDPA_JUSTIFICATION_PERIOD: u32 = 512;
 
+/// Frontier backend type
+pub type FrontierBackend = fc_db::Backend<Block, FullClient>;
+
 pub type Service = sc_service::PartialComponents<
     FullClient,
     FullBackend,
@@ -131,6 +134,82 @@ pub fn new_partial(config: &Configuration) -> Result<Service, ServiceError> {
     })
 }
 
+/// Spawn Frontier tasks for Ethereum compatibility
+///
+/// This function initializes the Frontier backend and spawns essential tasks:
+/// 1. Frontier Backend (fc-db) - RocksDB for EVM state mapping
+/// 2. Mapping Sync Worker - Syncs Ethereum block hashes to Substrate block hashes
+/// 3. Storage Override Handle - Provides EVM storage access for RPC
+fn spawn_frontier_tasks(
+    task_manager: &TaskManager,
+    client: Arc<FullClient>,
+    backend: Arc<FullBackend>,
+    frontier_backend: Arc<FrontierBackend>,
+    filter_pool: Option<fc_rpc::EthFilterApi<Block, FullClient>>,
+    overrides: Arc<fc_rpc::OverrideHandle<Block>>,
+    fee_history_cache: fc_rpc::FeeHistoryCache,
+    fee_history_cache_limit: u64,
+    sync_service: Arc<sc_service::SyncingService<Block>>,
+    pubsub_notification_sinks: Arc<
+        fc_mapping_sync::EthereumBlockNotificationSinks<
+            fc_mapping_sync::EthereumBlockNotification<Block>,
+        >,
+    >,
+) {
+    use fc_mapping_sync::{MappingSyncWorker, SyncStrategy};
+    use futures::StreamExt;
+
+    task_manager.spawn_essential_handle().spawn(
+        "frontier-mapping-sync-worker",
+        Some("frontier"),
+        MappingSyncWorker::new(
+            client.import_notification_stream(),
+            Duration::from_millis(6000),
+            client.clone(),
+            backend,
+            overrides.clone(),
+            frontier_backend.clone(),
+            3,
+            0,
+            SyncStrategy::Normal,
+            sync_service.clone(),
+            pubsub_notification_sinks.clone(),
+        )
+        .for_each(|()| futures::future::ready(())),
+    );
+
+    task_manager.spawn_essential_handle().spawn(
+        "frontier-schema-cache-task",
+        Some("frontier"),
+        fc_rpc::EthTask::ethereum_schema_cache_task(client.clone(), frontier_backend.clone()),
+    );
+
+    if let Some(filter_pool) = filter_pool {
+        const FILTER_RETAIN_THRESHOLD: u64 = 100;
+        task_manager.spawn_essential_handle().spawn(
+            "frontier-filter-pool",
+            Some("frontier"),
+            fc_rpc::EthTask::filter_pool_task(
+                client.clone(),
+                filter_pool,
+                FILTER_RETAIN_THRESHOLD,
+            ),
+        );
+    }
+
+    const FEE_HISTORY_LIMIT: u64 = 2048;
+    task_manager.spawn_essential_handle().spawn(
+        "frontier-fee-history",
+        Some("frontier"),
+        fc_rpc::EthTask::fee_history_task(
+            client,
+            overrides,
+            fee_history_cache,
+            fee_history_cache_limit.max(FEE_HISTORY_LIMIT),
+        ),
+    );
+}
+
 /// Builds a new service for a full client.
 #[allow(clippy::result_large_err)]
 pub fn new_full<
@@ -216,6 +295,31 @@ pub fn new_full<
         );
     }
 
+    // Initialize Frontier backend for Ethereum compatibility
+    let frontier_backend = fc_db::Backend::open(
+        Arc::clone(&client),
+        &config.database,
+    )?;
+    let frontier_backend = Arc::new(frontier_backend);
+
+    let filter_pool: Option<fc_rpc::EthFilterApi<Block, FullClient>> = Some(Arc::new(
+        fc_rpc::EthFilterApi::new(client.clone(), frontier_backend.clone(), 500),
+    ));
+
+    let fee_history_cache: fc_rpc::FeeHistoryCache = Arc::new(std::sync::Mutex::new(
+        fc_rpc::FeeHistoryCacheLimit::new(2048),
+    ));
+
+    let overrides = Arc::new(fc_rpc::OverrideHandle::new(
+        client.clone(),
+    ));
+
+    let pubsub_notification_sinks = Arc::new(
+        fc_mapping_sync::EthereumBlockNotificationSinks::<
+            fc_mapping_sync::EthereumBlockNotification<Block>,
+        >::default(),
+    );
+
     // Initialize storage module
     let storage_config = {
         let chain_name = config.chain_spec.name();
@@ -250,6 +354,10 @@ pub fn new_full<
         let client = client.clone();
         let pool = transaction_pool.clone();
         let rate_limiter = crate::rpc::RateLimiter::new();
+        let frontier_backend = frontier_backend.clone();
+        let overrides = overrides.clone();
+        let filter_pool = filter_pool.clone();
+        let fee_history_cache = fee_history_cache.clone();
 
         rate_limiter.start_cleanup_task(std::time::Duration::from_secs(300));
 
@@ -258,6 +366,11 @@ pub fn new_full<
                 client: client.clone(),
                 pool: pool.clone(),
                 rate_limiter: rate_limiter.clone(),
+                frontier_backend: frontier_backend.clone(),
+                overrides: overrides.clone(),
+                filter_pool: filter_pool.clone(),
+                fee_history_cache: fee_history_cache.clone(),
+                _backend: std::marker::PhantomData,
             };
             crate::rpc::create_full(deps).map_err(Into::into)
         })
@@ -270,13 +383,27 @@ pub fn new_full<
         task_manager: &mut task_manager,
         transaction_pool: transaction_pool.clone(),
         rpc_builder: rpc_extensions_builder,
-        backend,
+        backend: backend.clone(),
         system_rpc_tx,
         tx_handler_controller,
         sync_service: sync_service.clone(),
         config,
         telemetry: telemetry.as_mut(),
     })?;
+
+    // Spawn Frontier tasks for Ethereum compatibility
+    spawn_frontier_tasks(
+        &task_manager,
+        client.clone(),
+        backend.clone(),
+        frontier_backend.clone(),
+        filter_pool.clone(),
+        overrides.clone(),
+        fee_history_cache.clone(),
+        2048,
+        sync_service.clone(),
+        pubsub_notification_sinks.clone(),
+    );
 
     if role.is_authority() {
         let proposer_factory = sc_basic_authorship::ProposerFactory::new(

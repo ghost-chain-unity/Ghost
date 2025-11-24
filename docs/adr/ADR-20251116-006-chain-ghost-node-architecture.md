@@ -210,6 +210,49 @@ pub struct Extrinsic {
 
 #### Standard JSON-RPC Methods (eth_* compatible)
 
+**Implementation Status:** 🚧 **IN PROGRESS (November 24, 2025)** - Frontier Integration (DEFER-1.1.3-1)
+
+**Status: PARTIALLY COMPLETE - Node-side RPC infrastructure being wired**
+
+**✅ COMPLETED - Runtime Layer:**
+- `pallet-evm` (index 10) - EVM execution engine
+- `pallet-ethereum` (index 11) - Ethereum transaction compatibility
+- `pallet-base-fee` (index 12) - EIP-1559 base fee mechanism
+- `fp_rpc::EthereumRuntimeRPCApi` - Runtime API for eth_* calls (eth_call, eth_estimateGas, etc.)
+- `fp_rpc::ConvertTransactionRuntimeApi` - Transaction conversion for Ethereum compatibility
+
+**✅ COMPLETED - Node Layer:**
+- Frontier dependencies added (fc-consensus, fp-consensus, fc-db, fc-rpc, fc-mapping-sync)
+- `spawn_frontier_tasks` function created - initializes Frontier backend, mapping sync worker, fee history cache
+- Frontier backend initialized in service.rs - RocksDB for EVM state mapping
+- RPC module updated to accept Frontier dependencies (backend, overrides, filter pool, fee history)
+
+**✅ COMPLETED - RPC Layer:**
+- Actual Eth RPC APIs wired in `frontier.rs` (NOT stub):
+  - `Eth` API - Core Ethereum methods (eth_blockNumber, eth_getBalance, eth_call, eth_sendRawTransaction, etc.)
+  - `Net` API - Network information (net_version, net_listening, net_peerCount)
+  - `Web3` API - Web3 methods (web3_clientVersion, web3_sha3)
+  - `EthFilter` API - Filter methods (eth_newFilter, eth_getFilterChanges, eth_uninstallFilter)
+  - `EthPubSub` API - Pub/Sub methods (eth_subscribe, eth_unsubscribe)
+  - `TxPool` API - Transaction pool inspection (txpool_status, txpool_content)
+
+**⚠️ UNTESTED:**
+- Code not yet compiled due to disk space quota
+- eth_* endpoint functionality not yet verified
+- Integration testing required
+
+**Next Steps:**
+1. Verify code compiles successfully
+2. Test eth_* endpoints with MetaMask/ethers.js
+3. Validate EVM transaction flow end-to-end
+
+**Configuration:**
+- **Chain ID:** 200 (0xC8) - Ghost Protocol EVM chain ID
+- **Block Gas Limit:** 15,000,000 (supports 1000+ TPS target)
+- **Block Time:** 3 seconds (aligned with Substrate block production)
+- **Account Mapping:** SS58 ↔ H160 (first 20 bytes of AccountId32)
+- **Precompiles:** Standard Ethereum precompiles (ECRecover, SHA256, RIPEMD160, Identity, Modexp, etc.)
+
 **Wallet Integration:**
 ```json
 // Get balance
@@ -228,7 +271,16 @@ eth_estimateGas(transaction)
 eth_getBlockByNumber(blockNumber, fullTx)
 
 // Chain ID
-eth_chainId() // Returns 0x474C (GL for Ghost Layer)
+eth_chainId() // Returns 0xC8 (200 for Ghost Protocol)
+
+// Additional methods
+eth_call(transaction, blockNumber)
+eth_getCode(address, blockNumber)
+eth_gasPrice()
+eth_blockNumber()
+eth_getLogs(filterObject)
+eth_getTransactionByHash(txHash)
+eth_getTransactionCount(address, blockNumber)
 ```
 
 **WebSocket Subscriptions:**

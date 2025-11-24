@@ -1,6 +1,7 @@
 //! Substrate Node Template CLI library.
 #![warn(missing_docs)]
 
+mod account_mapping;
 mod benchmarking;
 mod chain_spec;
 mod cli;
