@@ -89,9 +89,12 @@ opt-level = 3
 panic = "unwind"
 
 [patch.crates-io]
-# Force all sp_io from stable2412 to prevent duplicate lang item errors during wasm build
-# This ensures Frontier dependencies use the same sp_io version as the rest of the workspace
+# Force all sp_io and sp_application_crypto from stable2412 to prevent duplicate lang item errors
+# This ensures WASM and native builds use identical dependency resolution, preventing panic_impl conflicts
 sp-io = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-application-crypto = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-core = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-runtime = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
 
 [profile.production]
 codegen-units = 1

@@ -52,7 +52,7 @@ Includes JWT authentication, request signing, client-side encryption for G3Mail,
 - **✅ Fixed 20+ module visibility errors:** Removed all `runtime::` module prefixes from type references in lib.rs, apis_impls.rs, genesis_config_presets.rs. The `#[frame_support::runtime]` macro generates types directly in scope, not via module path.
 - **✅ Runtime types corrected:** `runtime::Runtime` → `Runtime`, `runtime::RuntimeCall` → `RuntimeCall`, `runtime::AllPalletsWithSystem` → `AllPalletsWithSystem`
 - **✅ Pallet-transaction-payment dependency fixed:** Changed from crates.io v41.0.0 to polkadot-sdk stable2412 branch
-- **✅ sp_io duplicate lang item resolved:** Added `[patch.crates-io]` section to force all sp_io from stable2412 branch (prevents Frontier/Moonbeam from pulling different version)
+- **✅ sp_io duplicate lang item resolved:** Added aggressive `[patch.crates-io]` section for sp-io, sp-application-crypto, sp-core, and sp-runtime to force all from stable2412 branch. This ensures WASM and native builds use identical dependency resolution, preventing panic_impl conflicts during substrate-wasm-builder compilation
 - **✅ All dependencies aligned:** Entire workspace now uses stable2412 branch exclusively
 - **✅ Genesis config imports simplified:** Updated apis_impls.rs and genesis_config_presets.rs to use crate-root level access
 
