@@ -143,7 +143,7 @@ pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
 #[frame_support::runtime]
-mod runtime {
+pub mod runtime {
     #[runtime::runtime]
     #[runtime::derive(
         RuntimeCall,
