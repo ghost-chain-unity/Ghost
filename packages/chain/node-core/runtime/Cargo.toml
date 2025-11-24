@@ -33,14 +33,13 @@ pallet-chainghost.workspace = true
 pallet-g3mail.workspace = true
 pallet-ghonity.workspace = true
 
-# Frontier pallets for EVM compatibility (master branch - compatible with sp-runtime 41.1.0)
-pallet-evm = { git = "https://github.com/polkadot-evm/frontier", branch = "master", default-features = false }
-pallet-ethereum = { git = "https://github.com/polkadot-evm/frontier", branch = "master", default-features = false }
-pallet-base-fee = { git = "https://github.com/polkadot-evm/frontier", branch = "master", default-features = false }
-fp-evm = { git = "https://github.com/polkadot-evm/frontier", branch = "master", default-features = false }
-fp-self-contained = { git = "https://github.com/polkadot-evm/frontier", branch = "master", default-features = false }
-fp-rpc = { git = "https://github.com/polkadot-evm/frontier", branch = "master", default-features = false }
-fp-consensus = { git = "https://github.com/polkadot-evm/frontier", branch = "master", default-features = false }
+# Frontier pallets for EVM compatibility (Moonbeam fork master)
+# Note: fp-self-contained deferred due to trait compatibility issues - see DEFER-1.1.3-1 notes
+pallet-evm = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = false }
+pallet-ethereum = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = false }
+pallet-base-fee = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = false }
+fp-evm = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = false }
+fp-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = false }
 pallet-transaction-payment-rpc-runtime-api.workspace = true
 pallet-transaction-payment.workspace = true
 scale-info = { features = ["derive", "serde"], workspace = true }
@@ -88,9 +87,7 @@ std = [
         "pallet-ethereum/std",
         "pallet-base-fee/std",
         "fp-evm/std",
-        "fp-self-contained/std",
         "fp-rpc/std",
-        "fp-consensus/std",
         "pallet-transaction-payment-rpc-runtime-api/std",
         "pallet-transaction-payment/std",
         "scale-info/std",
