@@ -61,18 +61,14 @@ sc-transaction-pool.workspace = true
 ghost-runtime.workspace = true
 
 # Frontier RPC dependencies for Ethereum compatibility (Moonbeam fork master)
-# DEFERRED: Node-side RPC dependencies temporarily removed due to Replit disk quota limits
-# These will be re-added in Phase 2 or when disk space is available
-# Runtime pallets (pallet-evm, pallet-ethereum, pallet-base-fee, fp-evm, fp-rpc) are complete and ready
-# See DEFER-1.1.3-1-nodeRPC in roadmap-tasks.md for details
-# fc-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-# fc-rpc-core = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-# fc-db = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-# fc-mapping-sync = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-# fc-storage = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-# fc-consensus = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-# fp-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-# fp-consensus = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = false }
+fc-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
+fc-rpc-core = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
+fc-db = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
+fc-mapping-sync = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
+fc-storage = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
+fc-consensus = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
+fp-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
+fp-consensus = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = false }
 
 sp-api.default-features = true
 sp-api.workspace = true
