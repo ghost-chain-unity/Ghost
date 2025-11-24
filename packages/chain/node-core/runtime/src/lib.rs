@@ -213,28 +213,23 @@ impl_opaque_keys! {
 
 /// The `TransactionExtension` to the basic transaction logic.
 pub type TxExtension = (
-    frame_system::CheckNonZeroSender<runtime::Runtime>,
-    frame_system::CheckSpecVersion<runtime::Runtime>,
-    frame_system::CheckTxVersion<runtime::Runtime>,
-    frame_system::CheckGenesis<runtime::Runtime>,
-    frame_system::CheckEra<runtime::Runtime>,
-    frame_system::CheckNonce<runtime::Runtime>,
-    frame_system::CheckWeight<runtime::Runtime>,
-    pallet_transaction_payment::ChargeTransactionPayment<runtime::Runtime>,
-    frame_metadata_hash_extension::CheckMetadataHash<runtime::Runtime>,
+    frame_system::CheckNonZeroSender<Runtime>,
+    frame_system::CheckSpecVersion<Runtime>,
+    frame_system::CheckTxVersion<Runtime>,
+    frame_system::CheckGenesis<Runtime>,
+    frame_system::CheckEra<Runtime>,
+    frame_system::CheckNonce<Runtime>,
+    frame_system::CheckWeight<Runtime>,
+    pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
+    frame_metadata_hash_extension::CheckMetadataHash<Runtime>,
 );
 
 /// Unchecked extrinsic type as expected by this runtime.
 pub type UncheckedExtrinsic =
-    generic::UncheckedExtrinsic<Address, runtime::RuntimeCall, Signature, TxExtension>;
+    generic::UncheckedExtrinsic<Address, RuntimeCall, Signature, TxExtension>;
 
 /// Block type as expected by this runtime.
 pub type Block = generic::Block<Header, UncheckedExtrinsic>;
-
-// Re-export commonly used runtime types for convenience at crate level
-pub use runtime::{Runtime, RuntimeCall, RuntimeEvent, RuntimeOrigin, RuntimeTask};
-pub use runtime::{System, Timestamp, Aura, Grandpa, Balances, TransactionPayment, Sudo};
-pub use runtime::{ChainGhost, G3Mail, Ghonity, EVM, Ethereum, BaseFee};
 
 /// A Block signed with a Justification
 pub type SignedBlock = generic::SignedBlock<Block>;
@@ -243,7 +238,7 @@ pub type SignedBlock = generic::SignedBlock<Block>;
 pub type BlockId = generic::BlockId<Block>;
 
 /// The payload being signed in transactions.
-pub type SignedPayload = generic::SignedPayload<runtime::RuntimeCall, TxExtension>;
+pub type SignedPayload = generic::SignedPayload<RuntimeCall, TxExtension>;
 
 /// All migrations of the runtime, aside from the ones declared in the pallets.
 ///
@@ -253,10 +248,10 @@ type Migrations = ();
 
 /// Executive: handles dispatch to the various modules.
 pub type Executive = frame_executive::Executive<
-    runtime::Runtime,
+    Runtime,
     Block,
-    frame_system::ChainContext<runtime::Runtime>,
-    runtime::Runtime,
-    runtime::AllPalletsWithSystem,
+    frame_system::ChainContext<Runtime>,
+    Runtime,
+    AllPalletsWithSystem,
     Migrations,
 >;

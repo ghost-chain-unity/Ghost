@@ -43,10 +43,9 @@ use sp_version::RuntimeVersion;
 // Local module imports
 use super::{
     AccountId, Aura, Balance, Block, BlockNumber, Executive, Grandpa,
-    Nonce, Runtime, RuntimeCall, SessionKeys, System,
+    Nonce, Runtime, RuntimeCall, RuntimeGenesisConfig, SessionKeys, System,
     TransactionPayment, UncheckedExtrinsic, VERSION,
 };
-use super::runtime::RuntimeGenesisConfig as GenesisConfig;
 
 use crate::apis::ghost_protocol::{IntentData, JourneyStepData, MessagePointerData};
 use pallet_chainghost::{IntentById, IntentsByAccount, JourneyByIntent};
@@ -291,11 +290,11 @@ impl_runtime_apis! {
 
     impl sp_genesis_builder::GenesisBuilder<Block> for Runtime {
         fn build_state(config: Vec<u8>) -> sp_genesis_builder::Result {
-            build_state::<GenesisConfig>(config)
+            build_state::<RuntimeGenesisConfig>(config)
         }
 
         fn get_preset(id: &Option<sp_genesis_builder::PresetId>) -> Option<Vec<u8>> {
-            get_preset::<GenesisConfig>(id, crate::genesis_config_presets::get_preset)
+            get_preset::<RuntimeGenesisConfig>(id, crate::genesis_config_presets::get_preset)
         }
 
         fn preset_names() -> Vec<sp_genesis_builder::PresetId> {

@@ -15,8 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use crate::AccountId;
-use crate::runtime::{RuntimeGenesisConfig as GenesisConfig, BalancesConfig, SudoConfig};
+use crate::{AccountId, RuntimeGenesisConfig as GenesisConfig, BalancesConfig, SudoConfig};
 use alloc::{vec, vec::Vec};
 use frame_support::build_struct_json_patch;
 use serde_json::Value;
