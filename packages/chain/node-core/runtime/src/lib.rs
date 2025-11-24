@@ -56,12 +56,7 @@ pub mod opaque {
     pub type Hash = <BlakeTwo256 as HashT>::Output;
 }
 
-impl_opaque_keys! {
-        pub struct SessionKeys {
-                pub aura: Aura,
-                pub grandpa: Grandpa,
-        }
-}
+// SessionKeys will be defined after runtime module
 
 // To learn more about runtime versioning, see:
 // https://docs.substrate.io/main-docs/build/upgrade#runtime-versioning
@@ -146,52 +141,6 @@ pub type Address = MultiAddress<AccountId, ()>;
 /// Block header type as expected by this runtime.
 pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
 
-/// Block type as expected by this runtime.
-pub type Block = generic::Block<Header, UncheckedExtrinsic>;
-
-/// A Block signed with a Justification
-pub type SignedBlock = generic::SignedBlock<Block>;
-
-/// BlockId type as expected by this runtime.
-pub type BlockId = generic::BlockId<Block>;
-
-/// The `TransactionExtension` to the basic transaction logic.
-pub type TxExtension = (
-    frame_system::CheckNonZeroSender<Runtime>,
-    frame_system::CheckSpecVersion<Runtime>,
-    frame_system::CheckTxVersion<Runtime>,
-    frame_system::CheckGenesis<Runtime>,
-    frame_system::CheckEra<Runtime>,
-    frame_system::CheckNonce<Runtime>,
-    frame_system::CheckWeight<Runtime>,
-    pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
-    frame_metadata_hash_extension::CheckMetadataHash<Runtime>,
-    frame_system::WeightReclaim<Runtime>,
-);
-
-/// Unchecked extrinsic type as expected by this runtime.
-pub type UncheckedExtrinsic =
-    generic::UncheckedExtrinsic<Address, RuntimeCall, Signature, TxExtension>;
-
-/// The payload being signed in transactions.
-pub type SignedPayload = generic::SignedPayload<RuntimeCall, TxExtension>;
-
-/// All migrations of the runtime, aside from the ones declared in the pallets.
-///
-/// This can be a tuple of types, each implementing `OnRuntimeUpgrade`.
-#[allow(unused_parens)]
-type Migrations = ();
-
-/// Executive: handles dispatch to the various modules.
-pub type Executive = frame_executive::Executive<
-    Runtime,
-    Block,
-    frame_system::ChainContext<Runtime>,
-    Runtime,
-    AllPalletsWithSystem,
-    Migrations,
->;
-
 // Create the runtime by composing the FRAME pallets that were previously configured.
 #[frame_support::runtime]
 mod runtime {
@@ -205,8 +154,7 @@ mod runtime {
         RuntimeHoldReason,
         RuntimeSlashReason,
         RuntimeLockId,
-        RuntimeTask,
-        RuntimeViewFunction
+        RuntimeTask
     )]
     pub struct Runtime;
 
@@ -251,3 +199,64 @@ mod runtime {
     #[runtime::pallet_index(12)]
     pub type BaseFee = pallet_base_fee;
 }
+
+// Re-export runtime types
+pub use runtime::{Runtime, RuntimeCall, RuntimeEvent, RuntimeOrigin, RuntimeTask};
+
+// Re-export pallet types from runtime module
+pub use runtime::{Aura, Grandpa, Balances, System, Timestamp, TransactionPayment, Sudo};
+pub use runtime::{ChainGhost, G3Mail, Ghonity};
+pub use runtime::{EVM, Ethereum, BaseFee};
+
+// Define SessionKeys after runtime types are available
+impl_opaque_keys! {
+    pub struct SessionKeys {
+        pub aura: Aura,
+        pub grandpa: Grandpa,
+    }
+}
+
+/// The `TransactionExtension` to the basic transaction logic.
+pub type TxExtension = (
+    frame_system::CheckNonZeroSender<Runtime>,
+    frame_system::CheckSpecVersion<Runtime>,
+    frame_system::CheckTxVersion<Runtime>,
+    frame_system::CheckGenesis<Runtime>,
+    frame_system::CheckEra<Runtime>,
+    frame_system::CheckNonce<Runtime>,
+    frame_system::CheckWeight<Runtime>,
+    pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
+    frame_metadata_hash_extension::CheckMetadataHash<Runtime>,
+);
+
+/// Unchecked extrinsic type as expected by this runtime.
+pub type UncheckedExtrinsic =
+    generic::UncheckedExtrinsic<Address, RuntimeCall, Signature, TxExtension>;
+
+/// Block type as expected by this runtime.
+pub type Block = generic::Block<Header, UncheckedExtrinsic>;
+
+/// A Block signed with a Justification
+pub type SignedBlock = generic::SignedBlock<Block>;
+
+/// BlockId type as expected by this runtime.
+pub type BlockId = generic::BlockId<Block>;
+
+/// The payload being signed in transactions.
+pub type SignedPayload = generic::SignedPayload<RuntimeCall, TxExtension>;
+
+/// All migrations of the runtime, aside from the ones declared in the pallets.
+///
+/// This can be a tuple of types, each implementing `OnRuntimeUpgrade`.
+#[allow(unused_parens)]
+type Migrations = ();
+
+/// Executive: handles dispatch to the various modules.
+pub type Executive = frame_executive::Executive<
+    Runtime,
+    Block,
+    frame_system::ChainContext<Runtime>,
+    Runtime,
+    runtime::AllPalletsWithSystem,
+    Migrations,
+>;

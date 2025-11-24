@@ -1,0 +1,1678 @@
+﻿2025-11-24T12:22:36.2593262Z ##[group]Run bash packages/chain/node-core/scripts/cargo-check.sh
+2025-11-24T12:22:36.2594043Z [36;1mbash packages/chain/node-core/scripts/cargo-check.sh[0m
+2025-11-24T12:22:36.2641357Z shell: /usr/bin/bash -e {0}
+2025-11-24T12:22:36.2641739Z env:
+2025-11-24T12:22:36.2642022Z   CARGO_TERM_COLOR: always
+2025-11-24T12:22:36.2642369Z   RUST_BACKTRACE: 1
+2025-11-24T12:22:36.2642692Z   CARGO_HOME: /home/runner/.cargo
+2025-11-24T12:22:36.2643085Z   CARGO_INCREMENTAL: 0
+2025-11-24T12:22:36.2643425Z   CACHE_ON_FAILURE: true
+2025-11-24T12:22:36.2643748Z ##[endgroup]
+2025-11-24T12:22:36.2753727Z ================================================
+2025-11-24T12:22:36.2757316Z Running cargo check for Ghost Chain Node Core
+2025-11-24T12:22:36.2757794Z ================================================
+2025-11-24T12:22:36.2761876Z 
+2025-11-24T12:22:36.2762276Z Working directory: /home/runner/work/Ghost/Ghost/packages/chain/node-core
+2025-11-24T12:22:36.2762771Z 
+2025-11-24T12:22:38.0496665Z [1m[92m Downloading[0m crates ...
+2025-11-24T12:22:41.3671316Z [1m[92m  Downloaded[0m asn1-rs-derive v0.4.0
+2025-11-24T12:22:41.3799405Z [1m[92m  Downloaded[0m finito v0.1.0
+2025-11-24T12:22:41.3820839Z [1m[92m  Downloaded[0m asn1-rs-impl v0.1.0
+2025-11-24T12:22:41.3847178Z [1m[92m  Downloaded[0m futures-bounded v0.1.0
+2025-11-24T12:22:41.3859712Z [1m[92m  Downloaded[0m base64 v0.13.1
+2025-11-24T12:22:41.3927445Z [1m[92m  Downloaded[0m jsonrpsee v0.23.2
+2025-11-24T12:22:41.3940227Z [1m[92m  Downloaded[0m libp2p-connection-limits v0.2.1
+2025-11-24T12:22:41.3952922Z [1m[92m  Downloaded[0m jsonrpsee v0.22.5
+2025-11-24T12:22:41.3964161Z [1m[92m  Downloaded[0m darling_macro v0.14.4
+2025-11-24T12:22:41.3981805Z [1m[92m  Downloaded[0m beef v0.5.2
+2025-11-24T12:22:41.4010625Z [1m[92m  Downloaded[0m libp2p-allow-block-list v0.2.0
+2025-11-24T12:22:41.4025438Z [1m[92m  Downloaded[0m normalize-line-endings v0.3.0
+2025-11-24T12:22:41.4036337Z [1m[92m  Downloaded[0m difflib v0.4.0
+2025-11-24T12:22:41.4049782Z [1m[92m  Downloaded[0m enum-as-inner v0.5.1
+2025-11-24T12:22:41.4069625Z [1m[92m  Downloaded[0m float-cmp v0.9.0
+2025-11-24T12:22:41.4083329Z [1m[92m  Downloaded[0m jsonrpsee-types v0.22.5
+2025-11-24T12:22:41.4096033Z [1m[92m  Downloaded[0m impl-codec v0.6.0
+2025-11-24T12:22:41.4107155Z [1m[92m  Downloaded[0m futures-rustls v0.24.0
+2025-11-24T12:22:41.4128389Z [1m[92m  Downloaded[0m primitive-types v0.12.2
+2025-11-24T12:22:41.4144347Z [1m[92m  Downloaded[0m scale-decode-derive v0.13.1
+2025-11-24T12:22:41.4156019Z [1m[92m  Downloaded[0m matches v0.1.10
+2025-11-24T12:22:41.4166653Z [1m[92m  Downloaded[0m quick-protobuf-codec v0.2.0
+2025-11-24T12:22:41.4179275Z [1m[92m  Downloaded[0m proc-macro-warning v0.4.2
+2025-11-24T12:22:41.4193970Z [1m[92m  Downloaded[0m scale-encode-derive v0.7.2
+2025-11-24T12:22:41.4202981Z [1m[92m  Downloaded[0m libp2p-swarm-derive v0.33.0
+2025-11-24T12:22:41.4215201Z [1m[92m  Downloaded[0m libp2p-mdns v0.44.0
+2025-11-24T12:22:41.4235383Z [1m[92m  Downloaded[0m jsonrpsee-types v0.23.2
+2025-11-24T12:22:41.4247937Z [1m[92m  Downloaded[0m pem v1.1.1
+2025-11-24T12:22:41.4261829Z [1m[92m  Downloaded[0m libp2p-wasm-ext v0.40.0
+2025-11-24T12:22:41.4275820Z [1m[92m  Downloaded[0m libp2p-websocket v0.42.2
+2025-11-24T12:22:41.4306701Z [1m[92m  Downloaded[0m libp2p-tcp v0.40.1
+2025-11-24T12:22:41.4328166Z [1m[92m  Downloaded[0m quinn-udp v0.4.1
+2025-11-24T12:22:41.4355188Z [1m[92m  Downloaded[0m strsim v0.10.0
+2025-11-24T12:22:41.4406271Z [1m[92m  Downloaded[0m subxt-macro v0.37.0
+2025-11-24T12:22:41.4407107Z [1m[92m  Downloaded[0m sct v0.7.1
+2025-11-24T12:22:41.4468837Z [1m[92m  Downloaded[0m subxt-signer v0.37.0
+2025-11-24T12:22:41.4511857Z [1m[92m  Downloaded[0m tokio-rustls v0.25.0
+2025-11-24T12:22:41.4563165Z [1m[92m  Downloaded[0m ruzstd v0.5.0
+2025-11-24T12:22:41.4629873Z [1m[92m  Downloaded[0m subxt-core v0.37.1
+2025-11-24T12:22:41.4709198Z [1m[92m  Downloaded[0m libp2p-swarm v0.43.7
+2025-11-24T12:22:41.4769752Z [1m[92m  Downloaded[0m libp2p-kad v0.44.6
+2025-11-24T12:22:41.4837050Z [1m[92m  Downloaded[0m scale-value v0.16.3
+2025-11-24T12:22:41.4870506Z [1m[92m  Downloaded[0m subxt v0.37.0
+2025-11-24T12:22:41.4996323Z [1m[92m  Downloaded[0m smoldot-light v0.14.0
+2025-11-24T12:22:41.5036316Z [1m[92m  Downloaded[0m rustls-webpki v0.102.8
+2025-11-24T12:22:41.5382998Z [1m[92m  Downloaded[0m quinn-proto v0.10.6
+2025-11-24T12:22:41.5457937Z [1m[92m  Downloaded[0m idna v0.4.0
+2025-11-24T12:22:41.5530767Z [1m[92m  Downloaded[0m trie-db v0.29.1
+2025-11-24T12:22:41.5576441Z [1m[92m  Downloaded[0m frame-metadata v18.0.0
+2025-11-24T12:22:41.5633748Z [1m[92m  Downloaded[0m rustls v0.22.4
+2025-11-24T12:22:41.5795203Z [1m[92m  Downloaded[0m rustls v0.21.12
+2025-11-24T12:22:41.5942131Z [1m[92m  Downloaded[0m frame-metadata v16.0.0
+2025-11-24T12:22:41.6007841Z [1m[92m  Downloaded[0m frame-metadata v15.1.0
+2025-11-24T12:22:41.6073310Z [1m[92m  Downloaded[0m idna v0.2.3
+2025-11-24T12:22:41.6145371Z [1m[92m  Downloaded[0m merkleized-metadata v0.2.0
+2025-11-24T12:22:41.6255213Z [1m[92m  Downloaded[0m gimli v0.28.1
+2025-11-24T12:22:41.6346221Z [1m[92m  Downloaded[0m polkavm-linker v0.9.2
+2025-11-24T12:22:41.6360134Z [1m[92m  Downloaded[0m polkavm v0.9.3
+2025-11-24T12:22:41.6396885Z [1m[92m  Downloaded[0m quinn v0.10.2
+2025-11-24T12:22:41.6434676Z [1m[92m  Downloaded[0m prometheus-client v0.21.2
+2025-11-24T12:22:41.6496190Z [1m[92m  Downloaded[0m impl-serde v0.4.0
+2025-11-24T12:22:41.6499056Z [1m[92m  Downloaded[0m tokio-rustls v0.24.1
+2025-11-24T12:22:41.6529494Z [1m[92m  Downloaded[0m socket2 v0.4.10
+2025-11-24T12:22:41.6552813Z [1m[92m  Downloaded[0m x509-parser v0.15.1
+2025-11-24T12:22:41.6619641Z [1m[92m  Downloaded[0m rustls-platform-verifier v0.3.4
+2025-11-24T12:22:41.6672717Z [1m[92m  Downloaded[0m wasmi_arena v0.4.1
+2025-11-24T12:22:41.6685716Z [1m[92m  Downloaded[0m smoldot v0.16.0
+2025-11-24T12:22:41.6988021Z [1m[92m  Downloaded[0m jsonrpsee-core v0.23.2
+2025-11-24T12:22:41.7016311Z [1m[92m  Downloaded[0m der-parser v8.2.0
+2025-11-24T12:22:41.7056146Z [1m[92m  Downloaded[0m darling_core v0.14.4
+2025-11-24T12:22:41.7146299Z [1m[92m  Downloaded[0m subxt-metadata v0.37.0
+2025-11-24T12:22:41.7147093Z [1m[92m  Downloaded[0m trust-dns-proto v0.22.0
+2025-11-24T12:22:41.7336449Z [1m[92m  Downloaded[0m subxt-lightclient v0.37.0
+2025-11-24T12:22:41.7337350Z [1m[92m  Downloaded[0m subxt-codegen v0.37.0
+2025-11-24T12:22:41.7346815Z [1m[92m  Downloaded[0m scale-typegen v0.8.0
+2025-11-24T12:22:41.7401921Z [1m[92m  Downloaded[0m trust-dns-proto v0.23.2
+2025-11-24T12:22:41.7559448Z [1m[92m  Downloaded[0m wasmi_core v0.13.0
+2025-11-24T12:22:41.7572258Z [1m[92m  Downloaded[0m unicode-bidi v0.3.18
+2025-11-24T12:22:41.7596507Z [1m[92m  Downloaded[0m trust-dns-resolver v0.23.2
+2025-11-24T12:22:41.7636561Z [1m[92m  Downloaded[0m soketto v0.7.1
+2025-11-24T12:22:41.7686665Z [1m[92m  Downloaded[0m scale-encode v0.7.2
+2025-11-24T12:22:41.7690921Z [1m[92m  Downloaded[0m wasmi v0.31.2
+2025-11-24T12:22:41.7770763Z [1m[92m  Downloaded[0m rustls-native-certs v0.7.3
+2025-11-24T12:22:41.7806248Z [1m[92m  Downloaded[0m polkavm-linux-raw v0.9.0
+2025-11-24T12:22:41.7826252Z [1m[92m  Downloaded[0m polkavm-common v0.9.0
+2025-11-24T12:22:41.7840024Z [1m[92m  Downloaded[0m mockall_derive v0.11.4
+2025-11-24T12:22:41.7876235Z [1m[92m  Downloaded[0m libp2p-core v0.40.1
+2025-11-24T12:22:41.7902991Z [1m[92m  Downloaded[0m libp2p v0.52.4
+2025-11-24T12:22:41.7935940Z [1m[92m  Downloaded[0m jsonrpsee-core v0.22.5
+2025-11-24T12:22:41.7966451Z [1m[92m  Downloaded[0m rustls-pemfile v1.0.4
+2025-11-24T12:22:41.8017399Z [1m[92m  Downloaded[0m rustls-native-certs v0.6.3
+2025-11-24T12:22:41.8021453Z [1m[92m  Downloaded[0m rcgen v0.10.0
+2025-11-24T12:22:41.8047217Z [1m[92m  Downloaded[0m predicates v2.1.5
+2025-11-24T12:22:41.8079810Z [1m[92m  Downloaded[0m rustls-pemfile v2.2.0
+2025-11-24T12:22:41.8109806Z [1m[92m  Downloaded[0m no-std-net v0.6.0
+2025-11-24T12:22:41.8133035Z [1m[92m  Downloaded[0m mockall v0.11.4
+2025-11-24T12:22:41.8145144Z [1m[92m  Downloaded[0m libp2p-request-response v0.25.3
+2025-11-24T12:22:41.8159451Z [1m[92m  Downloaded[0m libp2p-identify v0.43.1
+2025-11-24T12:22:41.8173498Z [1m[92m  Downloaded[0m sha-1 v0.9.8
+2025-11-24T12:22:41.8191653Z [1m[92m  Downloaded[0m send_wrapper v0.6.0
+2025-11-24T12:22:41.8204432Z [1m[92m  Downloaded[0m reconnecting-jsonrpsee-ws-client v0.4.3
+2025-11-24T12:22:41.8218454Z [1m[92m  Downloaded[0m libp2p-tls v0.2.1
+2025-11-24T12:22:41.8230376Z [1m[92m  Downloaded[0m polkavm-assembler v0.9.0
+2025-11-24T12:22:41.8243693Z [1m[92m  Downloaded[0m oid-registry v0.6.1
+2025-11-24T12:22:41.8256290Z [1m[92m  Downloaded[0m libp2p-upnp v0.1.1
+2025-11-24T12:22:41.8267139Z [1m[92m  Downloaded[0m libp2p-noise v0.43.2
+2025-11-24T12:22:41.8287977Z [1m[92m  Downloaded[0m libp2p-ping v0.43.1
+2025-11-24T12:22:41.8300356Z [1m[92m  Downloaded[0m libp2p-dns v0.40.1
+2025-11-24T12:22:41.8310351Z [1m[92m  Downloaded[0m jsonrpsee-client-transport v0.23.2
+2025-11-24T12:22:41.8336557Z [1m[92m  Downloaded[0m event-listener v4.0.3
+2025-11-24T12:22:41.8349065Z [1m[92m  Downloaded[0m darling v0.14.4
+2025-11-24T12:22:41.8390343Z [1m[92m  Downloaded[0m libp2p-metrics v0.13.1
+2025-11-24T12:22:41.8406769Z [1m[92m  Downloaded[0m jsonrpsee-ws-client v0.23.2
+2025-11-24T12:22:41.8417212Z [1m[92m  Downloaded[0m hyper-rustls v0.24.2
+2025-11-24T12:22:41.8457772Z [1m[92m  Downloaded[0m libp2p-quic v0.9.3
+2025-11-24T12:22:41.8486656Z [1m[92m  Downloaded[0m jsonrpsee-http-client v0.22.5
+2025-11-24T12:22:41.8487701Z [1m[92m  Downloaded[0m jsonrpsee-client-transport v0.22.5
+2025-11-24T12:22:41.8493419Z [1m[92m  Downloaded[0m libp2p-yamux v0.44.1
+2025-11-24T12:22:41.8503641Z [1m[92m  Downloaded[0m keccak-hash v0.10.0
+2025-11-24T12:22:41.8514426Z [1m[92m  Downloaded[0m asn1-rs v0.5.2
+2025-11-24T12:22:42.9423574Z [1m[92m   Compiling[0m zeroize v1.8.2
+2025-11-24T12:22:42.9534834Z [1m[92m   Compiling[0m serde_json v1.0.145
+2025-11-24T12:22:46.1901288Z [1m[92m   Compiling[0m generic-array v0.14.7
+2025-11-24T12:22:46.8071641Z [1m[92m   Compiling[0m crypto-common v0.1.7
+2025-11-24T12:22:46.8630777Z [1m[92m   Compiling[0m block-buffer v0.10.4
+2025-11-24T12:22:47.1220286Z [1m[92m   Compiling[0m digest v0.10.7
+2025-11-24T12:22:47.7271937Z [1m[92m   Compiling[0m blake2 v0.10.6
+2025-11-24T12:22:48.1173012Z [1m[92m   Compiling[0m expander v2.2.1
+2025-11-24T12:22:48.4215106Z [1m[92m   Compiling[0m digest v0.9.0
+2025-11-24T12:22:48.4843114Z [1m[92m    Checking[0m idna v1.1.0
+2025-11-24T12:22:48.6379872Z [1m[92m    Checking[0m url v2.5.7
+2025-11-24T12:22:49.0285864Z [1m[92m   Compiling[0m libsecp256k1-core v0.3.0
+2025-11-24T12:22:49.8260611Z [1m[92m   Compiling[0m libsecp256k1-gen-genmult v0.3.0
+2025-11-24T12:22:49.9456897Z [1m[92m   Compiling[0m libsecp256k1-gen-ecmult v0.3.0
+2025-11-24T12:22:50.0228535Z [1m[92m   Compiling[0m libsecp256k1 v0.7.2
+2025-11-24T12:22:50.2696825Z [1m[92m   Compiling[0m ss58-registry v1.51.0
+2025-11-24T12:22:51.1088846Z [1m[92m    Checking[0m unicode-normalization v0.1.22
+2025-11-24T12:22:51.1166270Z [1m[92m    Checking[0m secrecy v0.8.0
+2025-11-24T12:22:51.4369652Z [1m[92m    Checking[0m parity-bip39 v2.0.1
+2025-11-24T12:22:51.6377498Z [1m[92m    Checking[0m wasmparser v0.102.0
+2025-11-24T12:22:54.1238915Z [1m[92m    Checking[0m wasmtime-types v8.0.1
+2025-11-24T12:22:54.3451102Z [1m[92m   Compiling[0m sha2 v0.10.9
+2025-11-24T12:22:54.4447850Z [1m[92m    Checking[0m wasmtime-environ v8.0.1
+2025-11-24T12:22:54.8397427Z [1m[92m    Checking[0m cranelift-wasm v0.95.1
+2025-11-24T12:22:55.1560173Z [1m[92m    Checking[0m wasmtime-runtime v8.0.1
+2025-11-24T12:22:55.4157608Z [1m[92m    Checking[0m wasmtime-cranelift-shared v8.0.1
+2025-11-24T12:22:55.5214831Z [1m[92m    Checking[0m wasmtime-cranelift v8.0.1
+2025-11-24T12:22:56.0867102Z [1m[92m   Compiling[0m sha3 v0.10.8
+2025-11-24T12:22:56.0944083Z [1m[92m    Checking[0m wasmtime-jit v8.0.1
+2025-11-24T12:22:56.3175642Z [1m[92m   Compiling[0m twox-hash v1.6.3
+2025-11-24T12:22:56.4686963Z [1m[92m    Checking[0m wasmtime v8.0.1
+2025-11-24T12:22:56.8516615Z [1m[92m    Checking[0m trie-db v0.29.1
+2025-11-24T12:22:58.1332664Z [1m[92m    Checking[0m frame-metadata v18.0.0
+2025-11-24T12:22:58.1945042Z [1m[92m   Compiling[0m sp-debug-derive v14.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:22:58.5613756Z [1m[92m   Compiling[0m sp-runtime-interface-proc-macro v18.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:22:58.9891116Z [1m[92m    Checking[0m sp-storage v22.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:00.0053528Z [1m[92m    Checking[0m sp-wasm-interface v21.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:00.1490884Z [1m[92m    Checking[0m sp-externalities v0.30.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:01.1368941Z [1m[92m    Checking[0m sp-tracing v17.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:01.3598234Z [1m[92m    Checking[0m sp-std v14.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:01.4133206Z [1m[92m    Checking[0m substrate-bip39 v0.6.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:01.4889969Z [1m[92m    Checking[0m sp-crypto-hashing v0.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:01.5568530Z [1m[92m   Compiling[0m sp-io v39.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:01.8131846Z [1m[92m    Checking[0m sp-panic-handler v13.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:01.8977899Z [1m[92m    Checking[0m sp-arithmetic v26.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:02.2648606Z [1m[92m    Checking[0m sp-runtime-interface v29.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:02.4167189Z [1m[92m    Checking[0m sp-core v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:04.5221857Z [1m[92m    Checking[0m sp-weights v31.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:06.2362847Z [1m[92m    Checking[0m sp-trie v38.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:06.4792015Z [1m[92m    Checking[0m sp-keystore v0.41.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:06.6437840Z [1m[92m    Checking[0m binary-merkle-tree v16.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:07.6257320Z [1m[92m   Compiling[0m sp-crypto-hashing-proc-macro v0.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:07.9328060Z [1m[92m   Compiling[0m sp-version-proc-macro v15.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:08.6605865Z [1m[92m    Checking[0m sp-state-machine v0.44.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:09.1618408Z [1m[92m   Compiling[0m sp-api-proc-macro v21.0.2 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:11.6156866Z [1m[92m   Compiling[0m sp-debug-derive v14.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:11.9683941Z [1m[92m    Checking[0m sp-storage v22.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:13.1310892Z [1m[92m    Checking[0m sp-externalities v0.30.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:13.6446106Z [1m[92m    Checking[0m sp-application-crypto v39.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:14.3233824Z [1m[92m    Checking[0m sp-wasm-interface v21.0.1 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:15.6595991Z [1m[92m    Checking[0m sp-tracing v17.0.1 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:16.0242230Z [1m[92m    Checking[0m sp-runtime v40.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:16.7676016Z [1m[92m    Checking[0m sp-crypto-hashing v0.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:16.8354376Z [1m[92m   Compiling[0m sp-runtime-interface-proc-macro v18.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:18.2714178Z [1m[92m    Checking[0m sp-std v14.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:18.3278207Z [1m[92m    Checking[0m sp-runtime-interface v29.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:18.4933614Z [1m[92m    Checking[0m sp-metadata-ir v0.8.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:19.5937715Z [1m[92m    Checking[0m substrate-bip39 v0.6.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:19.6709661Z [1m[92m    Checking[0m sp-core v35.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:21.5524328Z [1m[92m    Checking[0m sp-version v38.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:23.5717775Z [1m[92m    Checking[0m sp-inherents v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:23.6018674Z [1m[92m    Checking[0m sp-api v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:23:24.7062046Z [1m[92m    Checking[0m sp-trie v38.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:27.1326835Z [1m[92m    Checking[0m hyper-util v0.1.18
+2025-11-24T12:23:27.5265849Z [1m[92m    Checking[0m sp-panic-handler v13.0.1 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:27.6001752Z [1m[92m   Compiling[0m sp-io v39.0.1 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:27.7227995Z [1m[92m    Checking[0m sp-state-machine v0.44.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:28.4306867Z [1m[92m    Checking[0m sp-keystore v0.41.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:28.6091556Z [1m[92m    Checking[0m polkavm-assembler v0.9.0
+2025-11-24T12:23:28.6770478Z [1m[92m    Checking[0m polkavm-common v0.9.0
+2025-11-24T12:23:28.9677327Z [1m[92m    Checking[0m polkavm-linux-raw v0.9.0
+2025-11-24T12:23:29.2554883Z [1m[92m    Checking[0m polkavm v0.9.3
+2025-11-24T12:23:30.3780573Z [1m[92m    Checking[0m sp-arithmetic v26.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:32.9729302Z [1m[92m    Checking[0m sp-application-crypto v39.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:33.0904841Z [1m[92m    Checking[0m multiaddr v0.18.2
+2025-11-24T12:23:33.3464442Z [1m[92m    Checking[0m sp-weights v31.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:35.0648943Z [1m[92m    Checking[0m binary-merkle-tree v16.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:35.3058498Z [1m[92m    Checking[0m libp2p-core v0.40.1
+2025-11-24T12:23:35.9836904Z [1m[92m   Compiling[0m proc-macro-warning v0.4.2
+2025-11-24T12:23:36.0658922Z [1m[92m    Checking[0m sp-runtime v40.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:36.2087329Z [1m[92m   Compiling[0m sp-crypto-hashing-proc-macro v0.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:36.5350360Z [1m[92m   Compiling[0m sp-version-proc-macro v15.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:37.7428644Z [1m[92m   Compiling[0m wasm-bindgen-shared v0.2.105
+2025-11-24T12:23:38.0923381Z [1m[92m    Checking[0m sp-metadata-ir v0.8.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:39.3153267Z [1m[92m   Compiling[0m sp-api-proc-macro v21.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:41.6403617Z [1m[92m    Checking[0m sp-version v38.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:42.0264380Z [1m[92m    Checking[0m tungstenite v0.26.2
+2025-11-24T12:23:42.4376769Z [1m[92m   Compiling[0m libp2p-swarm-derive v0.33.0
+2025-11-24T12:23:43.1367293Z [1m[92m    Checking[0m hickory-proto v0.25.2
+2025-11-24T12:23:43.7558494Z [1m[92m    Checking[0m sp-api v35.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:44.8997428Z [1m[92m    Checking[0m libp2p-swarm v0.43.7
+2025-11-24T12:23:45.1309958Z [1m[92m    Checking[0m hickory-resolver v0.25.2
+2025-11-24T12:23:45.6918555Z [1m[92m    Checking[0m tokio-tungstenite v0.26.2
+2025-11-24T12:23:45.8088836Z [1m[92m    Checking[0m multiaddr v0.17.1
+2025-11-24T12:23:45.9458785Z [1m[92m    Checking[0m unicode-bidi v0.3.18
+2025-11-24T12:23:46.0544301Z [1m[92m    Checking[0m litep2p v0.9.5
+2025-11-24T12:23:46.3958167Z [1m[92m    Checking[0m float-cmp v0.9.0
+2025-11-24T12:23:46.4791625Z [1m[92m    Checking[0m difflib v0.4.0
+2025-11-24T12:23:46.6258966Z [1m[92m    Checking[0m normalize-line-endings v0.3.0
+2025-11-24T12:23:46.6809765Z [1m[92m    Checking[0m predicates v2.1.5
+2025-11-24T12:23:46.9590793Z [1m[92m   Compiling[0m wasm-bindgen-macro-support v0.2.105
+2025-11-24T12:23:49.5234372Z [1m[92m   Compiling[0m mockall_derive v0.11.4
+2025-11-24T12:23:52.3214264Z [1m[92m   Compiling[0m wasm-bindgen v0.2.105
+2025-11-24T12:23:52.4690754Z [1m[92m    Checking[0m unicode-ident v1.0.22
+2025-11-24T12:23:52.6417198Z [1m[92m    Checking[0m mockall v0.11.4
+2025-11-24T12:23:52.7256425Z [1m[92m   Compiling[0m wasm-bindgen-macro v0.2.105
+2025-11-24T12:23:52.9618888Z [1m[92m   Compiling[0m rustls v0.21.12
+2025-11-24T12:23:53.7757053Z [1m[92m    Checking[0m idna v0.4.0
+2025-11-24T12:23:54.1261188Z [1m[92m    Checking[0m sp-inherents v35.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:23:55.1543798Z [1m[92m    Checking[0m sct v0.7.1
+2025-11-24T12:23:55.2362009Z [1m[92m    Checking[0m rustls-webpki v0.101.7
+2025-11-24T12:23:55.5130350Z [1m[92m    Checking[0m matches v0.1.10
+2025-11-24T12:23:55.5761900Z [1m[92m    Checking[0m idna v0.2.3
+2025-11-24T12:23:57.2441704Z [1m[92m    Checking[0m trust-dns-proto v0.23.2
+2025-11-24T12:23:57.9259220Z [1m[92m    Checking[0m js-sys v0.3.82
+2025-11-24T12:23:59.2569509Z [1m[92m   Compiling[0m enum-as-inner v0.5.1
+2025-11-24T12:23:59.5618004Z [1m[92m    Checking[0m quick-protobuf-codec v0.2.0
+2025-11-24T12:23:59.6327779Z [1m[92m    Checking[0m socket2 v0.4.10
+2025-11-24T12:23:59.8383056Z [1m[92m    Checking[0m trust-dns-proto v0.22.0
+2025-11-24T12:24:00.8676502Z [1m[92m    Checking[0m wasm-bindgen-futures v0.4.55
+2025-11-24T12:24:00.9918567Z [1m[92m    Checking[0m trust-dns-resolver v0.23.2
+2025-11-24T12:24:01.7398626Z [1m[92m    Checking[0m futures-rustls v0.24.0
+2025-11-24T12:24:01.8417725Z [1m[92m    Checking[0m futures-bounded v0.1.0
+2025-11-24T12:24:01.8703299Z [1m[92m    Checking[0m send_wrapper v0.6.0
+2025-11-24T12:24:01.9196654Z [1m[92m    Checking[0m libp2p-websocket v0.42.2
+2025-11-24T12:24:01.9343125Z [1m[92m    Checking[0m libp2p-wasm-ext v0.40.0
+2025-11-24T12:24:02.1208198Z [1m[92m    Checking[0m libp2p-identify v0.43.1
+2025-11-24T12:24:02.2650290Z [1m[92m    Checking[0m libp2p-yamux v0.44.1
+2025-11-24T12:24:02.3550330Z [1m[92m    Checking[0m libp2p-mdns v0.44.0
+2025-11-24T12:24:02.3787348Z [1m[92m    Checking[0m libp2p-dns v0.40.1
+2025-11-24T12:24:02.5855899Z [1m[92m    Checking[0m libp2p-kad v0.44.6
+2025-11-24T12:24:02.5931032Z [1m[92m    Checking[0m libp2p-tcp v0.40.1
+2025-11-24T12:24:02.7773833Z [1m[92m    Checking[0m libp2p-request-response v0.25.3
+2025-11-24T12:24:02.9646667Z [1m[92m    Checking[0m libp2p-ping v0.43.1
+2025-11-24T12:24:03.0742770Z [1m[92m    Checking[0m libp2p-allow-block-list v0.2.0
+2025-11-24T12:24:03.1767844Z [1m[92m    Checking[0m libp2p-connection-limits v0.2.1
+2025-11-24T12:24:03.2907112Z [1m[92m    Checking[0m libp2p-noise v0.43.2
+2025-11-24T12:24:03.5670225Z [1m[92m   Compiling[0m sc-executor-wasmtime v0.36.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:03.6641453Z [1m[92m    Checking[0m libp2p v0.52.4
+2025-11-24T12:24:03.6920672Z [1m[92m    Checking[0m sp-staking v37.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:04.0502770Z [1m[92m    Checking[0m sp-maybe-compressed-blob v11.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:04.1217712Z [1m[92m    Checking[0m sp-consensus v0.41.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:04.2970191Z [1m[92m    Checking[0m sp-database v10.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:04.3920393Z [1m[92m    Checking[0m sp-genesis-builder v0.16.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:05.4105103Z [1m[92m    Checking[0m sc-allocator v30.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:05.5771325Z [1m[92m    Checking[0m sc-executor-common v0.36.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:05.7645279Z [1m[92m    Checking[0m sp-blockchain v38.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:05.8824019Z [1m[92m    Checking[0m sc-executor-polkavm v0.33.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:06.2425161Z [1m[92m    Checking[0m substrate-prometheus-endpoint v0.17.7 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:06.3889678Z [1m[92m   Compiling[0m futures-core v0.3.31
+2025-11-24T12:24:06.4793693Z [1m[92m    Checking[0m sc-executor v0.41.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:06.7820259Z [1m[92m    Checking[0m sp-statement-store v19.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:07.1483424Z [1m[92m    Checking[0m sc-transaction-pool-api v38.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:07.3531197Z [1m[92m    Checking[0m sc-utils v18.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:07.5043696Z [1m[92m   Compiling[0m futures-io v0.3.31
+2025-11-24T12:24:07.5997175Z [1m[92m   Compiling[0m futures-channel v0.3.31
+2025-11-24T12:24:07.7557752Z [1m[92m   Compiling[0m futures-task v0.3.31
+2025-11-24T12:24:07.8644956Z [1m[92m   Compiling[0m futures-util v0.3.31
+2025-11-24T12:24:10.3733009Z [1m[92m    Checking[0m sp-consensus-grandpa v22.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:11.0847943Z [1m[92m    Checking[0m sc-client-api v38.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:11.5395237Z [1m[92m    Checking[0m sc-network-types v0.15.5 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:11.7526943Z [1m[92m    Checking[0m sc-consensus v0.47.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:12.4852207Z [1m[92m   Compiling[0m sc-network v0.48.5 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:12.9544599Z [1m[92m    Checking[0m sp-maybe-compressed-blob v11.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:13.0240664Z [1m[92m    Checking[0m sc-allocator v30.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:13.1947787Z [1m[92m   Compiling[0m frame-support-procedural-tools-derive v12.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:13.4698961Z [1m[92m   Compiling[0m frame-support-procedural-tools v13.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:13.4896455Z [1m[92m    Checking[0m sc-network-common v0.47.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:13.7387941Z [1m[92m    Checking[0m sc-executor-common v0.36.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:14.7667896Z [1m[92m    Checking[0m sp-consensus v0.41.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:14.8457049Z [1m[92m    Checking[0m sp-database v10.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:14.9416872Z [1m[92m   Compiling[0m sc-executor-wasmtime v0.36.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:14.9529186Z [1m[92m    Checking[0m sp-blockchain v38.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:16.3286754Z [1m[92m   Compiling[0m frame-support-procedural v31.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:20.2981865Z [1m[92m    Checking[0m sc-executor-polkavm v0.33.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:20.4377645Z [1m[92m   Compiling[0m block-buffer v0.9.0
+2025-11-24T12:24:20.5165336Z [1m[92m    Checking[0m sc-executor v0.41.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:20.8568087Z [1m[92m    Checking[0m sc-transaction-pool-api v38.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:21.0946154Z [1m[92m    Checking[0m sp-statement-store v19.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:25.6317615Z [1m[92m    Checking[0m sc-utils v18.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:25.8048507Z [1m[92m    Checking[0m substrate-prometheus-endpoint v0.17.1 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:25.9737305Z [1m[92m   Compiling[0m futures-executor v0.3.31
+2025-11-24T12:24:26.3737816Z [1m[92m    Checking[0m sc-client-api v38.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:26.9295655Z [1m[92m   Compiling[0m futures v0.3.31
+2025-11-24T12:24:26.9818892Z [1m[92m    Checking[0m sp-genesis-builder v0.16.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:27.1917068Z [1m[92m    Checking[0m frame-support v39.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:28.0437779Z [1m[92m    Checking[0m sp-timestamp v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:29.1342181Z [1m[92m   Compiling[0m der v0.7.10
+2025-11-24T12:24:30.2394092Z [1m[92m    Checking[0m sp-staking v37.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:32.5475219Z [1m[92m   Compiling[0m signature v2.2.0
+2025-11-24T12:24:32.6437010Z [1m[92m   Compiling[0m curve25519-dalek v4.1.3
+2025-11-24T12:24:34.2327776Z [1m[92m   Compiling[0m spki v0.7.3
+2025-11-24T12:24:34.3757289Z [1m[92m   Compiling[0m hmac v0.12.1
+2025-11-24T12:24:34.4740336Z [1m[92m    Checking[0m jsonrpsee-server v0.24.10
+2025-11-24T12:24:35.3187320Z [1m[92m   Compiling[0m pkcs8 v0.10.2
+2025-11-24T12:24:35.4920040Z [1m[92m   Compiling[0m wasmtime-cache v8.0.1
+2025-11-24T12:24:36.8592861Z [1m[92m   Compiling[0m sec1 v0.7.3
+2025-11-24T12:24:37.0860846Z [1m[92m   Compiling[0m crypto-bigint v0.5.5
+2025-11-24T12:24:38.5948095Z [1m[92m   Compiling[0m crypto-mac v0.8.0
+2025-11-24T12:24:38.6717166Z [1m[92m   Compiling[0m hmac v0.8.1
+2025-11-24T12:24:44.7289780Z [1m[92m   Compiling[0m elliptic-curve v0.13.8
+2025-11-24T12:24:45.0633885Z [1m[92m    Checking[0m jsonrpsee v0.24.10
+2025-11-24T12:24:45.1250508Z [1m[92m   Compiling[0m rfc6979 v0.4.0
+2025-11-24T12:24:45.2080972Z [1m[92m   Compiling[0m ed25519 v2.2.3
+2025-11-24T12:24:45.3427084Z [1m[92m    Checking[0m sp-consensus-slots v0.41.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:47.4271699Z [1m[92m    Checking[0m sc-network-types v0.15.2 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:47.6813456Z [1m[92m   Compiling[0m merlin v3.0.0
+2025-11-24T12:24:47.7978966Z [1m[92m   Compiling[0m frame-support-procedural-tools-derive v12.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:48.9915913Z [1m[92m    Checking[0m frame-system v39.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:24:49.1178916Z [1m[92m   Compiling[0m frame-support-procedural-tools v13.0.1 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:49.3653598Z [1m[92m   Compiling[0m schnorrkel v0.11.5
+2025-11-24T12:24:50.2323285Z [1m[92m    Checking[0m sc-consensus v0.47.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:24:50.9657017Z [1m[92m   Compiling[0m ecdsa v0.16.9
+2025-11-24T12:24:52.7934720Z [1m[92m   Compiling[0m hmac-drbg v0.3.0
+2025-11-24T12:24:52.8659726Z [1m[92m   Compiling[0m pbkdf2 v0.12.2
+2025-11-24T12:24:53.1263987Z [1m[92m   Compiling[0m sha2 v0.9.9
+2025-11-24T12:24:53.4921740Z [1m[92m   Compiling[0m ring v0.17.14
+2025-11-24T12:24:56.4165817Z [1m[92m   Compiling[0m k256 v0.13.4
+2025-11-24T12:24:56.8350228Z [1m[92m   Compiling[0m frame-support-procedural v31.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:25:03.9451313Z [1m[92m   Compiling[0m ed25519-zebra v4.1.0
+2025-11-24T12:25:04.0839357Z [1m[92m    Checking[0m sc-telemetry v28.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:04.3173241Z [1m[92m    Checking[0m sp-consensus-grandpa v22.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:25:05.5348748Z [1m[92m   Compiling[0m sc-network v0.48.3 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:25:06.0277284Z [1m[92m   Compiling[0m sp-runtime-interface-proc-macro v18.0.0
+2025-11-24T12:25:07.4612276Z [1m[92m    Checking[0m sp-runtime-interface v29.0.1
+2025-11-24T12:25:07.5947684Z [1m[92m    Checking[0m sc-network-common v0.47.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:25:08.8487937Z [1m[92m    Checking[0m frame-support v39.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:25:11.5695277Z [1m[92m    Checking[0m sp-core v36.1.0
+2025-11-24T12:25:16.9043236Z [1m[92m   Compiling[0m untrusted v0.9.0
+2025-11-24T12:25:18.8171787Z [1m[92m   Compiling[0m tokio v1.48.0
+2025-11-24T12:25:23.5789998Z [1m[92m    Checking[0m sp-block-builder v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:24.6497526Z [1m[92m    Checking[0m sp-authority-discovery v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:27.6692936Z [1m[92m    Checking[0m polkadot-core-primitives v16.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:29.7196265Z [1m[92m   Compiling[0m derivative v2.2.0
+2025-11-24T12:25:30.3699603Z [1m[92m   Compiling[0m sp-crypto-hashing v0.1.0
+2025-11-24T12:25:30.5259437Z [1m[92m    Checking[0m sp-trie v39.1.0
+2025-11-24T12:25:31.2937870Z [1m[92m    Checking[0m polkadot-parachain-primitives v15.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:31.4074218Z [1m[92m    Checking[0m sp-rpc v33.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:31.6903231Z [1m[92m    Checking[0m evm-core v0.42.0 (https://github.com/moonbeam-foundation/evm?branch=moonbeam-polkadot-stable2412#ce90f488)
+2025-11-24T12:25:32.2738051Z [1m[92m   Compiling[0m sc-chain-spec-derive v12.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:32.6720707Z [1m[92m    Checking[0m evm-runtime v0.42.0 (https://github.com/moonbeam-foundation/evm?branch=moonbeam-polkadot-stable2412#ce90f488)
+2025-11-24T12:25:32.8580937Z [1m[92m    Checking[0m sc-chain-spec v41.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:33.4736394Z [1m[92m    Checking[0m polkadot-primitives v17.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:33.4936641Z [1m[92m    Checking[0m sp-state-machine v0.45.0
+2025-11-24T12:25:34.3996313Z [1m[92m    Checking[0m sp-keystore v0.42.0
+2025-11-24T12:25:34.5421134Z [1m[92m    Checking[0m frame-benchmarking v39.1.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:38.5166680Z [1m[92m   Compiling[0m sc-network-sync v0.47.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:39.0438644Z [1m[92m    Checking[0m sp-mixnet v0.13.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:39.1573832Z [1m[92m    Checking[0m sp-io v40.0.1
+2025-11-24T12:25:40.6721168Z [1m[92m    Checking[0m evm-gasometer v0.42.0 (https://github.com/moonbeam-foundation/evm?branch=moonbeam-polkadot-stable2412#ce90f488)
+2025-11-24T12:25:40.8481825Z [1m[92m    Checking[0m sc-block-builder v0.43.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:42.1417926Z [1m[92m    Checking[0m sc-mixnet v0.18.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:42.1987483Z [1m[92m   Compiling[0m http v0.2.12
+2025-11-24T12:25:43.0917005Z [1m[92m    Checking[0m sp-session v37.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:43.5717254Z [1m[92m    Checking[0m fork-tree v13.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:47.3453031Z [1m[92m    Checking[0m sc-rpc-api v0.47.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:49.4448076Z [1m[92m    Checking[0m evm v0.42.0 (https://github.com/moonbeam-foundation/evm?branch=moonbeam-polkadot-stable2412#ce90f488)
+2025-11-24T12:25:49.9186912Z [1m[92m    Checking[0m sp-application-crypto v40.1.0
+2025-11-24T12:25:50.3786958Z [1m[92m   Compiling[0m tokio-util v0.7.17
+2025-11-24T12:25:50.9912029Z [1m[92m    Checking[0m sp-timestamp v35.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:25:51.8883094Z [1m[92m    Checking[0m sp-offchain v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:25:52.1470910Z [1m[92m   Compiling[0m rustls-pki-types v1.13.0
+2025-11-24T12:25:52.5282748Z [1m[92m   Compiling[0m tower-service v0.3.3
+2025-11-24T12:25:52.5833334Z [1m[92m   Compiling[0m try-lock v0.2.5
+2025-11-24T12:25:52.6456990Z [1m[92m   Compiling[0m want v0.3.1
+2025-11-24T12:25:52.7452485Z [1m[92m    Checking[0m sp-runtime v41.1.0
+2025-11-24T12:25:52.9112077Z [1m[92m    Checking[0m sp-consensus-slots v0.41.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:25:54.9971693Z [1m[92m   Compiling[0m h2 v0.3.27
+2025-11-24T12:25:59.4178035Z [1m[92m    Checking[0m fp-evm v3.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:25:59.5946695Z [1m[92m   Compiling[0m http-body v0.4.6
+2025-11-24T12:25:59.7815728Z [1m[92m    Checking[0m sc-telemetry v28.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:26:00.1206909Z [1m[92m   Compiling[0m ed25519-dalek v2.2.0
+2025-11-24T12:26:00.3252067Z [1m[92m    Checking[0m sc-keystore v34.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:00.5202828Z [1m[92m   Compiling[0m sc-tracing-proc-macro v11.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:00.7793617Z [1m[92m   Compiling[0m socket2 v0.5.10
+2025-11-24T12:26:01.2154726Z [1m[92m   Compiling[0m strsim v0.10.0
+2025-11-24T12:26:01.3081886Z [1m[92m   Compiling[0m openssl-probe v0.1.6
+2025-11-24T12:26:01.4172161Z [1m[92m   Compiling[0m darling_core v0.14.4
+2025-11-24T12:26:01.4587817Z [1m[92m   Compiling[0m hyper v0.14.32
+2025-11-24T12:26:03.4450731Z [1m[92m    Checking[0m sc-tracing v38.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:09.0961053Z [1m[92m   Compiling[0m sc-network-light v0.47.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:09.4921976Z [1m[92m    Checking[0m sp-transaction-pool v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:09.6107321Z [1m[92m   Compiling[0m pin-project v1.1.10
+2025-11-24T12:26:10.1220501Z [1m[92m   Compiling[0m tracing-gum-proc-macro v5.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:10.5477531Z [1m[92m    Checking[0m impl-codec v0.6.0
+2025-11-24T12:26:10.5706225Z [1m[92m   Compiling[0m beef v0.5.2
+2025-11-24T12:26:10.5944995Z [1m[92m    Checking[0m impl-serde v0.4.0
+2025-11-24T12:26:10.6937284Z [1m[92m   Compiling[0m sc-sysinfo v41.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:10.8262015Z [1m[92m   Compiling[0m rustls v0.22.4
+2025-11-24T12:26:11.0636956Z [1m[92m    Checking[0m primitive-types v0.12.2
+2025-11-24T12:26:11.9537266Z [1m[92m   Compiling[0m jsonrpsee-types v0.22.5
+2025-11-24T12:26:12.3442793Z [1m[92m    Checking[0m tracing-gum v17.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:16.4167840Z [1m[92m    Checking[0m sc-rpc v43.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:17.1798576Z [1m[92m   Compiling[0m darling_macro v0.14.4
+2025-11-24T12:26:17.4307481Z [1m[92m   Compiling[0m rustls-webpki v0.102.8
+2025-11-24T12:26:17.4727805Z [1m[92m   Compiling[0m sp-crypto-hashing-proc-macro v0.1.0
+2025-11-24T12:26:17.8233577Z [1m[92m   Compiling[0m tokio-stream v0.1.17
+2025-11-24T12:26:18.4158589Z [1m[92m   Compiling[0m rustls-pemfile v1.0.4
+2025-11-24T12:26:18.5520841Z [1m[92m    Checking[0m polkadot-core-primitives v16.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:26:19.2056336Z [1m[92m   Compiling[0m sc-authority-discovery v0.48.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:19.6722268Z [1m[92m    Checking[0m sc-state-db v0.37.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:20.5487295Z [1m[92m   Compiling[0m xcm-procedural v11.0.1 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:26:20.8202854Z [1m[92m   Compiling[0m futures-timer v3.0.3
+2025-11-24T12:26:21.0963018Z [1m[92m   Compiling[0m jsonrpsee-core v0.22.5
+2025-11-24T12:26:22.0500987Z [1m[92m    Checking[0m staging-xcm v15.0.3 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:26:29.8565092Z [1m[92m    Checking[0m scale-bits v0.6.0
+2025-11-24T12:26:30.0319943Z [1m[92m    Checking[0m sc-client-db v0.45.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:31.7358045Z [1m[92m    Checking[0m sp-version v39.0.0
+2025-11-24T12:26:31.9153763Z [1m[92m    Checking[0m polkadot-parachain-primitives v15.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:26:32.0538713Z [1m[92m   Compiling[0m rustls-native-certs v0.6.3
+2025-11-24T12:26:34.1057191Z [1m[92m   Compiling[0m darling v0.14.4
+2025-11-24T12:26:34.1537849Z [1m[92m    Checking[0m sc-rpc-spec-v2 v0.48.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:35.9431524Z [1m[92m   Compiling[0m tokio-rustls v0.24.1
+2025-11-24T12:26:36.8153613Z [1m[92m    Checking[0m sc-transaction-pool v38.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:37.3551872Z [1m[92m    Checking[0m sp-keyring v40.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:37.6027482Z [1m[92m   Compiling[0m rustls-pemfile v2.2.0
+2025-11-24T12:26:37.7337867Z [1m[92m    Checking[0m sc-rpc-server v20.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:38.2142016Z [1m[92m    Checking[0m sc-network-transactions v0.47.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:38.5046228Z [1m[92m    Checking[0m sc-informant v0.47.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:38.7429269Z [1m[92m    Checking[0m frame-system v39.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:26:38.9977679Z [1m[92m    Checking[0m sp-consensus-babe v0.41.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:42.2255314Z [1m[92m    Checking[0m sp-rpc v33.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:26:42.4981378Z [1m[92m   Compiling[0m sha-1 v0.9.8
+2025-11-24T12:26:42.6752530Z [1m[92m    Checking[0m sp-block-builder v35.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:26:42.8410965Z [1m[92m    Checking[0m sp-authority-discovery v35.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:26:43.7141693Z [1m[92m    Checking[0m sp-mixnet v0.13.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:26:45.7393974Z [1m[92m    Checking[0m sp-transaction-storage-proof v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:46.7136982Z [1m[92m   Compiling[0m sp-api-proc-macro v22.0.1
+2025-11-24T12:26:47.7576145Z [1m[92m   Compiling[0m fatality-proc-macro v0.1.1
+2025-11-24T12:26:48.5081046Z [1m[92m   Compiling[0m xcm-procedural v11.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:49.2373974Z [1m[92m    Checking[0m fp-storage v2.0.0 (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:26:49.4019453Z [1m[92m   Compiling[0m sc-chain-spec-derive v12.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:26:49.8023341Z [1m[92m   Compiling[0m tower-layer v0.3.3
+2025-11-24T12:26:49.9274553Z [1m[92m   Compiling[0m base64 v0.13.1
+2025-11-24T12:26:49.9349947Z [1m[92m   Compiling[0m scale-type-resolver v0.2.0
+2025-11-24T12:26:50.1047464Z [1m[92m   Compiling[0m soketto v0.7.1
+2025-11-24T12:26:50.2237644Z [1m[92m    Checking[0m staging-xcm v15.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:50.5831409Z [1m[92m   Compiling[0m tower v0.4.13
+2025-11-24T12:26:50.8728170Z [1m[92m    Checking[0m sc-chain-spec v41.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:26:51.4487896Z [1m[92m    Checking[0m polkadot-node-primitives v17.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:52.9433802Z [1m[92m    Checking[0m sp-api v36.0.1
+2025-11-24T12:26:53.1560012Z [1m[92m    Checking[0m fatality v0.1.1
+2025-11-24T12:26:53.2130383Z [1m[92m    Checking[0m sc-service v0.49.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:26:54.5506725Z [1m[92m    Checking[0m sc-mixnet v0.18.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:26:55.9719566Z [1m[92m    Checking[0m polkadot-primitives v17.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:26:59.3972197Z [1m[92m   Compiling[0m rustls-native-certs v0.7.3
+2025-11-24T12:26:59.5752841Z [1m[92m   Compiling[0m hyper-rustls v0.24.2
+2025-11-24T12:26:59.7496103Z [1m[92m   Compiling[0m tokio-rustls v0.25.0
+2025-11-24T12:26:59.9219020Z [1m[92m   Compiling[0m scale-decode-derive v0.13.1
+2025-11-24T12:27:01.0285224Z [1m[92m   Compiling[0m orchestra-proc-macro v0.4.1
+2025-11-24T12:27:03.4955940Z [1m[92m   Compiling[0m scale-encode-derive v0.7.2
+2025-11-24T12:27:03.9197761Z [1m[92m    Checking[0m fp-rpc v3.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:27:04.0996771Z [1m[92m   Compiling[0m sc-network-sync v0.47.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:04.3839550Z [1m[92m    Checking[0m sc-cli v0.50.2 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:27:04.6103664Z [1m[92m    Checking[0m orchestra v0.4.1
+2025-11-24T12:27:04.7387277Z [1m[92m    Checking[0m scale-encode v0.7.2
+2025-11-24T12:27:06.6817975Z [1m[92m    Checking[0m cumulus-primitives-core v0.17.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:06.7730809Z [1m[92m    Checking[0m polkadot-node-network-protocol v21.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:27:09.7319211Z [1m[92m    Checking[0m scale-decode v0.13.1
+2025-11-24T12:27:10.7659319Z [1m[92m   Compiling[0m jsonrpsee-client-transport v0.22.5
+2025-11-24T12:27:10.9812960Z [1m[92m   Compiling[0m jsonrpsee-http-client v0.22.5
+2025-11-24T12:27:11.2477294Z [1m[92m    Checking[0m cumulus-primitives-core v0.17.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:27:11.4161039Z [1m[92m    Checking[0m sc-rpc-api v0.47.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:14.2794763Z [1m[92m    Checking[0m sp-genesis-builder v0.17.0
+2025-11-24T12:27:14.4184695Z [1m[92m   Compiling[0m frame-support-procedural v33.0.1
+2025-11-24T12:27:17.2508679Z [1m[92m    Checking[0m sc-block-builder v0.43.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:17.4121577Z [1m[92m    Checking[0m frame-benchmarking v39.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:22.8746243Z [1m[92m    Checking[0m polkadot-statement-table v17.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:27:24.9334001Z [1m[92m    Checking[0m sp-staking v38.0.0
+2025-11-24T12:27:25.0784887Z [1m[92m    Checking[0m sp-inherents v36.0.0
+2025-11-24T12:27:25.3787982Z [1m[92m    Checking[0m fp-consensus v2.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:27:27.1636961Z [1m[92m   Compiling[0m frame-metadata v16.0.0
+2025-11-24T12:27:27.2288365Z [1m[92m   Compiling[0m gimli v0.28.1
+2025-11-24T12:27:27.9332678Z [1m[92m    Checking[0m cumulus-primitives-proof-size-hostfunction v0.11.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:28.9978417Z [1m[92m    Checking[0m sc-state-db v0.37.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:29.2944028Z [1m[92m    Checking[0m frame-metadata v15.1.0
+2025-11-24T12:27:30.0533600Z [1m[92m    Checking[0m fork-tree v13.0.1 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:30.1700981Z [1m[92m   Compiling[0m sc-tracing-proc-macro v11.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:30.3956328Z [1m[92m    Checking[0m scale-value v0.16.3
+2025-11-24T12:27:30.9655333Z [1m[92m    Checking[0m sc-tracing v38.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:31.4068020Z [1m[92m   Compiling[0m cargo_metadata v0.15.4
+2025-11-24T12:27:32.5865326Z [1m[92m    Checking[0m sc-client-db v0.45.1 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:34.4709303Z [1m[92m    Checking[0m subxt-metadata v0.37.0
+2025-11-24T12:27:34.6003392Z [1m[92m   Compiling[0m polkavm-linker v0.9.2
+2025-11-24T12:27:34.7456662Z [1m[92m    Checking[0m cumulus-primitives-storage-weight-reclaim v9.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:36.8787608Z [1m[92m   Compiling[0m merkleized-metadata v0.2.0
+2025-11-24T12:27:38.8768141Z [1m[92m    Checking[0m frame-support v40.1.0
+2025-11-24T12:27:39.5866025Z [1m[92m    Checking[0m polkadot-node-subsystem-types v21.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:27:41.8101914Z [1m[92m   Compiling[0m jsonrpsee v0.22.5
+2025-11-24T12:27:41.8850646Z [1m[92m    Checking[0m polkadot-node-metrics v21.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:27:42.0929796Z [1m[92m    Checking[0m fp-account v1.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:27:42.4837446Z [1m[92m    Checking[0m pallet-timestamp v38.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:27:45.6822292Z [1m[92m    Checking[0m sp-session v37.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:48.6000942Z [1m[92m   Compiling[0m scale-typegen v0.8.0
+2025-11-24T12:27:50.0148006Z [1m[92m    Checking[0m sp-offchain v35.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:51.0783787Z [1m[92m   Compiling[0m sc-network-light v0.47.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:51.6046480Z [1m[92m   Compiling[0m sc-consensus-slots v0.47.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:51.7239589Z [1m[92m   Compiling[0m sc-sysinfo v41.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:51.8877897Z [1m[92m    Checking[0m subxt-core v0.37.1
+2025-11-24T12:27:53.5906381Z [1m[92m   Compiling[0m substrate-wasm-builder v25.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:27:56.5929632Z [1m[92m    Checking[0m sc-rpc v43.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:27:57.2612534Z [1m[92m    Checking[0m frame-system v40.2.0
+2025-11-24T12:27:57.3144260Z [1m[92m   Compiling[0m subxt-codegen v0.37.0
+2025-11-24T12:27:58.7547077Z [1m[92m    Checking[0m polkadot-overseer v21.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:00.8585299Z ⚡ Found 3 strongly connected components which includes at least one cycle each
+2025-11-24T12:28:00.8607675Z cycle(001) ∈ α: DisputeCoordinator ~~{"DisputeDistributionMessage"}~~> DisputeDistribution ~~{"DisputeCoordinatorMessage"}~~>  *
+2025-11-24T12:28:00.8609570Z cycle(002) ∈ β: CandidateBacking ~~{"CollatorProtocolMessage"}~~> CollatorProtocol ~~{"CandidateBackingMessage"}~~>  *
+2025-11-24T12:28:00.8611675Z cycle(003) ∈ γ: NetworkBridgeRx ~~{"GossipSupportMessage"}~~> GossipSupport ~~{"NetworkBridgeRxMessage"}~~>  *
+2025-11-24T12:28:02.6353063Z [1m[92m    Checking[0m pallet-evm v6.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:28:03.8996050Z [1m[92m    Checking[0m fc-api v1.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:28:04.1057372Z [1m[92m    Checking[0m pallet-transaction-payment v39.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:07.4879058Z [1m[92m    Checking[0m sp-consensus-aura v0.41.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:10.5655912Z [1m[92m    Checking[0m sp-transaction-pool v35.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:28:11.6344487Z [1m[92m   Compiling[0m sc-consensus-slots v0.47.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:11.7698796Z [1m[92m    Checking[0m sc-transaction-pool v38.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:28:13.8523306Z [1m[92m    Checking[0m pallet-transaction-payment-rpc-runtime-api v39.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:14.9641805Z [1m[92m    Checking[0m fc-db v2.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:28:15.2363729Z [1m[92m   Compiling[0m subxt-macro v0.37.0
+2025-11-24T12:28:16.4514449Z [1m[92m    Checking[0m frame-benchmarking v40.2.1
+2025-11-24T12:28:17.2577992Z [1m[92m    Checking[0m sc-rpc-spec-v2 v0.48.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:28:20.6747397Z [1m[92m   Compiling[0m ghost-runtime v0.1.0 (/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime)
+2025-11-24T12:28:23.4484294Z [1m[92m    Checking[0m pallet-session v39.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:29.8657940Z [1m[92m    Checking[0m cumulus-relay-chain-interface v0.21.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:30.2894311Z [1m[92m    Checking[0m sc-informant v0.47.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:28:30.5211334Z [1m[92m    Checking[0m sc-network-transactions v0.47.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:28:30.5908662Z [1m[92m    Checking[0m sc-rpc-server v20.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:28:30.7990642Z [1m[92m    Checking[0m cumulus-test-relay-sproof-builder v0.17.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:30.9753175Z [1m[92m    Checking[0m cumulus-primitives-parachain-inherent v0.17.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:31.0503545Z [1m[92m    Checking[0m fc-storage v1.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:28:31.2523606Z [1m[92m    Checking[0m keccak-hash v0.10.0
+2025-11-24T12:28:31.3143213Z [1m[92m    Checking[0m fp-ethereum v1.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:28:31.5378010Z [1m[92m    Checking[0m sp-consensus-aura v0.41.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:28:32.9378772Z [1m[92m    Checking[0m pallet-authorship v39.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:34.4953829Z [1m[92m    Checking[0m frame-try-runtime v0.45.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:35.5125970Z [1m[92m    Checking[0m sp-transaction-storage-proof v35.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:28:35.9499048Z [1m[92m    Checking[0m sc-keystore v34.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:28:36.1329094Z [1m[92m    Checking[0m frame-system-rpc-runtime-api v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:37.1608121Z [1m[92m    Checking[0m bip39 v2.2.0
+2025-11-24T12:28:37.3426518Z [1m[92m   Compiling[0m substrate-build-script-utils v11.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:37.5103749Z [1m[92m   Compiling[0m frame-benchmarking-cli v46.2.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:37.5178192Z [1m[92m   Compiling[0m ghost-node v0.1.0 (/home/runner/work/Ghost/Ghost/packages/chain/node-core/node)
+2025-11-24T12:28:37.6229639Z [1m[92m    Checking[0m sc-service v0.49.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:28:37.6417930Z [1m[92m    Checking[0m frame-metadata-hash-extension v0.7.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:38.8897296Z [1m[92m    Checking[0m subxt-signer v0.37.0
+2025-11-24T12:28:39.1564387Z [1m[92m    Checking[0m pallet-grandpa v39.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:39.7244748Z [1m[92m    Checking[0m frame-executive v39.1.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:39.9868687Z [1m[92m    Checking[0m sc-consensus-aura v0.48.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:28:40.4266690Z [1m[92m    Checking[0m cumulus-client-parachain-inherent v0.15.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:40.7492135Z [1m[92m    Checking[0m pallet-ethereum v4.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:28:41.4419071Z [1m[92m    Checking[0m fc-mapping-sync v2.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:28:42.4095723Z [1m[92m    Checking[0m pallet-transaction-payment v40.0.0
+2025-11-24T12:28:42.9437004Z [1m[92m    Checking[0m subxt v0.37.0
+2025-11-24T12:28:45.3163263Z [1m[92m    Checking[0m jsonrpsee-server v0.26.0
+2025-11-24T12:28:46.4876289Z [1m[92m    Checking[0m pallet-aura v38.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:49.3978793Z [1m[92m    Checking[0m pallet-base-fee v1.0.0 (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:28:49.9308020Z [1m[92m    Checking[0m sc-network-gossip v0.48.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:50.3920930Z [1m[92m    Checking[0m frame-system-benchmarking v39.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:51.7277038Z [1m[92m    Checking[0m pallet-balances v40.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:28:56.1763584Z [1m[92m    Checking[0m pallet-ghonity v0.1.0 (/home/runner/work/Ghost/Ghost/packages/chain/node-core/pallets/ghonity)
+2025-11-24T12:28:56.7886269Z [1m[92m    Checking[0m pallet-sudo v39.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:29:00.1973435Z [1m[92m    Checking[0m pallet-g3mail v0.1.0 (/home/runner/work/Ghost/Ghost/packages/chain/node-core/pallets/g3mail)
+2025-11-24T12:29:00.9630899Z [1m[92m    Checking[0m pallet-chainghost v0.1.0 (/home/runner/work/Ghost/Ghost/packages/chain/node-core/pallets/chainghost)
+2025-11-24T12:29:01.7821286Z [1m[92m    Checking[0m fc-rpc-core v1.1.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:29:03.2830854Z [1m[92m    Checking[0m sc-proposer-metrics v0.18.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:29:03.3761797Z [1m[92m    Checking[0m hyper-rustls v0.27.7
+2025-11-24T12:29:03.5494690Z [1m[92m    Checking[0m cumulus-primitives-proof-size-hostfunction v0.11.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:29:08.2402408Z [1m[92m    Checking[0m sc-offchain v43.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:29:08.8078703Z [1m[92m    Checking[0m jsonrpsee v0.26.0
+2025-11-24T12:29:08.8621965Z [1m[92m    Checking[0m sc-basic-authorship v0.48.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:29:09.1358588Z [1m[92m    Checking[0m fc-rpc v2.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:29:10.9797698Z [1m[92m    Checking[0m sc-consensus-grandpa v0.33.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:29:14.0247879Z [1m[92m    Checking[0m sc-consensus-aura v0.48.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:29:14.5324698Z [1m[92m    Checking[0m substrate-frame-rpc-system v42.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:29:15.6851532Z [1m[92m    Checking[0m pallet-transaction-payment-rpc v42.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:29:16.8558232Z [1m[92m    Checking[0m fc-consensus v2.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:29:17.0668954Z [1m[92m    Checking[0m pallet-template v0.1.0 (/home/runner/work/Ghost/Ghost/packages/chain/node-core/pallets/template)
+2025-11-24T12:41:41.5785923Z [1m[91merror[0m: failed to run custom build command for `ghost-runtime v0.1.0 (/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime)`
+2025-11-24T12:41:41.5789613Z note: To improve backtraces for build dependencies, set the CARGO_PROFILE_DEV_BUILD_OVERRIDE_DEBUG=true environment variable to enable debug information generation.
+2025-11-24T12:41:41.5796764Z 
+2025-11-24T12:41:41.5798195Z Caused by:
+2025-11-24T12:41:41.5800735Z   process didn't exit successfully: `/home/runner/work/Ghost/Ghost/packages/chain/node-core/target/debug/build/ghost-runtime-dda16f97e3ada0f8/build-script-build` (exit status: 1)
+2025-11-24T12:41:41.5803283Z   --- stdout
+2025-11-24T12:41:41.5803839Z   Information that should be included in a bug report.
+2025-11-24T12:41:41.5812767Z   Executing build command: env -u CARGO_ENCODED_RUSTFLAGS -u RUSTC CARGO_MAKEFLAGS="-j --jobserver-fds=8,11 --jobserver-auth=8,11" CARGO_TARGET_DIR="/home/runner/work/Ghost/Ghost/packages/chain/node-core/target/debug/wbuild/ghost-runtime/target" RUSTC_BOOTSTRAP="1" RUSTFLAGS="-C target-cpu=mvp -C target-feature=-sign-ext -C link-arg=--export-table -Clink-arg=--export=__heap_base -C link-arg=--import-memory  --cfg substrate_runtime " SKIP_WASM_BUILD="" "/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/cargo" "rustc" "--target=wasm32-unknown-unknown" "--manifest-path=/home/runner/work/Ghost/Ghost/packages/chain/node-core/target/debug/wbuild/ghost-runtime/Cargo.toml" "--color=always" "--profile" "release" "-Z" "build-std"
+2025-11-24T12:41:41.5817478Z   Using rustc version: rustc 1.91.1 (ed61e7d7e 2025-11-07)
+2025-11-24T12:41:41.5817817Z 
+2025-11-24T12:41:41.5817824Z 
+2025-11-24T12:41:41.5817930Z   --- stderr
+2025-11-24T12:41:41.5818362Z   [1m[92m    Updating[0m crates.io index
+2025-11-24T12:41:41.5818819Z   [1m[92m Downloading[0m crates ...
+2025-11-24T12:41:41.5819521Z   [1m[92m  Downloaded[0m cfg-if v1.0.1
+2025-11-24T12:41:41.5819976Z   [1m[92m  Downloaded[0m memchr v2.7.5
+2025-11-24T12:41:41.5820493Z   [1m[92m  Downloaded[0m rustc-literal-escaper v0.0.5
+2025-11-24T12:41:41.5821005Z   [1m[92m  Downloaded[0m getopts v0.2.24
+2025-11-24T12:41:41.5821462Z   [1m[92m  Downloaded[0m addr2line v0.25.0
+2025-11-24T12:41:41.5821921Z   [1m[92m  Downloaded[0m dlmalloc v0.2.10
+2025-11-24T12:41:41.5822363Z   [1m[92m  Downloaded[0m gimli v0.32.0
+2025-11-24T12:41:41.5822812Z   [1m[92m  Downloaded[0m libc v0.2.175
+2025-11-24T12:41:41.5823295Z   [1m[92m   Compiling[0m proc-macro2 v1.0.103
+2025-11-24T12:41:41.5823790Z   [1m[92m   Compiling[0m unicode-ident v1.0.22
+2025-11-24T12:41:41.5824230Z   [1m[92m   Compiling[0m quote v1.0.42
+2025-11-24T12:41:41.5824630Z   [1m[92m   Compiling[0m syn v2.0.111
+2025-11-24T12:41:41.5826103Z   [1m[92m   Compiling[0m compiler_builtins v0.1.160 (/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/compiler-builtins/compiler-builtins)
+2025-11-24T12:41:41.5827815Z   [1m[92m   Compiling[0m core v0.0.0 (/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core)
+2025-11-24T12:41:41.5829512Z   [1m[92m   Compiling[0m rustc-std-workspace-core v1.99.0 (/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/rustc-std-workspace-core)
+2025-11-24T12:41:41.5831184Z   [1m[92m   Compiling[0m alloc v0.0.0 (/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/alloc)
+2025-11-24T12:41:41.5833152Z   [1m[92m   Compiling[0m rustc-std-workspace-alloc v1.99.0 (/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/rustc-std-workspace-alloc)
+2025-11-24T12:41:41.5834321Z   [1m[92m   Compiling[0m libc v0.2.175
+2025-11-24T12:41:41.5834778Z   [1m[92m   Compiling[0m object v0.37.3
+2025-11-24T12:41:41.5858462Z   [1m[92m   Compiling[0m unwind v0.0.0 (/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/unwind)
+2025-11-24T12:41:41.5859517Z   [1m[92m   Compiling[0m gimli v0.32.0
+2025-11-24T12:41:41.5859972Z   [1m[92m   Compiling[0m adler2 v2.0.1
+2025-11-24T12:41:41.5860415Z   [1m[92m   Compiling[0m cfg-if v1.0.1
+2025-11-24T12:41:41.5860854Z   [1m[92m   Compiling[0m memchr v2.7.5
+2025-11-24T12:41:41.5861817Z   [1m[92m   Compiling[0m std v0.0.0 (/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std)
+2025-11-24T12:41:41.5862749Z   [1m[92m   Compiling[0m addr2line v0.25.0
+2025-11-24T12:41:41.5863217Z   [1m[92m   Compiling[0m dlmalloc v0.2.10
+2025-11-24T12:41:41.5863699Z   [1m[92m   Compiling[0m miniz_oxide v0.8.9
+2025-11-24T12:41:41.5864816Z   [1m[92m   Compiling[0m panic_unwind v0.0.0 (/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/panic_unwind)
+2025-11-24T12:41:41.5866730Z   [1m[92m   Compiling[0m std_detect v0.1.5 (/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std_detect)
+2025-11-24T12:41:41.5867742Z   [1m[92m   Compiling[0m hashbrown v0.15.5
+2025-11-24T12:41:41.5868843Z   [1m[92m   Compiling[0m panic_abort v0.0.0 (/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/panic_abort)
+2025-11-24T12:41:41.5869851Z   [1m[92m   Compiling[0m rustc-demangle v0.1.26
+2025-11-24T12:41:41.5870336Z   [1m[92m   Compiling[0m libc v0.2.177
+2025-11-24T12:41:41.5870815Z   [1m[92m   Compiling[0m serde_derive v1.0.228
+2025-11-24T12:41:41.5872092Z   [1m[92m   Compiling[0m rustc-std-workspace-std v1.99.0 (/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/rustc-std-workspace-std)
+2025-11-24T12:41:41.5873290Z   [1m[92m   Compiling[0m rustc-literal-escaper v0.0.5
+2025-11-24T12:41:41.5874389Z   [1m[92m   Compiling[0m proc_macro v0.0.0 (/home/runner/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/proc_macro)
+2025-11-24T12:41:41.5875859Z   [1m[92m   Compiling[0m version_check v0.9.5
+2025-11-24T12:41:41.5876386Z   [1m[92m   Compiling[0m zeroize_derive v1.4.2
+2025-11-24T12:41:41.5876874Z   [1m[92m   Compiling[0m equivalent v1.0.2
+2025-11-24T12:41:41.5877361Z   [1m[92m   Compiling[0m typenum v1.19.0
+2025-11-24T12:41:41.5877841Z   [1m[92m   Compiling[0m serde_core v1.0.228
+2025-11-24T12:41:41.5878323Z   [1m[92m   Compiling[0m hashbrown v0.16.1
+2025-11-24T12:41:41.5878793Z   [1m[92m   Compiling[0m indexmap v2.12.1
+2025-11-24T12:41:41.5879270Z   [1m[92m   Compiling[0m generic-array v0.14.7
+2025-11-24T12:41:41.5879733Z   [1m[92m   Compiling[0m winnow v0.7.13
+2025-11-24T12:41:41.5880182Z   [1m[92m   Compiling[0m rustversion v1.0.22
+2025-11-24T12:41:41.5880664Z   [1m[92m   Compiling[0m toml_parser v1.0.4
+2025-11-24T12:41:41.5881132Z   [1m[92m   Compiling[0m toml_datetime v0.7.3
+2025-11-24T12:41:41.5881598Z   [1m[92m   Compiling[0m serde v1.0.228
+2025-11-24T12:41:41.5882037Z   [1m[92m   Compiling[0m toml_edit v0.23.7
+2025-11-24T12:41:41.5882515Z   [1m[92m   Compiling[0m proc-macro-crate v3.4.0
+2025-11-24T12:41:41.5882996Z   [1m[92m   Compiling[0m unicode-xid v0.2.6
+2025-11-24T12:41:41.5883513Z   [1m[92m   Compiling[0m const_format_proc_macros v0.2.34
+2025-11-24T12:41:41.5884015Z   [1m[92m   Compiling[0m autocfg v1.5.0
+2025-11-24T12:41:41.5884524Z   [1m[92m   Compiling[0m parity-scale-codec-derive v3.7.5
+2025-11-24T12:41:41.5885040Z   [1m[92m   Compiling[0m zeroize v1.8.2
+2025-11-24T12:41:41.5886321Z   [1m[92m   Compiling[0m impl-trait-for-tuples v0.2.3
+2025-11-24T12:41:41.5886800Z   [1m[92m   Compiling[0m memchr v2.7.6
+2025-11-24T12:41:41.5887210Z   [1m[92m   Compiling[0m subtle v2.6.1
+2025-11-24T12:41:41.5887655Z   [1m[92m   Compiling[0m cfg-if v1.0.4
+2025-11-24T12:41:41.5888117Z   [1m[92m   Compiling[0m const-oid v0.9.6
+2025-11-24T12:41:41.5888566Z   [1m[92m   Compiling[0m aho-corasick v1.1.4
+2025-11-24T12:41:41.5889032Z   [1m[92m   Compiling[0m regex-syntax v0.8.8
+2025-11-24T12:41:41.5889491Z   [1m[92m   Compiling[0m crypto-common v0.1.7
+2025-11-24T12:41:41.5889972Z   [1m[92m   Compiling[0m block-buffer v0.10.4
+2025-11-24T12:41:41.5890418Z   [1m[92m   Compiling[0m digest v0.10.7
+2025-11-24T12:41:41.5890879Z   [1m[92m   Compiling[0m regex-automata v0.4.13
+2025-11-24T12:41:41.5891329Z   [1m[92m   Compiling[0m regex v1.12.2
+2025-11-24T12:41:41.5891793Z   [1m[92m   Compiling[0m derive_more-impl v1.0.0
+2025-11-24T12:41:41.5892275Z   [1m[92m   Compiling[0m once_cell v1.21.3
+2025-11-24T12:41:41.5892710Z   [1m[92m   Compiling[0m arrayvec v0.7.6
+2025-11-24T12:41:41.5893196Z   [1m[92m   Compiling[0m scale-info-derive v2.11.6
+2025-11-24T12:41:41.5893732Z   [1m[92m   Compiling[0m radium v0.7.0
+2025-11-24T12:41:41.5894164Z   [1m[92m   Compiling[0m tap v1.0.1
+2025-11-24T12:41:41.5894588Z   [1m[92m   Compiling[0m bytes v1.11.0
+2025-11-24T12:41:41.5895021Z   [1m[92m   Compiling[0m wyz v0.5.1
+2025-11-24T12:41:41.5895738Z   [1m[92m   Compiling[0m parity-scale-codec v3.7.5
+2025-11-24T12:41:41.5896232Z   [1m[92m   Compiling[0m funty v2.0.0
+2025-11-24T12:41:41.5896689Z   [1m[92m   Compiling[0m const_format v0.2.35
+2025-11-24T12:41:41.5897166Z   [1m[92m   Compiling[0m byte-slice-cast v1.2.3
+2025-11-24T12:41:41.5897619Z   [1m[92m   Compiling[0m bitvec v1.0.1
+2025-11-24T12:41:41.5898039Z   [1m[92m   Compiling[0m crunchy v0.2.4
+2025-11-24T12:41:41.5898489Z   [1m[92m   Compiling[0m lazy_static v1.5.0
+2025-11-24T12:41:41.5898950Z   [1m[92m   Compiling[0m Inflector v0.11.4
+2025-11-24T12:41:41.5899400Z   [1m[92m   Compiling[0m termcolor v1.4.1
+2025-11-24T12:41:41.5899828Z   [1m[92m   Compiling[0m semver v1.0.27
+2025-11-24T12:41:41.5900295Z   [1m[92m   Compiling[0m prettyplease v0.2.37
+2025-11-24T12:41:41.5900754Z   [1m[92m   Compiling[0m fs-err v2.11.0
+2025-11-24T12:41:41.5901189Z   [1m[92m   Compiling[0m ref-cast v1.0.25
+2025-11-24T12:41:41.5901838Z   [1m[92m   Compiling[0m rustc_version v0.4.1
+2025-11-24T12:41:41.5902294Z   [1m[92m   Compiling[0m getrandom v0.2.16
+2025-11-24T12:41:41.5902742Z   [1m[92m   Compiling[0m expander v2.2.1
+2025-11-24T12:41:41.5903168Z   [1m[92m   Compiling[0m blake2 v0.10.6
+2025-11-24T12:41:41.5903605Z   [1m[92m   Compiling[0m file-guard v0.2.0
+2025-11-24T12:41:41.5904063Z   [1m[92m   Compiling[0m ref-cast-impl v1.0.25
+2025-11-24T12:41:41.5904538Z   [1m[92m   Compiling[0m itoa v1.0.15
+2025-11-24T12:41:41.5904971Z   [1m[92m   Compiling[0m digest v0.9.0
+2025-11-24T12:41:41.5905402Z   [1m[92m   Compiling[0m zerocopy v0.8.28
+2025-11-24T12:41:41.5906034Z   [1m[92m   Compiling[0m derive_more v1.0.0
+2025-11-24T12:41:41.5906494Z   [1m[92m   Compiling[0m scale-info v2.11.6
+2025-11-24T12:41:41.5906965Z   [1m[92m   Compiling[0m serde_json v1.0.145
+2025-11-24T12:41:41.5907443Z   [1m[92m   Compiling[0m libsecp256k1-core v0.3.0
+2025-11-24T12:41:41.5907931Z   [1m[92m   Compiling[0m rand_core v0.6.4
+2025-11-24T12:41:41.5908345Z   [1m[92m   Compiling[0m ryu v1.0.20
+2025-11-24T12:41:41.5908805Z   [1m[92m   Compiling[0m bitcoin-internals v0.2.0
+2025-11-24T12:41:41.5909302Z   [1m[92m   Compiling[0m static_assertions v1.1.0
+2025-11-24T12:41:41.5909752Z   [1m[92m   Compiling[0m paste v1.0.15
+2025-11-24T12:41:41.5910251Z   [1m[92m   Compiling[0m libsecp256k1-gen-genmult v0.3.0
+2025-11-24T12:41:41.5910801Z   [1m[92m   Compiling[0m libsecp256k1-gen-ecmult v0.3.0
+2025-11-24T12:41:41.5911292Z   [1m[92m   Compiling[0m byteorder v1.5.0
+2025-11-24T12:41:41.5911916Z   [1m[92m   Compiling[0m num-traits v0.2.19
+2025-11-24T12:41:41.5912388Z   [1m[92m   Compiling[0m derive-syn-parse v0.2.0
+2025-11-24T12:41:41.5912877Z   [1m[92m   Compiling[0m integer-sqrt v0.1.5
+2025-11-24T12:41:41.5913331Z   [1m[92m   Compiling[0m impl-serde v0.5.0
+2025-11-24T12:41:41.5913782Z   [1m[92m   Compiling[0m serde_spanned v0.6.9
+2025-11-24T12:41:41.5914246Z   [1m[92m   Compiling[0m toml_datetime v0.6.11
+2025-11-24T12:41:41.5914814Z   [1m[92m   Compiling[0m toml_write v0.1.2
+2025-11-24T12:41:41.5915261Z   [1m[92m   Compiling[0m toml_edit v0.22.27
+2025-11-24T12:41:41.5915867Z   [1m[92m   Compiling[0m same-file v1.0.6
+2025-11-24T12:41:41.5916318Z   [1m[92m   Compiling[0m walkdir v2.5.0
+2025-11-24T12:41:41.5930218Z   [1m[92m   Compiling[0m rustc-hex v2.1.0
+2025-11-24T12:41:41.5930738Z   [1m[92m   Compiling[0m log v0.4.28
+2025-11-24T12:41:41.5931282Z   [1m[92m   Compiling[0m common-path v1.0.0
+2025-11-24T12:41:41.5931745Z   [1m[92m   Compiling[0m keccak v0.1.5
+2025-11-24T12:41:41.5932187Z   [1m[92m   Compiling[0m rlp-derive v0.2.0
+2025-11-24T12:41:41.5932628Z   [1m[92m   Compiling[0m rlp v0.6.1
+2025-11-24T12:41:41.5933079Z   [1m[92m   Compiling[0m ppv-lite86 v0.2.21
+2025-11-24T12:41:41.5933520Z   [1m[92m   Compiling[0m toml v0.8.23
+2025-11-24T12:41:41.5933922Z   [1m[92m   Compiling[0m hex v0.4.3
+2025-11-24T12:41:41.5934331Z   [1m[92m   Compiling[0m uint v0.10.0
+2025-11-24T12:41:41.5934765Z   [1m[92m   Compiling[0m rand_chacha v0.3.1
+2025-11-24T12:41:41.5935224Z   [1m[92m   Compiling[0m docify_macros v0.2.9
+2025-11-24T12:41:41.5935875Z   [1m[92m   Compiling[0m impl-rlp v0.4.0
+2025-11-24T12:41:41.5936336Z   [1m[92m   Compiling[0m fixed-hash v0.8.0
+2025-11-24T12:41:41.5936771Z   [1m[92m   Compiling[0m sha2 v0.10.9
+2025-11-24T12:41:41.5937191Z   [1m[92m   Compiling[0m impl-codec v0.7.1
+2025-11-24T12:41:41.5937624Z   [1m[92m   Compiling[0m rand v0.8.5
+2025-11-24T12:41:41.5938065Z   [1m[92m   Compiling[0m impl-num-traits v0.2.0
+2025-11-24T12:41:41.5938596Z   [1m[92m   Compiling[0m pin-project-lite v0.2.16
+2025-11-24T12:41:41.5939083Z   [1m[92m   Compiling[0m cpufeatures v0.2.17
+2025-11-24T12:41:41.5939563Z   [1m[92m   Compiling[0m primitive-types v0.13.1
+2025-11-24T12:41:41.5940033Z   [1m[92m   Compiling[0m hash-db v0.16.0
+2025-11-24T12:41:41.5940465Z   [1m[92m   Compiling[0m arrayref v0.3.9
+2025-11-24T12:41:41.5941129Z   [1m[92m   Compiling[0m hmac v0.12.1
+2025-11-24T12:41:41.5941550Z   [1m[92m   Compiling[0m der v0.7.10
+2025-11-24T12:41:41.5941974Z   [1m[92m   Compiling[0m sha3 v0.10.8
+2025-11-24T12:41:41.5942425Z   [1m[92m   Compiling[0m curve25519-dalek v4.1.3
+2025-11-24T12:41:41.5942892Z   [1m[92m   Compiling[0m base16ct v0.2.0
+2025-11-24T12:41:41.5943334Z   [1m[92m   Compiling[0m tracing-core v0.1.34
+2025-11-24T12:41:41.5943777Z   [1m[92m   Compiling[0m tracing v0.1.41
+2025-11-24T12:41:41.5944219Z   [1m[92m   Compiling[0m serdect v0.2.0
+2025-11-24T12:41:41.5944680Z   [1m[92m   Compiling[0m spki v0.7.3
+2025-11-24T12:41:41.5945085Z   [1m[92m   Compiling[0m ff v0.13.1
+2025-11-24T12:41:41.5945755Z   [1m[92m   Compiling[0m signature v2.2.0
+2025-11-24T12:41:41.5946237Z   [1m[92m   Compiling[0m environmental v1.1.4
+2025-11-24T12:41:41.5946681Z   [1m[92m   Compiling[0m group v0.13.0
+2025-11-24T12:41:41.5947099Z   [1m[92m   Compiling[0m pkcs8 v0.10.2
+2025-11-24T12:41:41.5947520Z   [1m[92m   Compiling[0m sec1 v0.7.3
+2025-11-24T12:41:41.5947964Z   [1m[92m   Compiling[0m crypto-bigint v0.5.5
+2025-11-24T12:41:41.5948408Z   [1m[92m   Compiling[0m rfc6979 v0.4.0
+2025-11-24T12:41:41.5948815Z   [1m[92m   Compiling[0m merlin v3.0.0
+2025-11-24T12:41:41.5949266Z   [1m[92m   Compiling[0m getrandom_or_panic v0.0.3
+2025-11-24T12:41:41.5949741Z   [1m[92m   Compiling[0m constant_time_eq v0.3.1
+2025-11-24T12:41:41.5950200Z   [1m[92m   Compiling[0m blake2b_simd v1.0.3
+2025-11-24T12:41:41.5950650Z   [1m[92m   Compiling[0m schnorrkel v0.11.5
+2025-11-24T12:41:41.5951315Z   [1m[92m   Compiling[0m elliptic-curve v0.13.8
+2025-11-24T12:41:41.5951770Z   [1m[92m   Compiling[0m ecdsa v0.16.9
+2025-11-24T12:41:41.5952233Z   [1m[92m   Compiling[0m bounded-collections v0.2.4
+2025-11-24T12:41:41.5952714Z   [1m[92m   Compiling[0m twox-hash v1.6.3
+2025-11-24T12:41:41.5953141Z   [1m[92m   Compiling[0m pbkdf2 v0.12.2
+2025-11-24T12:41:41.5953580Z   [1m[92m   Compiling[0m tinyvec_macros v0.1.1
+2025-11-24T12:41:41.5954034Z   [1m[92m   Compiling[0m smallvec v1.15.1
+2025-11-24T12:41:41.5954516Z   [1m[92m   Compiling[0m tinyvec v1.10.0
+2025-11-24T12:41:41.5954957Z   [1m[92m   Compiling[0m k256 v0.13.4
+2025-11-24T12:41:41.5955420Z   [1m[92m   Compiling[0m hash256-std-hasher v0.15.2
+2025-11-24T12:41:41.5956101Z   [1m[92m   Compiling[0m ss58-registry v1.51.0
+2025-11-24T12:41:41.5956575Z   [1m[92m   Compiling[0m libsecp256k1 v0.7.2
+2025-11-24T12:41:41.5957079Z   [1m[92m   Compiling[0m hex-conservative v0.1.2
+2025-11-24T12:41:41.5957611Z   [1m[92m   Compiling[0m bitcoin_hashes v0.13.0
+2025-11-24T12:41:41.5958151Z   [1m[92m   Compiling[0m unicode-normalization v0.1.22
+2025-11-24T12:41:41.5958640Z   [1m[92m   Compiling[0m ed25519 v2.2.3
+2025-11-24T12:41:41.5959074Z   [1m[92m   Compiling[0m base64 v0.22.1
+2025-11-24T12:41:41.5959522Z   [1m[92m   Compiling[0m ed25519-zebra v4.1.0
+2025-11-24T12:41:41.5959986Z   [1m[92m   Compiling[0m parity-bip39 v2.0.1
+2025-11-24T12:41:41.5960449Z   [1m[92m   Compiling[0m secrecy v0.8.0
+2025-11-24T12:41:41.5960873Z   [1m[92m   Compiling[0m bs58 v0.5.1
+2025-11-24T12:41:41.5961302Z   [1m[92m   Compiling[0m bitflags v1.3.2
+2025-11-24T12:41:41.5961750Z   [1m[92m   Compiling[0m array-bytes v6.2.3
+2025-11-24T12:41:41.5962200Z   [1m[92m   Compiling[0m docify v0.2.9
+2025-11-24T12:41:41.5962630Z   [1m[92m   Compiling[0m trie-root v0.18.0
+2025-11-24T12:41:41.5963095Z   [1m[92m   Compiling[0m memory-db v0.32.0
+2025-11-24T12:41:41.5963548Z   [1m[92m   Compiling[0m either v1.15.0
+2025-11-24T12:41:41.5963979Z   [1m[92m   Compiling[0m tuplex v0.1.2
+2025-11-24T12:41:41.5964462Z   [1m[92m   Compiling[0m proc-macro-warning v1.84.1
+2025-11-24T12:41:41.5964937Z   [1m[92m   Compiling[0m trie-db v0.29.1
+2025-11-24T12:41:41.5966089Z   [1m[92m   Compiling[0m sp-debug-derive v14.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.5966902Z   [1m[92m   Compiling[0m jobserver v0.1.34
+2025-11-24T12:41:41.5967576Z   [1m[92m   Compiling[0m find-msvc-tools v0.1.5
+2025-11-24T12:41:41.5968036Z   [1m[92m   Compiling[0m shlex v1.3.0
+2025-11-24T12:41:41.5968479Z   [1m[92m   Compiling[0m itertools v0.10.5
+2025-11-24T12:41:41.5968919Z   [1m[92m   Compiling[0m cc v1.2.47
+2025-11-24T12:41:41.5969875Z   [1m[92m   Compiling[0m sp-runtime-interface-proc-macro v18.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.5970767Z   [1m[92m   Compiling[0m itertools v0.11.0
+2025-11-24T12:41:41.5971623Z   [1m[92m   Compiling[0m sp-crypto-hashing v0.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.5972481Z   [1m[92m   Compiling[0m stable_deref_trait v1.2.1
+2025-11-24T12:41:41.5972988Z   [1m[92m   Compiling[0m frame-metadata v18.0.0
+2025-11-24T12:41:41.5973475Z   [1m[92m   Compiling[0m tiny-keccak v2.0.2
+2025-11-24T12:41:41.5973938Z   [1m[92m   Compiling[0m syn v1.0.109
+2025-11-24T12:41:41.5974419Z   [1m[92m   Compiling[0m const-random-macro v0.1.16
+2025-11-24T12:41:41.5974923Z   [1m[92m   Compiling[0m synstructure v0.13.2
+2025-11-24T12:41:41.5975399Z   [1m[92m   Compiling[0m const-random v0.1.18
+2025-11-24T12:41:41.5976090Z   [1m[92m   Compiling[0m macro_magic_core_macros v0.5.1
+2025-11-24T12:41:41.5976622Z   [1m[92m   Compiling[0m macro_magic_core v0.5.1
+2025-11-24T12:41:41.5977116Z   [1m[92m   Compiling[0m zerofrom-derive v0.1.6
+2025-11-24T12:41:41.5977617Z   [1m[92m   Compiling[0m macro_magic_macros v0.5.1
+2025-11-24T12:41:41.5978090Z   [1m[92m   Compiling[0m zerofrom v0.1.6
+2025-11-24T12:41:41.5978723Z   [1m[92m   Compiling[0m yoke-derive v0.8.1
+2025-11-24T12:41:41.5979560Z   [1m[92m   Compiling[0m sp-storage v22.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.5981513Z   [1m[92m   Compiling[0m yoke v0.8.1
+2025-11-24T12:41:41.5982337Z   [1m[92m   Compiling[0m sp-tracing v17.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.5983566Z   [1m[92m   Compiling[0m sp-externalities v0.30.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.5984775Z   [1m[92m   Compiling[0m sp-wasm-interface v21.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.5985807Z   [1m[92m   Compiling[0m proc-macro-error-attr v1.0.4
+2025-11-24T12:41:41.5986654Z   [1m[92m   Compiling[0m sp-std v14.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.5987523Z   [1m[92m   Compiling[0m getrandom v0.3.4
+2025-11-24T12:41:41.5988451Z   [1m[92m   Compiling[0m sp-runtime-interface v29.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.5989298Z   [1m[92m   Compiling[0m macro_magic v0.5.1
+2025-11-24T12:41:41.5989764Z   [1m[92m   Compiling[0m cfg-expr v0.15.8
+2025-11-24T12:41:41.5990620Z   [1m[92m   Compiling[0m substrate-bip39 v0.6.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.5991440Z   [1m[92m   Compiling[0m proc-macro-error v1.0.4
+2025-11-24T12:41:41.5991950Z   [1m[92m   Compiling[0m zerovec-derive v0.11.2
+2025-11-24T12:41:41.5992781Z   [1m[92m   Compiling[0m sp-core v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.5993521Z   [1m[92m   Compiling[0m zerovec v0.11.5
+2025-11-24T12:41:41.5994121Z   [1m[92m   Compiling[0m displaydoc v0.2.5
+2025-11-24T12:41:41.5994642Z   [1m[92m   Compiling[0m include_dir_macros v0.7.4
+2025-11-24T12:41:41.5995186Z   [1m[92m   Compiling[0m include_dir v0.7.4
+2025-11-24T12:41:41.5995840Z   [1m[92m   Compiling[0m indexmap v1.9.3
+2025-11-24T12:41:41.5996669Z   [1m[92m   Compiling[0m sp-io v39.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.5997421Z   [1m[92m   Compiling[0m ahash v0.8.12
+2025-11-24T12:41:41.5998114Z   [1m[92m   Compiling[0m aquamarine v0.5.0
+2025-11-24T12:41:41.5998611Z   [1m[92m   Compiling[0m tt-call v1.0.9
+2025-11-24T12:41:41.5999082Z   [1m[92m   Compiling[0m hashbrown v0.12.3
+2025-11-24T12:41:41.5999563Z   [1m[92m   Compiling[0m tinystr v0.8.2
+2025-11-24T12:41:41.6000540Z   [1m[92m   Compiling[0m sp-crypto-hashing-proc-macro v0.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6001758Z   [1m[92m   Compiling[0m sp-trie v38.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6002950Z   [1m[92m   Compiling[0m sp-version-proc-macro v15.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6004186Z   [1m[92m   Compiling[0m sp-arithmetic v26.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6005734Z   [1m[92m   Compiling[0m sp-debug-derive v14.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6006715Z   [1m[92m   Compiling[0m writeable v0.6.2
+2025-11-24T12:41:41.6007181Z   [1m[92m   Compiling[0m litemap v0.8.1
+2025-11-24T12:41:41.6007633Z   [1m[92m   Compiling[0m anyhow v1.0.100
+2025-11-24T12:41:41.6008106Z   [1m[92m   Compiling[0m icu_locale_core v2.1.1
+2025-11-24T12:41:41.6009046Z   [1m[92m   Compiling[0m sp-application-crypto v39.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6010328Z   [1m[92m   Compiling[0m sp-weights v31.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6011302Z   [1m[92m   Compiling[0m hashbrown v0.13.2
+2025-11-24T12:41:41.6011761Z   [1m[92m   Compiling[0m zerotrie v0.2.3
+2025-11-24T12:41:41.6012232Z   [1m[92m   Compiling[0m potential_utf v0.1.4
+2025-11-24T12:41:41.6013128Z   [1m[92m   Compiling[0m binary-merkle-tree v16.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6014027Z   [1m[92m   Compiling[0m icu_properties_data v2.1.1
+2025-11-24T12:41:41.6014603Z   [1m[92m   Compiling[0m icu_normalizer_data v2.1.1
+2025-11-24T12:41:41.6015092Z   [1m[92m   Compiling[0m icu_collections v2.1.1
+2025-11-24T12:41:41.6015708Z   [1m[92m   Compiling[0m icu_provider v2.1.1
+2025-11-24T12:41:41.6016554Z   [1m[92m   Compiling[0m sp-runtime v40.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6017892Z   [1m[92m   Compiling[0m sp-storage v22.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6019221Z   [1m[92m   Compiling[0m sp-api-proc-macro v21.0.2 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6020619Z   [1m[92m   Compiling[0m sp-externalities v0.30.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6022133Z   [1m[92m   Compiling[0m sp-tracing v17.0.1 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6023759Z   [1m[92m   Compiling[0m sp-runtime-interface-proc-macro v18.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6025438Z   [1m[92m   Compiling[0m sp-wasm-interface v21.0.1 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6027102Z   [1m[92m   Compiling[0m sp-std v14.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6028067Z   [1m[92m   Compiling[0m thiserror v1.0.69
+2025-11-24T12:41:41.6028584Z   [1m[92m   Compiling[0m icu_normalizer v2.1.1
+2025-11-24T12:41:41.6029128Z   [1m[92m   Compiling[0m icu_properties v2.1.1
+2025-11-24T12:41:41.6030309Z   [1m[92m   Compiling[0m sp-runtime-interface v29.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6032158Z   [1m[92m   Compiling[0m substrate-bip39 v0.6.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6033711Z   [1m[92m   Compiling[0m sp-crypto-hashing v0.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6034696Z   [1m[92m   Compiling[0m cranelift-entity v0.95.1
+2025-11-24T12:41:41.6035207Z   [1m[92m   Compiling[0m thiserror-impl v1.0.69
+2025-11-24T12:41:41.6035870Z   [1m[92m   Compiling[0m target-lexicon v0.12.16
+2025-11-24T12:41:41.6036385Z   [1m[92m   Compiling[0m fallible-iterator v0.2.0
+2025-11-24T12:41:41.6036864Z   [1m[92m   Compiling[0m pkg-config v0.3.32
+2025-11-24T12:41:41.6037322Z   [1m[92m   Compiling[0m gimli v0.27.3
+2025-11-24T12:41:41.6037809Z   [1m[92m   Compiling[0m zstd-sys v2.0.16+zstd.1.5.7
+2025-11-24T12:41:41.6038313Z   [1m[92m   Compiling[0m idna_adapter v1.2.1
+2025-11-24T12:41:41.6039309Z   [1m[92m   Compiling[0m sp-core v35.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6040223Z   [1m[92m   Compiling[0m utf8_iter v1.0.4
+2025-11-24T12:41:41.6040696Z   [1m[92m   Compiling[0m cranelift-isle v0.95.1
+2025-11-24T12:41:41.6041179Z   [1m[92m   Compiling[0m percent-encoding v2.3.2
+2025-11-24T12:41:41.6041688Z   [1m[92m   Compiling[0m form_urlencoded v1.2.2
+2025-11-24T12:41:41.6042166Z   [1m[92m   Compiling[0m idna v1.1.0
+2025-11-24T12:41:41.6042906Z   [1m[92m   Compiling[0m cranelift-codegen-shared v0.95.1
+2025-11-24T12:41:41.6043477Z   [1m[92m   Compiling[0m slice-group-by v0.3.1
+2025-11-24T12:41:41.6043965Z   [1m[92m   Compiling[0m crc32fast v1.5.0
+2025-11-24T12:41:41.6044476Z   [1m[92m   Compiling[0m cranelift-codegen-meta v0.95.1
+2025-11-24T12:41:41.6044959Z   [1m[92m   Compiling[0m url v2.5.7
+2025-11-24T12:41:41.6046274Z   [1m[92m   Compiling[0m sp-version v38.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6047439Z   [1m[92m   Compiling[0m sp-metadata-ir v0.8.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6048710Z   [1m[92m   Compiling[0m sp-io v39.0.1 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6049929Z   [1m[92m   Compiling[0m sp-api v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6050713Z   [1m[92m   Compiling[0m cranelift-codegen v0.95.1
+2025-11-24T12:41:41.6051222Z   [1m[92m   Compiling[0m wasmparser v0.102.0
+2025-11-24T12:41:41.6052221Z   [1m[92m   Compiling[0m sp-trie v38.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6053153Z   [1m[92m   Compiling[0m fxhash v0.2.1
+2025-11-24T12:41:41.6053619Z   [1m[92m   Compiling[0m io-lifetimes v1.0.11
+2025-11-24T12:41:41.6054074Z   [1m[92m   Compiling[0m rustix v1.1.2
+2025-11-24T12:41:41.6054513Z   [1m[92m   Compiling[0m regalloc2 v0.6.1
+2025-11-24T12:41:41.6054984Z   [1m[92m   Compiling[0m wasmtime-types v8.0.1
+2025-11-24T12:41:41.6055607Z   [1m[92m   Compiling[0m object v0.30.4
+2025-11-24T12:41:41.6056102Z   [1m[92m   Compiling[0m cranelift-bforest v0.95.1
+2025-11-24T12:41:41.6057171Z   [1m[92m   Compiling[0m sp-arithmetic v26.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6058137Z   [1m[92m   Compiling[0m bitflags v2.10.0
+2025-11-24T12:41:41.6058584Z   [1m[92m   Compiling[0m rustix v0.36.17
+2025-11-24T12:41:41.6059017Z   [1m[92m   Compiling[0m bumpalo v3.19.0
+2025-11-24T12:41:41.6059482Z   [1m[92m   Compiling[0m linux-raw-sys v0.11.0
+2025-11-24T12:41:41.6059965Z   [1m[92m   Compiling[0m crossbeam-utils v0.8.21
+2025-11-24T12:41:41.6061180Z   [1m[92m   Compiling[0m sp-weights v31.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6062755Z   [1m[92m   Compiling[0m sp-application-crypto v39.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6064374Z   [1m[92m   Compiling[0m binary-merkle-tree v16.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6065344Z   [1m[92m   Compiling[0m object v0.32.2
+2025-11-24T12:41:41.6066071Z   [1m[92m   Compiling[0m errno v0.3.14
+2025-11-24T12:41:41.6066534Z   [1m[92m   Compiling[0m linux-raw-sys v0.1.4
+2025-11-24T12:41:41.6067563Z   [1m[92m   Compiling[0m sp-runtime v40.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6068529Z   [1m[92m   Compiling[0m wasmtime-environ v8.0.1
+2025-11-24T12:41:41.6069025Z   [1m[92m   Compiling[0m memoffset v0.8.0
+2025-11-24T12:41:41.6069513Z   [1m[92m   Compiling[0m zstd-safe v5.0.2+zstd.1.5.2
+2025-11-24T12:41:41.6070028Z   [1m[92m   Compiling[0m crossbeam-epoch v0.9.18
+2025-11-24T12:41:41.6070532Z   [1m[92m   Compiling[0m ar_archive_writer v0.2.0
+2025-11-24T12:41:41.6071047Z   [1m[92m   Compiling[0m wasmtime-runtime v8.0.1
+2025-11-24T12:41:41.6071917Z   [1m[92m   Compiling[0m sp-inherents v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6072705Z   [1m[92m   Compiling[0m is-terminal v0.4.17
+2025-11-24T12:41:41.6073366Z   [1m[92m   Compiling[0m humantime v2.3.0
+2025-11-24T12:41:41.6073822Z   [1m[92m   Compiling[0m cpp_demangle v0.3.5
+2025-11-24T12:41:41.6074299Z   [1m[92m   Compiling[0m rayon-core v1.13.0
+2025-11-24T12:41:41.6074758Z   [1m[92m   Compiling[0m env_logger v0.10.2
+2025-11-24T12:41:41.6075207Z   [1m[92m   Compiling[0m psm v0.1.28
+2025-11-24T12:41:41.6075827Z   [1m[92m   Compiling[0m crossbeam-deque v0.8.6
+2025-11-24T12:41:41.6076346Z   [1m[92m   Compiling[0m wasmtime-jit-debug v8.0.1
+2025-11-24T12:41:41.6076876Z   [1m[92m   Compiling[0m cranelift-frontend v0.95.1
+2025-11-24T12:41:41.6077404Z   [1m[92m   Compiling[0m cranelift-native v0.95.1
+2025-11-24T12:41:41.6077885Z   [1m[92m   Compiling[0m memfd v0.6.5
+2025-11-24T12:41:41.6078357Z   [1m[92m   Compiling[0m wasmtime-asm-macros v8.0.1
+2025-11-24T12:41:41.6078837Z   [1m[92m   Compiling[0m bincode v1.3.3
+2025-11-24T12:41:41.6079284Z   [1m[92m   Compiling[0m dirs-sys-next v0.1.2
+2025-11-24T12:41:41.6079832Z   [1m[92m   Compiling[0m curve25519-dalek-derive v0.1.1
+2025-11-24T12:41:41.6080347Z   [1m[92m   Compiling[0m powerfmt v0.2.0
+2025-11-24T12:41:41.6080823Z   [1m[92m   Compiling[0m wasmtime-cache v8.0.1
+2025-11-24T12:41:41.6081301Z   [1m[92m   Compiling[0m deranged v0.5.5
+2025-11-24T12:41:41.6081782Z   [1m[92m   Compiling[0m directories-next v2.0.0
+2025-11-24T12:41:41.6082277Z   [1m[92m   Compiling[0m cranelift-wasm v0.95.1
+2025-11-24T12:41:41.6082831Z   [1m[92m   Compiling[0m wasmtime-cranelift-shared v8.0.1
+2025-11-24T12:41:41.6083366Z   [1m[92m   Compiling[0m zstd v0.11.2+zstd.1.5.2
+2025-11-24T12:41:41.6083885Z   [1m[92m   Compiling[0m file-per-thread-logger v0.1.6
+2025-11-24T12:41:41.6084378Z   [1m[92m   Compiling[0m addr2line v0.19.0
+2025-11-24T12:41:41.6084933Z   [1m[92m   Compiling[0m wasmtime-jit-icache-coherence v8.0.1
+2025-11-24T12:41:41.6085604Z   [1m[92m   Compiling[0m toml v0.5.11
+2025-11-24T12:41:41.6086652Z   [1m[92m   Compiling[0m frame-support-procedural-tools-derive v12.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6087680Z   [1m[92m   Compiling[0m tracing-attributes v0.1.30
+2025-11-24T12:41:41.6088189Z   [1m[92m   Compiling[0m futures-core v0.3.31
+2025-11-24T12:41:41.6088670Z   [1m[92m   Compiling[0m futures-sink v0.3.31
+2025-11-24T12:41:41.6089125Z   [1m[92m   Compiling[0m time-core v0.1.6
+2025-11-24T12:41:41.6089766Z   [1m[92m   Compiling[0m num-conv v0.1.0
+2025-11-24T12:41:41.6090224Z   [1m[92m   Compiling[0m wasmtime v8.0.1
+2025-11-24T12:41:41.6090665Z   [1m[92m   Compiling[0m base64 v0.21.7
+2025-11-24T12:41:41.6091098Z   [1m[92m   Compiling[0m time v0.3.44
+2025-11-24T12:41:41.6091560Z   [1m[92m   Compiling[0m futures-channel v0.3.31
+2025-11-24T12:41:41.6092566Z   [1m[92m   Compiling[0m frame-support-procedural-tools v13.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6093495Z   [1m[92m   Compiling[0m wasmtime-jit v8.0.1
+2025-11-24T12:41:41.6094044Z   [1m[92m   Compiling[0m rayon v1.11.0
+2025-11-24T12:41:41.6094533Z   [1m[92m   Compiling[0m wasmtime-cranelift v8.0.1
+2025-11-24T12:41:41.6095045Z   [1m[92m   Compiling[0m tracing-log v0.2.0
+2025-11-24T12:41:41.6096010Z   [1m[92m   Compiling[0m sp-staking v37.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6096804Z   [1m[92m   Compiling[0m secp256k1-sys v0.9.2
+2025-11-24T12:41:41.6097322Z   [1m[92m   Compiling[0m sharded-slab v0.1.7
+2025-11-24T12:41:41.6097754Z   [1m[92m   Compiling[0m matchers v0.2.0
+2025-11-24T12:41:41.6098196Z   [1m[92m   Compiling[0m crypto-mac v0.8.0
+2025-11-24T12:41:41.6098656Z   [1m[92m   Compiling[0m thread_local v1.1.9
+2025-11-24T12:41:41.6099133Z   [1m[92m   Compiling[0m futures-macro v0.3.31
+2025-11-24T12:41:41.6099624Z   [1m[92m   Compiling[0m parking_lot_core v0.9.12
+2025-11-24T12:41:41.6100106Z   [1m[92m   Compiling[0m futures-io v0.3.31
+2025-11-24T12:41:41.6100747Z   [1m[92m   Compiling[0m nu-ansi-term v0.50.3
+2025-11-24T12:41:41.6101211Z   [1m[92m   Compiling[0m base64ct v1.8.0
+2025-11-24T12:41:41.6101650Z   [1m[92m   Compiling[0m slab v0.4.11
+2025-11-24T12:41:41.6102094Z   [1m[92m   Compiling[0m futures-task v0.3.31
+2025-11-24T12:41:41.6102562Z   [1m[92m   Compiling[0m pin-utils v0.1.0
+2025-11-24T12:41:41.6103019Z   [1m[92m   Compiling[0m futures-util v0.3.31
+2025-11-24T12:41:41.6103517Z   [1m[92m   Compiling[0m password-hash v0.5.0
+2025-11-24T12:41:41.6104018Z   [1m[92m   Compiling[0m tracing-subscriber v0.3.20
+2025-11-24T12:41:41.6104493Z   [1m[92m   Compiling[0m hmac v0.8.1
+2025-11-24T12:41:41.6105424Z   [1m[92m   Compiling[0m frame-support-procedural v31.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6119099Z   [1m[92m   Compiling[0m sp-genesis-builder v0.16.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6119990Z   [1m[92m   Compiling[0m block-buffer v0.9.0
+2025-11-24T12:41:41.6120508Z   [1m[92m   Compiling[0m serde_bytes v0.11.19
+2025-11-24T12:41:41.6120988Z   [1m[92m   Compiling[0m num_cpus v1.17.0
+2025-11-24T12:41:41.6121475Z   [1m[92m   Compiling[0m allocator-api2 v0.2.21
+2025-11-24T12:41:41.6121969Z   [1m[92m   Compiling[0m opaque-debug v0.3.1
+2025-11-24T12:41:41.6122415Z   [1m[92m   Compiling[0m foldhash v0.1.5
+2025-11-24T12:41:41.6122877Z   [1m[92m   Compiling[0m scopeguard v1.2.0
+2025-11-24T12:41:41.6123338Z   [1m[92m   Compiling[0m lock_api v0.4.14
+2025-11-24T12:41:41.6123773Z   [1m[92m   Compiling[0m sha2 v0.9.9
+2025-11-24T12:41:41.6124251Z   [1m[92m   Compiling[0m futures-executor v0.3.31
+2025-11-24T12:41:41.6125154Z   [1m[92m   Compiling[0m frame-support v39.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6126112Z   [1m[92m   Compiling[0m hmac-drbg v0.3.0
+2025-11-24T12:41:41.6127240Z   [1m[92m   Compiling[0m sp-crypto-hashing-proc-macro v0.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6128925Z   [1m[92m   Compiling[0m sp-version-proc-macro v15.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6129931Z   [1m[92m   Compiling[0m num-format v0.4.4
+2025-11-24T12:41:41.6130420Z   [1m[92m   Compiling[0m dyn-clonable-impl v0.9.2
+2025-11-24T12:41:41.6131173Z   [1m[92m   Compiling[0m dyn-clone v1.0.20
+2025-11-24T12:41:41.6131640Z   [1m[92m   Compiling[0m dyn-clonable v0.9.2
+2025-11-24T12:41:41.6132668Z   [1m[92m   Compiling[0m sp-version v38.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6133614Z   [1m[92m   Compiling[0m parking_lot v0.12.5
+2025-11-24T12:41:41.6134082Z   [1m[92m   Compiling[0m secp256k1 v0.28.2
+2025-11-24T12:41:41.6134526Z   [1m[92m   Compiling[0m futures v0.3.31
+2025-11-24T12:41:41.6135698Z   [1m[92m   Compiling[0m sp-metadata-ir v0.8.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6137244Z   [1m[92m   Compiling[0m sp-api-proc-macro v21.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6138224Z   [1m[92m   Compiling[0m sp-debug-derive v14.0.0
+2025-11-24T12:41:41.6139100Z   [1m[92m   Compiling[0m frame-system v39.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6140395Z   [1m[92m   Compiling[0m sp-api v35.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6141852Z   [1m[92m   Compiling[0m sp-inherents v35.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6142789Z   [1m[92m   Compiling[0m sp-storage v22.0.0
+2025-11-24T12:41:41.6143995Z   [1m[92m   Compiling[0m frame-support-procedural-tools-derive v12.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6146123Z   [1m[92m   Compiling[0m frame-support-procedural-tools v13.0.1 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6147231Z   [1m[92m   Compiling[0m sp-externalities v0.30.0
+2025-11-24T12:41:41.6148281Z   [1m[92m   Compiling[0m sp-staking v37.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6149197Z   [1m[92m   Compiling[0m sp-tracing v17.1.0
+2025-11-24T12:41:41.6149767Z   [1m[92m   Compiling[0m sp-runtime-interface-proc-macro v18.0.0
+2025-11-24T12:41:41.6150352Z   [1m[92m   Compiling[0m sp-wasm-interface v21.0.1
+2025-11-24T12:41:41.6150839Z   [1m[92m   Compiling[0m sp-std v14.0.0
+2025-11-24T12:41:41.6151335Z   [1m[92m   Compiling[0m sp-runtime-interface v29.0.1
+2025-11-24T12:41:41.6152502Z   [1m[92m   Compiling[0m frame-support-procedural v31.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6154118Z   [1m[92m   Compiling[0m sp-genesis-builder v0.16.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6155112Z   [1m[92m   Compiling[0m substrate-bip39 v0.6.0
+2025-11-24T12:41:41.6155769Z   [1m[92m   Compiling[0m sp-crypto-hashing v0.1.0
+2025-11-24T12:41:41.6156246Z   [1m[92m   Compiling[0m gimli v0.32.3
+2025-11-24T12:41:41.6156692Z   [1m[92m   Compiling[0m scratch v1.0.9
+2025-11-24T12:41:41.6157157Z   [1m[92m   Compiling[0m unicode-width v0.2.2
+2025-11-24T12:41:41.6157631Z   [1m[92m   Compiling[0m addr2line v0.25.1
+2025-11-24T12:41:41.6158084Z   [1m[92m   Compiling[0m sp-core v36.1.0
+2025-11-24T12:41:41.6158559Z   [1m[92m   Compiling[0m link-cplusplus v1.0.12
+2025-11-24T12:41:41.6159026Z   [1m[92m   Compiling[0m sp-io v40.0.1
+2025-11-24T12:41:41.6159481Z   [1m[92m   Compiling[0m convert_case v0.4.0
+2025-11-24T12:41:41.6159952Z   [1m[92m   Compiling[0m derive_more v0.99.20
+2025-11-24T12:41:41.6160995Z   [1m[92m   Compiling[0m frame-support v39.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6161955Z   [1m[92m   Compiling[0m backtrace v0.3.76
+2025-11-24T12:41:41.6162626Z   [1m[92m   Compiling[0m codespan-reporting v0.13.1
+2025-11-24T12:41:41.6163120Z   [1m[92m   Compiling[0m schnellru v0.2.4
+2025-11-24T12:41:41.6163587Z   [1m[92m   Compiling[0m nohash-hasher v0.2.0
+2025-11-24T12:41:41.6164096Z   [1m[92m   Compiling[0m cxxbridge-flags v1.0.189
+2025-11-24T12:41:41.6164592Z   [1m[92m   Compiling[0m zstd-safe v6.0.6
+2025-11-24T12:41:41.6165026Z   [1m[92m   Compiling[0m cxx v1.0.189
+2025-11-24T12:41:41.6165632Z   [1m[92m   Compiling[0m cxx-build v1.0.189
+2025-11-24T12:41:41.6166094Z   [1m[92m   Compiling[0m ethbloom v0.14.1
+2025-11-24T12:41:41.6166993Z   [1m[92m   Compiling[0m sp-panic-handler v13.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6168228Z   [1m[92m   Compiling[0m frame-benchmarking v39.1.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6169052Z   [1m[92m   Compiling[0m trie-db v0.30.0
+2025-11-24T12:41:41.6169531Z   [1m[92m   Compiling[0m sp-arithmetic v26.1.0
+2025-11-24T12:41:41.6170014Z   [1m[92m   Compiling[0m parity-wasm v0.45.0
+2025-11-24T12:41:41.6170486Z   [1m[92m   Compiling[0m sp-weights v31.1.0
+2025-11-24T12:41:41.6170932Z   [1m[92m   Compiling[0m sp-trie v39.1.0
+2025-11-24T12:41:41.6171430Z   [1m[92m   Compiling[0m sp-application-crypto v40.1.0
+2025-11-24T12:41:41.6172341Z   [1m[92m   Compiling[0m sp-state-machine v0.44.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6173150Z   [1m[92m   Compiling[0m ethereum-types v0.15.1
+2025-11-24T12:41:41.6174166Z   [1m[92m   Compiling[0m sp-keystore v0.41.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6174945Z   [1m[92m   Compiling[0m ed25519-dalek v2.2.0
+2025-11-24T12:41:41.6175432Z   [1m[92m   Compiling[0m polkavm-common v0.9.0
+2025-11-24T12:41:41.6176538Z   [1m[92m   Compiling[0m evm-core v0.42.0 (https://github.com/moonbeam-foundation/evm?branch=moonbeam-polkadot-stable2412#ce90f488)
+2025-11-24T12:41:41.6177450Z   [1m[92m   Compiling[0m binary-merkle-tree v16.1.0
+2025-11-24T12:41:41.6177937Z   [1m[92m   Compiling[0m auto_impl v1.3.0
+2025-11-24T12:41:41.6178399Z   [1m[92m   Compiling[0m sp-runtime v41.1.0
+2025-11-24T12:41:41.6179366Z   [1m[92m   Compiling[0m evm-runtime v0.42.0 (https://github.com/moonbeam-foundation/evm?branch=moonbeam-polkadot-stable2412#ce90f488)
+2025-11-24T12:41:41.6180230Z   [1m[92m   Compiling[0m zstd v0.12.4
+2025-11-24T12:41:41.6180674Z   [1m[92m   Compiling[0m ethereum v0.18.2
+2025-11-24T12:41:41.6181145Z   [1m[92m   Compiling[0m wasm-opt-sys v0.116.0
+2025-11-24T12:41:41.6181652Z   [1m[92m   Compiling[0m polkavm-assembler v0.9.0
+2025-11-24T12:41:41.6182169Z   [1m[92m   Compiling[0m polkavm-linux-raw v0.9.0
+2025-11-24T12:41:41.6182636Z   [1m[92m   Compiling[0m polkavm v0.9.3
+2025-11-24T12:41:41.6183552Z   [1m[92m   Compiling[0m sp-maybe-compressed-blob v11.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6184928Z   [1m[92m   Compiling[0m evm-gasometer v0.42.0 (https://github.com/moonbeam-foundation/evm?branch=moonbeam-polkadot-stable2412#ce90f488)
+2025-11-24T12:41:41.6186043Z   [1m[92m   Compiling[0m sp-crypto-hashing-proc-macro v0.1.0
+2025-11-24T12:41:41.6186592Z   [1m[92m   Compiling[0m wasm-instrument v0.4.0
+2025-11-24T12:41:41.6187458Z   [1m[92m   Compiling[0m sc-allocator v30.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6188275Z   [1m[92m   Compiling[0m sp-version-proc-macro v15.0.0
+2025-11-24T12:41:41.6188787Z   [1m[92m   Compiling[0m frame-metadata v20.0.0
+2025-11-24T12:41:41.6189289Z   [1m[92m   Compiling[0m cxxbridge-macro v1.0.189
+2025-11-24T12:41:41.6189772Z   [1m[92m   Compiling[0m hex-literal v0.4.1
+2025-11-24T12:41:41.6190245Z   [1m[92m   Compiling[0m num_enum_derive v0.7.5
+2025-11-24T12:41:41.6190708Z   [1m[92m   Compiling[0m foldhash v0.2.0
+2025-11-24T12:41:41.6191320Z   [1m[92m   Compiling[0m heck v0.5.0
+2025-11-24T12:41:41.6191764Z   [1m[92m   Compiling[0m simple-mermaid v0.1.1
+2025-11-24T12:41:41.6192247Z   [1m[92m   Compiling[0m strum_macros v0.26.4
+2025-11-24T12:41:41.6192704Z   [1m[92m   Compiling[0m num_enum v0.7.5
+2025-11-24T12:41:41.6193170Z   [1m[92m   Compiling[0m sp-metadata-ir v0.10.0
+2025-11-24T12:41:41.6193699Z   [1m[92m   Compiling[0m sp-version v39.0.0
+2025-11-24T12:41:41.6194579Z   [1m[92m   Compiling[0m sc-executor-common v0.36.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6195981Z   [1m[92m   Compiling[0m evm v0.42.0 (https://github.com/moonbeam-foundation/evm?branch=moonbeam-polkadot-stable2412#ce90f488)
+2025-11-24T12:41:41.6196845Z   [1m[92m   Compiling[0m wasm-opt-cxx-sys v0.116.0
+2025-11-24T12:41:41.6197894Z   [1m[92m   Compiling[0m sp-timestamp v35.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6199220Z   [1m[92m   Compiling[0m sp-timestamp v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6200634Z   [1m[92m   Compiling[0m polkadot-core-primitives v16.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6201650Z   [1m[92m   Compiling[0m derivative v2.2.0
+2025-11-24T12:41:41.6202095Z   [1m[92m   Compiling[0m blake3 v1.8.2
+2025-11-24T12:41:41.6202576Z   [1m[92m   Compiling[0m sp-api-proc-macro v22.0.1
+2025-11-24T12:41:41.6203838Z   [1m[92m   Compiling[0m xcm-procedural v11.0.1 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6204936Z   [1m[92m   Compiling[0m frame-support-procedural-tools-derive v12.0.0
+2025-11-24T12:41:41.6206100Z   [1m[92m   Compiling[0m sc-executor-wasmtime v0.36.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6206930Z   [1m[92m   Compiling[0m camino v1.2.1
+2025-11-24T12:41:41.6207421Z   [1m[92m   Compiling[0m scale-type-resolver v0.2.0
+2025-11-24T12:41:41.6207915Z   [1m[92m   Compiling[0m scale-bits v0.6.0
+2025-11-24T12:41:41.6208469Z   [1m[92m   Compiling[0m frame-support-procedural-tools v13.0.1
+2025-11-24T12:41:41.6209579Z   [1m[92m   Compiling[0m staging-xcm v15.0.3 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6210501Z   [1m[92m   Compiling[0m sp-api v36.0.1
+2025-11-24T12:41:41.6211642Z   [1m[92m   Compiling[0m polkadot-parachain-primitives v15.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6213304Z   [1m[92m   Compiling[0m sp-consensus-slots v0.41.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6214781Z   [1m[92m   Compiling[0m fp-evm v3.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:41:41.6216372Z   [1m[92m   Compiling[0m frame-system v39.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6217979Z   [1m[92m   Compiling[0m sp-authority-discovery v35.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6218966Z   [1m[92m   Compiling[0m heck v0.4.1
+2025-11-24T12:41:41.6219424Z   [1m[92m   Compiling[0m semver-parser v0.7.0
+2025-11-24T12:41:41.6219891Z   [1m[92m   Compiling[0m fastrand v2.3.0
+2025-11-24T12:41:41.6220334Z   [1m[92m   Compiling[0m rustc-hash v1.1.0
+2025-11-24T12:41:41.6220789Z   [1m[92m   Compiling[0m regalloc2 v0.9.3
+2025-11-24T12:41:41.6221236Z   [1m[92m   Compiling[0m tempfile v3.23.0
+2025-11-24T12:41:41.6221677Z   [1m[92m   Compiling[0m semver v0.6.0
+2025-11-24T12:41:41.6222128Z   [1m[92m   Compiling[0m strum_macros v0.24.3
+2025-11-24T12:41:41.6223402Z   [1m[92m   Compiling[0m polkadot-primitives v17.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6224438Z   [1m[92m   Compiling[0m sp-genesis-builder v0.17.0
+2025-11-24T12:41:41.6224995Z   [1m[92m   Compiling[0m frame-support-procedural v33.0.1
+2025-11-24T12:41:41.6225676Z   [1m[92m   Compiling[0m scale-decode v0.13.1
+2025-11-24T12:41:41.6226564Z   [1m[92m   Compiling[0m sc-executor-polkavm v0.33.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6227384Z   [1m[92m   Compiling[0m sp-staking v38.0.0
+2025-11-24T12:41:41.6227824Z   [1m[92m   Compiling[0m gimli v0.28.1
+2025-11-24T12:41:41.6228274Z   [1m[92m   Compiling[0m sp-inherents v36.0.0
+2025-11-24T12:41:41.6228758Z   [1m[92m   Compiling[0m cargo-platform v0.1.9
+2025-11-24T12:41:41.6229210Z   [1m[92m   Compiling[0m strum v0.24.1
+2025-11-24T12:41:41.6229654Z   [1m[92m   Compiling[0m hashbrown v0.14.5
+2025-11-24T12:41:41.6230119Z   [1m[92m   Compiling[0m polkavm-linker v0.9.2
+2025-11-24T12:41:41.6230602Z   [1m[92m   Compiling[0m cargo_metadata v0.15.4
+2025-11-24T12:41:41.6231084Z   [1m[92m   Compiling[0m frame-support v40.1.0
+2025-11-24T12:41:41.6231593Z   [1m[92m   Compiling[0m merkleized-metadata v0.2.0
+2025-11-24T12:41:41.6232448Z   [1m[92m   Compiling[0m sc-executor v0.41.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6233880Z   [1m[92m   Compiling[0m cumulus-primitives-core v0.17.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6235085Z   [1m[92m   Compiling[0m build-helper v0.1.1
+2025-11-24T12:41:41.6236119Z   [1m[92m   Compiling[0m pallet-timestamp v38.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6236916Z   [1m[92m   Compiling[0m strum v0.26.3
+2025-11-24T12:41:41.6237366Z   [1m[92m   Compiling[0m console v0.15.11
+2025-11-24T12:41:41.6238617Z   [1m[92m   Compiling[0m cumulus-primitives-proof-size-hostfunction v0.11.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6239755Z   [1m[92m   Compiling[0m filetime v0.2.26
+2025-11-24T12:41:41.6240955Z   [1m[92m   Compiling[0m cumulus-primitives-storage-weight-reclaim v9.1.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6242088Z   [1m[92m   Compiling[0m frame-system v40.2.0
+2025-11-24T12:41:41.6242585Z   [1m[92m   Compiling[0m finality-grandpa v0.16.3
+2025-11-24T12:41:41.6243684Z   [1m[92m   Compiling[0m frame-benchmarking v39.0.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6245179Z   [1m[92m   Compiling[0m fp-account v1.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:41:41.6246641Z   [1m[92m   Compiling[0m sp-consensus-slots v0.41.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6247805Z   [1m[92m   Compiling[0m sp-session v37.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6249126Z   [1m[92m   Compiling[0m sp-state-machine v0.44.0 (https://github.com/moonbeam-foundation/polkadot-sdk?branch=moonbeam-polkadot-stable2412#192f0745)
+2025-11-24T12:41:41.6250461Z   [1m[92m   Compiling[0m pallet-session v39.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6251738Z   [1m[92m   Compiling[0m fp-rpc v3.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:41:41.6253013Z   [1m[92m   Compiling[0m sp-consensus-aura v0.41.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6254510Z   [1m[92m   Compiling[0m pallet-evm v6.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:41:41.6255989Z   [1m[92m   Compiling[0m sp-consensus-grandpa v22.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6256828Z   [1m[92m   Compiling[0m frame-benchmarking v40.2.1
+2025-11-24T12:41:41.6257857Z   [1m[92m   Compiling[0m fp-ethereum v1.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:41:41.6259300Z   [1m[92m   Compiling[0m fp-consensus v2.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:41:41.6260701Z   [1m[92m   Compiling[0m pallet-transaction-payment v39.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6261966Z   [1m[92m   Compiling[0m pallet-authorship v39.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6263158Z   [1m[92m   Compiling[0m frame-try-runtime v0.45.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6264473Z   [1m[92m   Compiling[0m fp-storage v2.0.0 (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:41:41.6265374Z   [1m[92m   Compiling[0m const-hex v1.17.0
+2025-11-24T12:41:41.6266467Z   [1m[92m   Compiling[0m frame-metadata-hash-extension v0.7.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6268095Z   [1m[92m   Compiling[0m pallet-ethereum v4.0.0-dev (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:41:41.6269422Z   [1m[92m   Compiling[0m frame-executive v39.1.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6270604Z   [1m[92m   Compiling[0m pallet-grandpa v39.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6271997Z   [1m[92m   Compiling[0m pallet-transaction-payment-rpc-runtime-api v39.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6273362Z   [1m[92m   Compiling[0m sp-keyring v40.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6274214Z   [1m[92m   Compiling[0m pallet-transaction-payment v40.0.0
+2025-11-24T12:41:41.6275105Z   [1m[92m   Compiling[0m pallet-aura v38.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6276555Z   [1m[92m   Compiling[0m pallet-base-fee v1.0.0 (https://github.com/moonbeam-foundation/frontier?branch=moonbeam-polkadot-stable2412#97d9bc8d)
+2025-11-24T12:41:41.6277930Z   [1m[92m   Compiling[0m frame-system-benchmarking v39.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6279240Z   [1m[92m   Compiling[0m pallet-chainghost v0.1.0 (/home/runner/work/Ghost/Ghost/packages/chain/node-core/pallets/chainghost)
+2025-11-24T12:41:41.6280490Z   [1m[92m   Compiling[0m pallet-ghonity v0.1.0 (/home/runner/work/Ghost/Ghost/packages/chain/node-core/pallets/ghonity)
+2025-11-24T12:41:41.6281644Z   [1m[92m   Compiling[0m pallet-sudo v39.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6282792Z   [1m[92m   Compiling[0m pallet-balances v40.1.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6283979Z   [1m[92m   Compiling[0m pallet-g3mail v0.1.0 (/home/runner/work/Ghost/Ghost/packages/chain/node-core/pallets/g3mail)
+2025-11-24T12:41:41.6285159Z   [1m[92m   Compiling[0m sp-block-builder v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6286443Z   [1m[92m   Compiling[0m sp-offchain v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6287851Z   [1m[92m   Compiling[0m frame-system-rpc-runtime-api v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6289122Z   [1m[92m   Compiling[0m sp-transaction-pool v35.0.0 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6289936Z   [1m[92m   Compiling[0m wasm-opt v0.116.1
+2025-11-24T12:41:41.6290828Z   [1m[92m   Compiling[0m substrate-wasm-builder v25.0.1 (https://github.com/paritytech/polkadot-sdk?branch=stable2412#33663108)
+2025-11-24T12:41:41.6291984Z   [1m[92m   Compiling[0m ghost-runtime v0.1.0 (/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime)
+2025-11-24T12:41:41.6293640Z   [0m[1m[38;5;9merror[0m[0m[1m: expected one of: `RuntimeCall`, `RuntimeEvent`, `RuntimeError`, `RuntimeOrigin`, `RuntimeFreezeReason`, `RuntimeHoldReason`, `RuntimeSlashReason`, `RuntimeLockId`, `RuntimeTask`[0m
+2025-11-24T12:41:41.6295321Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:209:9[0m
+2025-11-24T12:41:41.6296214Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6296806Z   [0m[1m[38;5;12m209[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m        RuntimeViewFunction[0m
+2025-11-24T12:41:41.6297520Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m         [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^^^[0m
+2025-11-24T12:41:41.6297848Z 
+2025-11-24T12:41:41.6305407Z   [0m[1m[38;5;9merror[E0432][0m[0m[1m: unresolved imports `super::Aura`, `super::Grandpa`, `super::InherentDataExt`, `super::Runtime`, `super::RuntimeCall`, `super::RuntimeGenesisConfig`, `super::System`, `super::TransactionPayment`[0m
+2025-11-24T12:41:41.6308016Z   [0m  [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:45:16[0m
+2025-11-24T12:41:41.6308882Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6309709Z   [0m[1m[38;5;12m45[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    AccountId, Aura, Balance, Block, BlockNumber, Executive, Grandpa,[0m
+2025-11-24T12:41:41.6311016Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                [0m[0m[1m[38;5;9m^^^^[0m[0m [0m[0m[1m[38;5;9mno `Aura` in the root[0m[0m                    [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mno `Grandpa` in the root[0m
+2025-11-24T12:41:41.6312376Z   [0m[1m[38;5;12m46[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    InherentDataExt, Nonce, Runtime, RuntimeCall, RuntimeGenesisConfig, SessionKeys, System,[0m
+2025-11-24T12:41:41.6313914Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^[0m[0m         [0m[0m[1m[38;5;9m^^^^^^^[0m[0m  [0m[0m[1m[38;5;9m^^^^^^^^^^^[0m[0m  [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^^^^[0m[0m               [0m[0m[1m[38;5;9m^^^^^^[0m[0m [0m[0m[1m[38;5;9mno `System` in the root[0m
+2025-11-24T12:41:41.6315117Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m|[0m[0m                       [0m[0m[1m[38;5;9m|[0m[0m        [0m[0m[1m[38;5;9m|[0m[0m            [0m[0m[1m[38;5;9m|[0m
+2025-11-24T12:41:41.6316455Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m|[0m[0m                       [0m[0m[1m[38;5;9m|[0m[0m        [0m[0m[1m[38;5;9m|[0m[0m            [0m[0m[1m[38;5;9mno `RuntimeGenesisConfig` in the root[0m
+2025-11-24T12:41:41.6317543Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m|[0m[0m                       [0m[0m[1m[38;5;9m|[0m[0m        [0m[0m[1m[38;5;9mno `RuntimeCall` in the root[0m
+2025-11-24T12:41:41.6318456Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m|[0m[0m                       [0m[0m[1m[38;5;9mno `Runtime` in the root[0m
+2025-11-24T12:41:41.6319251Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9mno `InherentDataExt` in the root[0m
+2025-11-24T12:41:41.6320124Z   [0m[1m[38;5;12m47[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    TransactionPayment, UncheckedExtrinsic, VERSION,[0m
+2025-11-24T12:41:41.6321270Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mno `TransactionPayment` in the root[0m
+2025-11-24T12:41:41.6321732Z 
+2025-11-24T12:41:41.6322414Z   [0m[1m[38;5;9merror[E0432][0m[0m[1m: unresolved imports `super::Balances`, `super::Runtime`, `super::RuntimeEvent`[0m
+2025-11-24T12:41:41.6323689Z   [0m [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/configs/frontier.rs:8:24[0m
+2025-11-24T12:41:41.6324549Z   [0m  [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6325359Z   [0m[1m[38;5;12m8[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0muse super::{AccountId, Balances, Runtime, RuntimeEvent};[0m
+2025-11-24T12:41:41.6326754Z   [0m  [0m[0m[1m[38;5;12m|[0m[0m                        [0m[0m[1m[38;5;9m^^^^^^^^[0m[0m  [0m[0m[1m[38;5;9m^^^^^^^[0m[0m  [0m[0m[1m[38;5;9m^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mno `RuntimeEvent` in `configs`[0m
+2025-11-24T12:41:41.6327649Z   [0m  [0m[0m[1m[38;5;12m|[0m[0m                        [0m[0m[1m[38;5;9m|[0m[0m         [0m[0m[1m[38;5;9m|[0m
+2025-11-24T12:41:41.6328480Z   [0m  [0m[0m[1m[38;5;12m|[0m[0m                        [0m[0m[1m[38;5;9m|[0m[0m         [0m[0m[1m[38;5;9mno `Runtime` in `configs`[0m
+2025-11-24T12:41:41.6329321Z   [0m  [0m[0m[1m[38;5;12m|[0m[0m                        [0m[0m[1m[38;5;9mno `Balances` in `configs`[0m
+2025-11-24T12:41:41.6330223Z   [0m  [0m[0m[1m[38;5;12m|[0m[0m                        [0m[0m[1m[38;5;9mhelp: a similar name exists in the module: `Balance`[0m
+2025-11-24T12:41:41.6331096Z   [0m  [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6332035Z   [0m  [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: unresolved item `crate::apis_impls::api::Runtime` exists but is inaccessible[0m
+2025-11-24T12:41:41.6332645Z 
+2025-11-24T12:41:41.6334432Z   [0m[1m[38;5;9merror[E0432][0m[0m[1m: unresolved imports `super::Aura`, `super::Balances`, `super::PalletInfo`, `super::Runtime`, `super::RuntimeCall`, `super::RuntimeEvent`, `super::RuntimeFreezeReason`, `super::RuntimeHoldReason`, `super::RuntimeOrigin`, `super::RuntimeTask`, `super::System`[0m
+2025-11-24T12:41:41.6336838Z   [0m  [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/configs/mod.rs:46:16[0m
+2025-11-24T12:41:41.6337691Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6338640Z   [0m[1m[38;5;12m46[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    AccountId, Aura, Balance, Balances, Block, BlockNumber, Hash, Nonce, PalletInfo, Runtime,[0m
+2025-11-24T12:41:41.6340070Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                [0m[0m[1m[38;5;9m^^^^[0m[0m           [0m[0m[1m[38;5;9m^^^^^^^^[0m[0m                                   [0m[0m[1m[38;5;9m^^^^^^^^^^[0m[0m  [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mno `Runtime` in the root[0m
+2025-11-24T12:41:41.6341224Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                [0m[0m[1m[38;5;9m|[0m[0m              [0m[0m[1m[38;5;9m|[0m[0m                                          [0m[0m[1m[38;5;9m|[0m
+2025-11-24T12:41:41.6342273Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                [0m[0m[1m[38;5;9m|[0m[0m              [0m[0m[1m[38;5;9m|[0m[0m                                          [0m[0m[1m[38;5;9mno `PalletInfo` in the root[0m
+2025-11-24T12:41:41.6343213Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                [0m[0m[1m[38;5;9m|[0m[0m              [0m[0m[1m[38;5;9mno `Balances` in the root[0m
+2025-11-24T12:41:41.6344189Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                [0m[0m[1m[38;5;9m|[0m[0m              [0m[0m[1m[38;5;9mhelp: a similar name exists in the module: `Balance`[0m
+2025-11-24T12:41:41.6345032Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                [0m[0m[1m[38;5;9mno `Aura` in the root[0m
+2025-11-24T12:41:41.6346506Z   [0m[1m[38;5;12m47[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    RuntimeCall, RuntimeEvent, RuntimeFreezeReason, RuntimeHoldReason, RuntimeOrigin, RuntimeTask,[0m
+2025-11-24T12:41:41.6348129Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m^^^^^^^^^^^[0m[0m  [0m[0m[1m[38;5;9m^^^^^^^^^^^^[0m[0m  [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^^^[0m[0m  [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^[0m[0m  [0m[0m[1m[38;5;9m^^^^^^^^^^^^^[0m[0m  [0m[0m[1m[38;5;9m^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mno `RuntimeTask` in the root[0m
+2025-11-24T12:41:41.6349440Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m|[0m[0m            [0m[0m[1m[38;5;9m|[0m[0m             [0m[0m[1m[38;5;9m|[0m[0m                    [0m[0m[1m[38;5;9m|[0m[0m                  [0m[0m[1m[38;5;9m|[0m
+2025-11-24T12:41:41.6350703Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m|[0m[0m            [0m[0m[1m[38;5;9m|[0m[0m             [0m[0m[1m[38;5;9m|[0m[0m                    [0m[0m[1m[38;5;9m|[0m[0m                  [0m[0m[1m[38;5;9mno `RuntimeOrigin` in the root[0m
+2025-11-24T12:41:41.6351942Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m|[0m[0m            [0m[0m[1m[38;5;9m|[0m[0m             [0m[0m[1m[38;5;9m|[0m[0m                    [0m[0m[1m[38;5;9mno `RuntimeHoldReason` in the root[0m
+2025-11-24T12:41:41.6353032Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m|[0m[0m            [0m[0m[1m[38;5;9m|[0m[0m             [0m[0m[1m[38;5;9mno `RuntimeFreezeReason` in the root[0m
+2025-11-24T12:41:41.6354110Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m|[0m[0m            [0m[0m[1m[38;5;9mno `RuntimeEvent` in the root[0m
+2025-11-24T12:41:41.6354852Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9mno `RuntimeCall` in the root[0m
+2025-11-24T12:41:41.6355873Z   [0m[1m[38;5;12m48[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    System, EXISTENTIAL_DEPOSIT, SLOT_DURATION, VERSION,[0m
+2025-11-24T12:41:41.6356674Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m^^^^^^[0m
+2025-11-24T12:41:41.6357148Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6357989Z   [0m   [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: unresolved item `crate::apis_impls::api::Aura` exists but is inaccessible[0m
+2025-11-24T12:41:41.6358861Z   [0m   [0m[0m[1m[38;5;12m= [0m[0m[1mhelp[0m[0m: consider importing this trait instead:[0m
+2025-11-24T12:41:41.6359532Z   [0m           frame_support::traits::PalletInfo[0m
+2025-11-24T12:41:41.6360501Z   [0m   [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: unresolved item `crate::apis_impls::api::Runtime` exists but is inaccessible[0m
+2025-11-24T12:41:41.6361703Z   [0m   [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: unresolved item `crate::apis_impls::api::RuntimeCall` exists but is inaccessible[0m
+2025-11-24T12:41:41.6362267Z 
+2025-11-24T12:41:41.6362992Z   [0m[1m[38;5;9merror[E0432][0m[0m[1m: unresolved imports `crate::BalancesConfig`, `crate::RuntimeGenesisConfig`, `crate::SudoConfig`[0m
+2025-11-24T12:41:41.6364339Z   [0m  [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/genesis_config_presets.rs:18:24[0m
+2025-11-24T12:41:41.6365184Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6366226Z   [0m[1m[38;5;12m18[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0muse crate::{AccountId, BalancesConfig, RuntimeGenesisConfig, SudoConfig};[0m
+2025-11-24T12:41:41.6367406Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                        [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^[0m[0m  [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^^^^[0m[0m  [0m[0m[1m[38;5;9m^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mno `SudoConfig` in the root[0m
+2025-11-24T12:41:41.6368275Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                        [0m[0m[1m[38;5;9m|[0m[0m               [0m[0m[1m[38;5;9m|[0m
+2025-11-24T12:41:41.6369303Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                        [0m[0m[1m[38;5;9m|[0m[0m               [0m[0m[1m[38;5;9mno `RuntimeGenesisConfig` in the root[0m
+2025-11-24T12:41:41.6370076Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                        [0m[0m[1m[38;5;9mno `BalancesConfig` in the root[0m
+2025-11-24T12:41:41.6370598Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6371525Z   [0m   [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: unresolved item `crate::apis_impls::api::RuntimeGenesisConfig` exists but is inaccessible[0m
+2025-11-24T12:41:41.6372139Z 
+2025-11-24T12:41:41.6372644Z   [0m[1m[38;5;9merror[E0433][0m[0m[1m: failed to resolve: could not find `view_functions` in `frame_support`[0m
+2025-11-24T12:41:41.6373778Z   [0m  [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:84:25[0m
+2025-11-24T12:41:41.6374554Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6375666Z   [0m[1m[38;5;12m84[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    impl frame_support::view_functions::runtime_api::RuntimeViewFunction<Block> for Runtime {[0m
+2025-11-24T12:41:41.6376827Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                         [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mcould not find `view_functions` in `frame_support`[0m
+2025-11-24T12:41:41.6377294Z 
+2025-11-24T12:41:41.6377786Z   [0m[1m[38;5;9merror[E0433][0m[0m[1m: failed to resolve: could not find `view_functions` in `frame_support`[0m
+2025-11-24T12:41:41.6379085Z   [0m  [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:85:53[0m
+2025-11-24T12:41:41.6379865Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6381273Z   [0m[1m[38;5;12m85[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m[1m[38;5;12m...[0m[0m   fn execute_view_function(id: frame_support::view_functions::ViewFunctionId, input: Vec<u8>) -> Result<Vec<u8>, frame_support::view_[0m[0m[1m[38;5;12m...[0m
+2025-11-24T12:41:41.6382757Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                                                   [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mcould not find `view_functions` in `frame_support`[0m
+2025-11-24T12:41:41.6383242Z 
+2025-11-24T12:41:41.6383757Z   [0m[1m[38;5;9merror[E0433][0m[0m[1m: failed to resolve: could not find `view_functions` in `frame_support`[0m
+2025-11-24T12:41:41.6384877Z   [0m  [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:85:135[0m
+2025-11-24T12:41:41.6385836Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6386792Z   [0m[1m[38;5;12m85[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m[1m[38;5;12m...[0m[0m-> Result<Vec<u8>, frame_support::view_functions::ViewFunctionDispatchError> {[0m
+2025-11-24T12:41:41.6387921Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                                      [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mcould not find `view_functions` in `frame_support`[0m
+2025-11-24T12:41:41.6388409Z 
+2025-11-24T12:41:41.6388823Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Balances` in this scope[0m
+2025-11-24T12:41:41.6389460Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6390398Z   [0m   [0m[0m[1m[38;5;12m::: [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:132:1[0m
+2025-11-24T12:41:41.6391207Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6391806Z   [0m[1m[38;5;12m132[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0mpub type Balance = u128;[0m
+2025-11-24T12:41:41.6392876Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m [0m[0m[1m[38;5;12m------------------------[0m[0m [0m[0m[1m[38;5;12msimilarly named type alias `Balance` defined here[0m
+2025-11-24T12:41:41.6394213Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/benchmarks.rs:30:23[0m
+2025-11-24T12:41:41.6395288Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6396094Z   [0m [0m[0m[1m[38;5;12m30[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    [pallet_balances, Balances][0m
+2025-11-24T12:41:41.6397034Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                       [0m[0m[1m[38;5;9m^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mhelp: a type alias with a similar name exists: `Balance`[0m
+2025-11-24T12:41:41.6397691Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6398615Z   [0m   [0m[0m[1m[38;5;12m::: [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:243:13[0m
+2025-11-24T12:41:41.6399490Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6400130Z   [0m[1m[38;5;12m243[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            list_benchmarks!(list, extra);[0m
+2025-11-24T12:41:41.6401079Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m             [0m[0m[1m[38;5;12m-----------------------------[0m[0m [0m[0m[1m[38;5;12min this macro invocation[0m
+2025-11-24T12:41:41.6401730Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6402719Z   [0m    [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: this error originates in the macro `list_benchmarks` (in Nightly builds, run with -Z macro-backtrace for more info)[0m
+2025-11-24T12:41:41.6403454Z 
+2025-11-24T12:41:41.6403824Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Timestamp` in this scope[0m
+2025-11-24T12:41:41.6404831Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/benchmarks.rs:31:24[0m
+2025-11-24T12:41:41.6406020Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6406717Z   [0m [0m[0m[1m[38;5;12m31[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    [pallet_timestamp, Timestamp][0m
+2025-11-24T12:41:41.6407541Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                        [0m[0m[1m[38;5;9m^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6408096Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6408995Z   [0m   [0m[0m[1m[38;5;12m::: [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:243:13[0m
+2025-11-24T12:41:41.6409754Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6410374Z   [0m[1m[38;5;12m243[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            list_benchmarks!(list, extra);[0m
+2025-11-24T12:41:41.6411259Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m             [0m[0m[1m[38;5;12m-----------------------------[0m[0m [0m[0m[1m[38;5;12min this macro invocation[0m
+2025-11-24T12:41:41.6411885Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6412874Z   [0m    [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: this error originates in the macro `list_benchmarks` (in Nightly builds, run with -Z macro-backtrace for more info)[0m
+2025-11-24T12:41:41.6414010Z   [0m[1m[38;5;14mhelp[0m[0m: consider importing one of these structs[0m
+2025-11-24T12:41:41.6415116Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:27:1[0m
+2025-11-24T12:41:41.6416146Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6416792Z   [0m [0m[0m[1m[38;5;12m27[0m[0m [0m[0m[38;5;10m+ use sp_core::offchain::Timestamp;[0m
+2025-11-24T12:41:41.6417830Z   [0m   [0m[0m[1m[38;5;12m--> |[0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:27:1[0m
+2025-11-24T12:41:41.6418622Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6419278Z   [0m [0m[0m[1m[38;5;12m27[0m[0m [0m[0m[38;5;10m+ use sp_runtime::offchain::Timestamp;[0m
+2025-11-24T12:41:41.6419817Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6420034Z 
+2025-11-24T12:41:41.6420381Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Sudo` in this scope[0m
+2025-11-24T12:41:41.6421390Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/benchmarks.rs:32:19[0m
+2025-11-24T12:41:41.6422345Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6422975Z   [0m [0m[0m[1m[38;5;12m32[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    [pallet_sudo, Sudo][0m
+2025-11-24T12:41:41.6423837Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                   [0m[0m[1m[38;5;9m^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6424417Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6425326Z   [0m   [0m[0m[1m[38;5;12m::: [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:243:13[0m
+2025-11-24T12:41:41.6426365Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6426989Z   [0m[1m[38;5;12m243[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            list_benchmarks!(list, extra);[0m
+2025-11-24T12:41:41.6427973Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m             [0m[0m[1m[38;5;12m-----------------------------[0m[0m [0m[0m[1m[38;5;12min this macro invocation[0m
+2025-11-24T12:41:41.6428648Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6429689Z   [0m    [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: this error originates in the macro `list_benchmarks` (in Nightly builds, run with -Z macro-backtrace for more info)[0m
+2025-11-24T12:41:41.6430413Z 
+2025-11-24T12:41:41.6430785Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Balances` in this scope[0m
+2025-11-24T12:41:41.6431346Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6432379Z   [0m   [0m[0m[1m[38;5;12m::: [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:132:1[0m
+2025-11-24T12:41:41.6433113Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6433688Z   [0m[1m[38;5;12m132[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0mpub type Balance = u128;[0m
+2025-11-24T12:41:41.6434633Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m [0m[0m[1m[38;5;12m------------------------[0m[0m [0m[0m[1m[38;5;12msimilarly named type alias `Balance` defined here[0m
+2025-11-24T12:41:41.6435968Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/benchmarks.rs:30:23[0m
+2025-11-24T12:41:41.6436764Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6437374Z   [0m [0m[0m[1m[38;5;12m30[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    [pallet_balances, Balances][0m
+2025-11-24T12:41:41.6438324Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                       [0m[0m[1m[38;5;9m^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mhelp: a type alias with a similar name exists: `Balance`[0m
+2025-11-24T12:41:41.6438976Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6439884Z   [0m   [0m[0m[1m[38;5;12m::: [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:269:13[0m
+2025-11-24T12:41:41.6440668Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6441292Z   [0m[1m[38;5;12m269[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            add_benchmarks!(params, batches);[0m
+2025-11-24T12:41:41.6442214Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m             [0m[0m[1m[38;5;12m--------------------------------[0m[0m [0m[0m[1m[38;5;12min this macro invocation[0m
+2025-11-24T12:41:41.6442840Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6443821Z   [0m    [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: this error originates in the macro `add_benchmarks` (in Nightly builds, run with -Z macro-backtrace for more info)[0m
+2025-11-24T12:41:41.6444537Z 
+2025-11-24T12:41:41.6444921Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Timestamp` in this scope[0m
+2025-11-24T12:41:41.6446107Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/benchmarks.rs:31:24[0m
+2025-11-24T12:41:41.6446898Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6447518Z   [0m [0m[0m[1m[38;5;12m31[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    [pallet_timestamp, Timestamp][0m
+2025-11-24T12:41:41.6448526Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                        [0m[0m[1m[38;5;9m^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6449087Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6449990Z   [0m   [0m[0m[1m[38;5;12m::: [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:269:13[0m
+2025-11-24T12:41:41.6450779Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6451399Z   [0m[1m[38;5;12m269[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            add_benchmarks!(params, batches);[0m
+2025-11-24T12:41:41.6452319Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m             [0m[0m[1m[38;5;12m--------------------------------[0m[0m [0m[0m[1m[38;5;12min this macro invocation[0m
+2025-11-24T12:41:41.6452948Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6453934Z   [0m    [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: this error originates in the macro `add_benchmarks` (in Nightly builds, run with -Z macro-backtrace for more info)[0m
+2025-11-24T12:41:41.6454959Z   [0m[1m[38;5;14mhelp[0m[0m: consider importing one of these structs[0m
+2025-11-24T12:41:41.6456065Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:27:1[0m
+2025-11-24T12:41:41.6456846Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6457487Z   [0m [0m[0m[1m[38;5;12m27[0m[0m [0m[0m[38;5;10m+ use sp_core::offchain::Timestamp;[0m
+2025-11-24T12:41:41.6458658Z   [0m   [0m[0m[1m[38;5;12m--> |[0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:27:1[0m
+2025-11-24T12:41:41.6459444Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6460089Z   [0m [0m[0m[1m[38;5;12m27[0m[0m [0m[0m[38;5;10m+ use sp_runtime::offchain::Timestamp;[0m
+2025-11-24T12:41:41.6460642Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6460871Z 
+2025-11-24T12:41:41.6461222Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Sudo` in this scope[0m
+2025-11-24T12:41:41.6462223Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/benchmarks.rs:32:19[0m
+2025-11-24T12:41:41.6463001Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6463577Z   [0m [0m[0m[1m[38;5;12m32[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    [pallet_sudo, Sudo][0m
+2025-11-24T12:41:41.6464363Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                   [0m[0m[1m[38;5;9m^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6464927Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6465971Z   [0m   [0m[0m[1m[38;5;12m::: [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:269:13[0m
+2025-11-24T12:41:41.6466760Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6467390Z   [0m[1m[38;5;12m269[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            add_benchmarks!(params, batches);[0m
+2025-11-24T12:41:41.6468310Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m             [0m[0m[1m[38;5;12m--------------------------------[0m[0m [0m[0m[1m[38;5;12min this macro invocation[0m
+2025-11-24T12:41:41.6468944Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6469920Z   [0m    [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: this error originates in the macro `add_benchmarks` (in Nightly builds, run with -Z macro-backtrace for more info)[0m
+2025-11-24T12:41:41.6470650Z 
+2025-11-24T12:41:41.6470997Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Aura` in this scope[0m
+2025-11-24T12:41:41.6471959Z   [0m  [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:61:27[0m
+2025-11-24T12:41:41.6472703Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6473449Z   [0m[1m[38;5;12m61[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m                pub aura: Aura,[0m
+2025-11-24T12:41:41.6474240Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                           [0m[0m[1m[38;5;9m^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6474642Z 
+2025-11-24T12:41:41.6474996Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Grandpa` in this scope[0m
+2025-11-24T12:41:41.6476114Z   [0m  [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:62:30[0m
+2025-11-24T12:41:41.6476866Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6477464Z   [0m[1m[38;5;12m62[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m                pub grandpa: Grandpa,[0m
+2025-11-24T12:41:41.6478276Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                              [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6478696Z 
+2025-11-24T12:41:41.6479037Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Aura` in this scope[0m
+2025-11-24T12:41:41.6479988Z   [0m  [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:61:27[0m
+2025-11-24T12:41:41.6480712Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6481286Z   [0m[1m[38;5;12m61[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m                pub aura: Aura,[0m
+2025-11-24T12:41:41.6482069Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                           [0m[0m[1m[38;5;9m^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6482867Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6483384Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6484641Z   [0m  [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/.cargo/git/checkouts/polkadot-sdk-dee0edd6eefa0594/3366310/substrate/primitives/runtime/src/traits/mod.rs:2071:19[0m
+2025-11-24T12:41:41.6485819Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6486389Z   [0m[1m[38;5;12m207| [0m[0m        pub struct $name[0m[0m[38;5;10m<Aura>[0m[0m {[0m
+2025-11-24T12:41:41.6487057Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                         [0m[0m[38;5;10m++++++[0m
+2025-11-24T12:41:41.6487377Z 
+2025-11-24T12:41:41.6487737Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Grandpa` in this scope[0m
+2025-11-24T12:41:41.6488690Z   [0m  [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:62:30[0m
+2025-11-24T12:41:41.6489422Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6490021Z   [0m[1m[38;5;12m62[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m                pub grandpa: Grandpa,[0m
+2025-11-24T12:41:41.6490834Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                              [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6491381Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6491908Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6493190Z   [0m  [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/.cargo/git/checkouts/polkadot-sdk-dee0edd6eefa0594/3366310/substrate/primitives/runtime/src/traits/mod.rs:2071:19[0m
+2025-11-24T12:41:41.6494261Z   [0m   [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6494843Z   [0m[1m[38;5;12m207| [0m[0m        pub struct $name[0m[0m[38;5;10m<Grandpa>[0m[0m {[0m
+2025-11-24T12:41:41.6495649Z   [0m   [0m[0m[1m[38;5;12m|[0m[0m                         [0m[0m[38;5;10m+++++++++[0m
+2025-11-24T12:41:41.6495986Z 
+2025-11-24T12:41:41.6496355Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Runtime` in this scope[0m
+2025-11-24T12:41:41.6497314Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:160:38[0m
+2025-11-24T12:41:41.6498054Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6498999Z   [0m[1m[38;5;12m160[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    frame_system::CheckNonZeroSender<Runtime>,[0m
+2025-11-24T12:41:41.6499863Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                                      [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6500433Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6500963Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6501551Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6502340Z   [0m[1m[38;5;12m159[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type TxExtension[0m[0m[38;5;10m<Runtime>[0m[0m = ([0m
+2025-11-24T12:41:41.6503167Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                     [0m[0m[38;5;10m+++++++++[0m
+2025-11-24T12:41:41.6503526Z 
+2025-11-24T12:41:41.6503897Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Runtime` in this scope[0m
+2025-11-24T12:41:41.6504919Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:161:36[0m
+2025-11-24T12:41:41.6505849Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6506637Z   [0m[1m[38;5;12m161[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    frame_system::CheckSpecVersion<Runtime>,[0m
+2025-11-24T12:41:41.6507537Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                                    [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6508377Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6508939Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6509473Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6510187Z   [0m[1m[38;5;12m159[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type TxExtension[0m[0m[38;5;10m<Runtime>[0m[0m = ([0m
+2025-11-24T12:41:41.6510977Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                     [0m[0m[38;5;10m+++++++++[0m
+2025-11-24T12:41:41.6511328Z 
+2025-11-24T12:41:41.6511692Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Runtime` in this scope[0m
+2025-11-24T12:41:41.6512661Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:162:34[0m
+2025-11-24T12:41:41.6513395Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6514109Z   [0m[1m[38;5;12m162[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    frame_system::CheckTxVersion<Runtime>,[0m
+2025-11-24T12:41:41.6514955Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                                  [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6515669Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6516212Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6516726Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6517431Z   [0m[1m[38;5;12m159[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type TxExtension[0m[0m[38;5;10m<Runtime>[0m[0m = ([0m
+2025-11-24T12:41:41.6518178Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                     [0m[0m[38;5;10m+++++++++[0m
+2025-11-24T12:41:41.6518505Z 
+2025-11-24T12:41:41.6518861Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Runtime` in this scope[0m
+2025-11-24T12:41:41.6519820Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:163:32[0m
+2025-11-24T12:41:41.6520558Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6521251Z   [0m[1m[38;5;12m163[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    frame_system::CheckGenesis<Runtime>,[0m
+2025-11-24T12:41:41.6522074Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                                [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6522811Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6523333Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6523854Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6524541Z   [0m[1m[38;5;12m159[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type TxExtension[0m[0m[38;5;10m<Runtime>[0m[0m = ([0m
+2025-11-24T12:41:41.6525284Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                     [0m[0m[38;5;10m+++++++++[0m
+2025-11-24T12:41:41.6525767Z 
+2025-11-24T12:41:41.6526125Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Runtime` in this scope[0m
+2025-11-24T12:41:41.6527104Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:164:28[0m
+2025-11-24T12:41:41.6527832Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6528525Z   [0m[1m[38;5;12m164[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    frame_system::CheckEra<Runtime>,[0m
+2025-11-24T12:41:41.6529339Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                            [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6529902Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6530413Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6530918Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6531597Z   [0m[1m[38;5;12m159[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type TxExtension[0m[0m[38;5;10m<Runtime>[0m[0m = ([0m
+2025-11-24T12:41:41.6532336Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                     [0m[0m[38;5;10m+++++++++[0m
+2025-11-24T12:41:41.6532828Z 
+2025-11-24T12:41:41.6533187Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Runtime` in this scope[0m
+2025-11-24T12:41:41.6534140Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:165:30[0m
+2025-11-24T12:41:41.6534872Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6535722Z   [0m[1m[38;5;12m165[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    frame_system::CheckNonce<Runtime>,[0m
+2025-11-24T12:41:41.6536549Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                              [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6537110Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6537633Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6538146Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6538906Z   [0m[1m[38;5;12m159[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type TxExtension[0m[0m[38;5;10m<Runtime>[0m[0m = ([0m
+2025-11-24T12:41:41.6539771Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                     [0m[0m[38;5;10m+++++++++[0m
+2025-11-24T12:41:41.6540125Z 
+2025-11-24T12:41:41.6540527Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Runtime` in this scope[0m
+2025-11-24T12:41:41.6541614Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:166:31[0m
+2025-11-24T12:41:41.6542438Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6543154Z   [0m[1m[38;5;12m166[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    frame_system::CheckWeight<Runtime>,[0m
+2025-11-24T12:41:41.6543979Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                               [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6544533Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6545063Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6545740Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6546432Z   [0m[1m[38;5;12m159[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type TxExtension[0m[0m[38;5;10m<Runtime>[0m[0m = ([0m
+2025-11-24T12:41:41.6547178Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                     [0m[0m[38;5;10m+++++++++[0m
+2025-11-24T12:41:41.6547672Z 
+2025-11-24T12:41:41.6548037Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Runtime` in this scope[0m
+2025-11-24T12:41:41.6548998Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:167:58[0m
+2025-11-24T12:41:41.6549735Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6550587Z   [0m[1m[38;5;12m167[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    pallet_transaction_payment::ChargeTransactionPayment<Runtime>,[0m
+2025-11-24T12:41:41.6551589Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                                                          [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6552163Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6552683Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6553197Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6553881Z   [0m[1m[38;5;12m159[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type TxExtension[0m[0m[38;5;10m<Runtime>[0m[0m = ([0m
+2025-11-24T12:41:41.6554625Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                     [0m[0m[38;5;10m+++++++++[0m
+2025-11-24T12:41:41.6554945Z 
+2025-11-24T12:41:41.6555301Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Runtime` in this scope[0m
+2025-11-24T12:41:41.6556409Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:168:54[0m
+2025-11-24T12:41:41.6557350Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6558163Z   [0m[1m[38;5;12m168[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    frame_metadata_hash_extension::CheckMetadataHash<Runtime>,[0m
+2025-11-24T12:41:41.6559110Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                                                      [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6559681Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6560197Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6560705Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6561383Z   [0m[1m[38;5;12m159[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type TxExtension[0m[0m[38;5;10m<Runtime>[0m[0m = ([0m
+2025-11-24T12:41:41.6562115Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                     [0m[0m[38;5;10m+++++++++[0m
+2025-11-24T12:41:41.6562439Z 
+2025-11-24T12:41:41.6562877Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `WeightReclaim` in crate `frame_system`[0m
+2025-11-24T12:41:41.6563884Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:169:19[0m
+2025-11-24T12:41:41.6573319Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6574211Z   [0m[1m[38;5;12m169[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    frame_system::WeightReclaim<Runtime>,[0m
+2025-11-24T12:41:41.6575073Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                   [0m[0m[1m[38;5;9m^^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in `frame_system`[0m
+2025-11-24T12:41:41.6575677Z 
+2025-11-24T12:41:41.6576053Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Runtime` in this scope[0m
+2025-11-24T12:41:41.6577032Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:169:33[0m
+2025-11-24T12:41:41.6577781Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6578508Z   [0m[1m[38;5;12m169[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    frame_system::WeightReclaim<Runtime>,[0m
+2025-11-24T12:41:41.6579338Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                                 [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6579892Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6580709Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6581231Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6581939Z   [0m[1m[38;5;12m159[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type TxExtension[0m[0m[38;5;10m<Runtime>[0m[0m = ([0m
+2025-11-24T12:41:41.6582704Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                     [0m[0m[38;5;10m+++++++++[0m
+2025-11-24T12:41:41.6583036Z 
+2025-11-24T12:41:41.6583417Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `RuntimeCall` in this scope[0m
+2025-11-24T12:41:41.6584406Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:174:42[0m
+2025-11-24T12:41:41.6585139Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6586220Z   [0m[1m[38;5;12m174[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    generic::UncheckedExtrinsic<Address, RuntimeCall, Signature, TxExtension>;[0m
+2025-11-24T12:41:41.6587354Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                                          [0m[0m[1m[38;5;9m^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6588021Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6588631Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6589210Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6589978Z   [0m[1m[38;5;12m173[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type UncheckedExtrinsic[0m[0m[38;5;10m<RuntimeCall>[0m[0m =[0m
+2025-11-24T12:41:41.6590979Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                            [0m[0m[38;5;10m+++++++++++++[0m
+2025-11-24T12:41:41.6591296Z 
+2025-11-24T12:41:41.6591712Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `RuntimeCall` in this scope[0m
+2025-11-24T12:41:41.6592725Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:177:49[0m
+2025-11-24T12:41:41.6593476Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6594484Z   [0m[1m[38;5;12m177[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0mpub type SignedPayload = generic::SignedPayload<RuntimeCall, TxExtension>;[0m
+2025-11-24T12:41:41.6595663Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                                                 [0m[0m[1m[38;5;9m^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6596245Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6596765Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6597270Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6598336Z   [0m[1m[38;5;12m177[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type SignedPayload[0m[0m[38;5;10m<RuntimeCall>[0m[0m = generic::SignedPayload<RuntimeCall, TxExtension>;[0m
+2025-11-24T12:41:41.6599310Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                       [0m[0m[38;5;10m+++++++++++++[0m
+2025-11-24T12:41:41.6599641Z 
+2025-11-24T12:41:41.6600001Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Runtime` in this scope[0m
+2025-11-24T12:41:41.6600954Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:187:5[0m
+2025-11-24T12:41:41.6601678Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6602212Z   [0m[1m[38;5;12m187[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    Runtime,[0m
+2025-11-24T12:41:41.6602936Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6603487Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6604019Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6604524Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6605395Z   [0m[1m[38;5;12m186[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type Executive[0m[0m[38;5;10m<Runtime>[0m[0m = frame_executive::Executive<[0m
+2025-11-24T12:41:41.6606557Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                   [0m[0m[38;5;10m+++++++++[0m
+2025-11-24T12:41:41.6606886Z 
+2025-11-24T12:41:41.6607249Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Runtime` in this scope[0m
+2025-11-24T12:41:41.6608205Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:189:32[0m
+2025-11-24T12:41:41.6608948Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6609664Z   [0m[1m[38;5;12m189[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    frame_system::ChainContext<Runtime>,[0m
+2025-11-24T12:41:41.6610560Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                                [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6611134Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6611680Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6612230Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6613118Z   [0m[1m[38;5;12m186[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type Executive[0m[0m[38;5;10m<Runtime>[0m[0m = frame_executive::Executive<[0m
+2025-11-24T12:41:41.6613935Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                   [0m[0m[38;5;10m+++++++++[0m
+2025-11-24T12:41:41.6614253Z 
+2025-11-24T12:41:41.6614609Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `Runtime` in this scope[0m
+2025-11-24T12:41:41.6615915Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:190:5[0m
+2025-11-24T12:41:41.6616671Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6617205Z   [0m[1m[38;5;12m190[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    Runtime,[0m
+2025-11-24T12:41:41.6617941Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6618488Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6619011Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6619531Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6620415Z   [0m[1m[38;5;12m186[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type Executive[0m[0m[38;5;10m<Runtime>[0m[0m = frame_executive::Executive<[0m
+2025-11-24T12:41:41.6621231Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                   [0m[0m[38;5;10m+++++++++[0m
+2025-11-24T12:41:41.6621557Z 
+2025-11-24T12:41:41.6621975Z   [0m[1m[38;5;9merror[E0412][0m[0m[1m: cannot find type `AllPalletsWithSystem` in this scope[0m
+2025-11-24T12:41:41.6622978Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/lib.rs:191:5[0m
+2025-11-24T12:41:41.6623701Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6624265Z   [0m[1m[38;5;12m191[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m    AllPalletsWithSystem,[0m
+2025-11-24T12:41:41.6625046Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m     [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9mnot found in this scope[0m
+2025-11-24T12:41:41.6625737Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6626296Z   [0m[1m[38;5;14mhelp[0m[0m: you might be missing a type parameter[0m
+2025-11-24T12:41:41.6626882Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6627968Z   [0m[1m[38;5;12m186[0m[0m [0m[0m[1m[38;5;12m| [0m[0mpub type Executive[0m[0m[38;5;10m<AllPalletsWithSystem>[0m[0m = frame_executive::Executive<[0m
+2025-11-24T12:41:41.6628991Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                   [0m[0m[38;5;10m++++++++++++++++++++++[0m
+2025-11-24T12:41:41.6629349Z 
+2025-11-24T12:41:41.6629891Z   [0m[1m[33mwarning[0m[0m[1m: unused import: `frame_support::traits::StorageInfoTrait`[0m
+2025-11-24T12:41:41.6631085Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:236:17[0m
+2025-11-24T12:41:41.6632145Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6632921Z   [0m[1m[38;5;12m236[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            use frame_support::traits::StorageInfoTrait;[0m
+2025-11-24T12:41:41.6633691Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                 [0m[0m[1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+2025-11-24T12:41:41.6634191Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6634896Z   [0m    [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default[0m
+2025-11-24T12:41:41.6635392Z 
+2025-11-24T12:41:41.6636111Z   [0m[1m[33mwarning[0m[0m[1m: unused import: `frame_support::traits::WhitelistedStorageKeys`[0m
+2025-11-24T12:41:41.6637235Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:264:17[0m
+2025-11-24T12:41:41.6638139Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6638933Z   [0m[1m[38;5;12m264[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            use frame_support::traits::WhitelistedStorageKeys;[0m
+2025-11-24T12:41:41.6639779Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                 [0m[0m[1m[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+2025-11-24T12:41:41.6640151Z 
+2025-11-24T12:41:41.6640739Z   [0m[1m[38;5;9merror[E0152][0m[0m[1m: duplicate lang item in crate `sp_io` (which `frame_support` depends on): `panic_impl`[0m
+2025-11-24T12:41:41.6641789Z   [0m  [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6642631Z   [0m  [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: the lang item is first defined in crate `sp_io` (which `sp_application_crypto` depends on)[0m
+2025-11-24T12:41:41.6644620Z   [0m  [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: first definition in `sp_io` loaded from /home/runner/work/Ghost/Ghost/packages/chain/node-core/target/debug/wbuild/ghost-runtime/target/wasm32-unknown-unknown/release/deps/libsp_io-ee49e59129bc78d2.rmeta[0m
+2025-11-24T12:41:41.6647651Z   [0m  [0m[0m[1m[38;5;12m= [0m[0m[1mnote[0m[0m: second definition in `sp_io` loaded from /home/runner/work/Ghost/Ghost/packages/chain/node-core/target/debug/wbuild/ghost-runtime/target/wasm32-unknown-unknown/release/deps/libsp_io-c652d663188212a3.rmeta[0m
+2025-11-24T12:41:41.6648931Z 
+2025-11-24T12:41:41.6649418Z   [0m[1m[38;5;9merror[E0433][0m[0m[1m: failed to resolve: use of undeclared type `AllPalletsWithSystem`[0m
+2025-11-24T12:41:41.6650563Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:245:32[0m
+2025-11-24T12:41:41.6651397Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6652219Z   [0m[1m[38;5;12m245[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            let storage_info = AllPalletsWithSystem::storage_info();[0m
+2025-11-24T12:41:41.6653231Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                                [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9muse of undeclared type `AllPalletsWithSystem`[0m
+2025-11-24T12:41:41.6653691Z 
+2025-11-24T12:41:41.6654172Z   [0m[1m[38;5;9merror[E0433][0m[0m[1m: failed to resolve: use of undeclared type `AllPalletsWithSystem`[0m
+2025-11-24T12:41:41.6655275Z   [0m   [0m[0m[1m[38;5;12m--> [0m[0m/home/runner/work/Ghost/Ghost/packages/chain/node-core/runtime/src/apis_impls.rs:265:53[0m
+2025-11-24T12:41:41.6656197Z   [0m    [0m[0m[1m[38;5;12m|[0m
+2025-11-24T12:41:41.6657225Z   [0m[1m[38;5;12m265[0m[0m [0m[0m[1m[38;5;12m|[0m[0m [0m[0m            let whitelist: Vec<TrackedStorageKey> = AllPalletsWithSystem::whitelisted_storage_keys();[0m
+2025-11-24T12:41:41.6658425Z   [0m    [0m[0m[1m[38;5;12m|[0m[0m                                                     [0m[0m[1m[38;5;9m^^^^^^^^^^^^^^^^^^^^[0m[0m [0m[0m[1m[38;5;9muse of undeclared type `AllPalletsWithSystem`[0m
+2025-11-24T12:41:41.6659075Z 
+2025-11-24T12:41:41.6659455Z   [0m[1mSome errors have detailed explanations: E0152, E0412, E0432, E0433.[0m
+2025-11-24T12:41:41.6660227Z   [0m[1mFor more information about an error, try `rustc --explain E0152`.[0m
+2025-11-24T12:41:41.6660941Z   [1m[33mwarning[0m: `ghost-runtime` (lib) generated 2 warnings
+2025-11-24T12:41:41.6661761Z   [1m[91merror[0m: could not compile `ghost-runtime` (lib) due to 38 previous errors; 2 warnings emitted
+2025-11-24T12:41:41.7484371Z 
+2025-11-24T12:41:41.7486821Z ✅ Cargo check completed successfully!
+2025-11-24T12:41:41.7489458Z Log saved to: /tmp/cargo-check.log
