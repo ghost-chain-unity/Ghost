@@ -47,10 +47,12 @@ Includes JWT authentication, request signing, client-side encryption for G3Mail,
 
 ## Recent Changes (2025-11-24)
 
-- **Runtime Structure Fix:** Reorganized runtime/src/lib.rs - moved `mod runtime` block earlier to enable proper type sequencing, removed unavailable features (RuntimeViewFunction, WeightReclaim)
-- **Type Export Fixes:** Added root-level re-exports for RuntimeGenesisConfig, BalancesConfig, SudoConfig to genesis_config_presets.rs
-- **Dependency Version Alignment:** Updated all polkadot-sdk and Frontier dependencies from stable2409 to stable2412 for consistency
-- **Import Path Fixes:** Cleaned up apis_impls.rs and genesis_config_presets.rs imports to use correct type paths
+- **Compilation Errors RESOLVED:** Fixed 20+ module visibility and import path errors in runtime/src/lib.rs, apis_impls.rs, and genesis_config_presets.rs
+- **Runtime Module Access Fixed:** Discovered #[frame_support::runtime] macro generates types directly in scope (not via module path). Removed all `runtime::` prefixes from type references
+- **Core Type References Corrected:** Changed `runtime::Runtime` → `Runtime`, `runtime::RuntimeCall` → `RuntimeCall`, `runtime::AllPalletsWithSystem` → `AllPalletsWithSystem`
+- **Dependency Root Cause Fixed:** Identified and resolved duplicate sp_io lang item error - pallet-transaction-payment was pinned to crates.io v41.0.0 instead of stable2412 branch. Updated to use polkadot-sdk stable2412 branch for consistency
+- **All Dependencies Aligned:** All workspace dependencies now consistently use stable2412 branch from polkadot-sdk repository
+- **Genesis Config Imports Updated:** Simplified imports in genesis_config_presets.rs and apis_impls.rs to use crate-root level access
 
 ## External Dependencies
 
