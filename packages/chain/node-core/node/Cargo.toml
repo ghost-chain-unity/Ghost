@@ -105,11 +105,7 @@ std = ["ghost-runtime/std"]
 runtime-benchmarks = [
         "frame-benchmarking-cli/runtime-benchmarks",
         "frame-system/runtime-benchmarks",
-        "sc-service/runtime-benchmarks",
-        "sp-api/runtime-benchmarks",
-        "sp-runtime/runtime-benchmarks",
 ]
 try-runtime = [
         "frame-system/try-runtime",
-        "sp-runtime/try-runtime",
 ]
