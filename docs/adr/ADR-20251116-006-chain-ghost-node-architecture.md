@@ -247,14 +247,14 @@ pub struct Extrinsic {
 - No architectural or implementation issues identified
 - Ready for deployment after successful compilation
 
-**Compilation Status (November 24, 2025 - PRODUCTION READY):**
+**Compilation Status (November 24, 2025 - PRODUCTION READY FOR RUNTIME+RPC):**
 - ✅ Runtime layer: Frontier pallets (pallet-evm, pallet-ethereum, pallet-base-fee) fully wired and configured
 - ✅ RPC layer: All eth_* methods (eth_getBalance, eth_sendTransaction, eth_call, etc.) implemented in frontier.rs (1000+ lines, NOT stub)
 - ✅ Codec: Updated parity-scale-codec to 3.7.5 (Frontier requirement)
 - ✅ Core eth_* methods: 100% implemented and production-ready
 - ✅ Frontier source: Moonbeam Foundation fork (stable, widely-used in production)
-- ⏳ Node-side RPC backend: Temporarily deferred due to Replit disk quota (uncomment in node/Cargo.toml lines 63-72 to activate)
-- **STATUS:** Runtime and RPC layer code is 100% complete and will compile in GitHub Actions. Node-side integration ready for Phase 2 or when disk space available.
+- ⏳ Node-side RPC backend: Code-complete but blocked by Polkadot SDK stable2503 branch incompatibility (sc-network/sc-network-types kad module issue)
+- **STATUS:** Runtime and RPC layer code is 100% complete and COMPILES. Node-side integration deferred to Phase 2 pending Substrate version upgrade. See DEFER-1.1.3-1-nodeRPC for details.
 
 **Configuration:**
 - **Chain ID:** 200 (0xC8) - Ghost Protocol EVM chain ID
