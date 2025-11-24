@@ -387,9 +387,8 @@ impl_runtime_apis! {
             <Runtime as pallet_evm::Config>::ChainId::get()
         }
 
-        fn account_basic(address: fp_evm::H160) -> fp_evm::Account {
-            let (account, _) = super::configs::EVM::account_basic(&address);
-            account
+        fn account_basic(address: sp_core::H160) -> fp_evm::Account {
+            pallet_evm::Pallet::<Runtime>::account_basic(&address)
         }
 
         fn gas_price() -> sp_core::U256 {
@@ -397,23 +396,23 @@ impl_runtime_apis! {
             gas_price
         }
 
-        fn account_code_at(address: fp_evm::H160) -> Vec<u8> {
+        fn account_code_at(address: sp_core::H160) -> Vec<u8> {
             pallet_evm::AccountCodes::<Runtime>::get(address)
         }
 
-        fn author() -> fp_evm::H160 {
+        fn author() -> sp_core::H160 {
             <pallet_evm::Pallet<Runtime>>::find_author()
         }
 
-        fn storage_at(address: fp_evm::H160, index: sp_core::U256) -> sp_core::U256 {
+        fn storage_at(address: sp_core::H160, index: sp_core::U256) -> sp_core::U256 {
             let mut tmp = [0u8; 32];
             index.to_big_endian(&mut tmp);
             pallet_evm::AccountStorages::<Runtime>::get(address, sp_core::H256::from_slice(&tmp[..]))
         }
 
         fn call(
-            from: fp_evm::H160,
-            to: fp_evm::H160,
+            from: sp_core::H160,
+            to: sp_core::H160,
             data: Vec<u8>,
             value: sp_core::U256,
             gas_limit: sp_core::U256,
@@ -421,7 +420,7 @@ impl_runtime_apis! {
             max_priority_fee_per_gas: Option<sp_core::U256>,
             nonce: Option<sp_core::U256>,
             estimate: bool,
-            access_list: Option<Vec<(fp_evm::H160, Vec<sp_core::H256>)>>,
+            access_list: Option<Vec<(sp_core::H160, Vec<sp_core::H256>)>>,
         ) -> Result<pallet_evm::CallInfo, sp_runtime::DispatchError> {
             let config = if estimate {
                 let mut config = <Runtime as pallet_evm::Config>::config().clone();
@@ -489,7 +488,7 @@ impl_runtime_apis! {
         }
 
         fn create(
-            from: fp_evm::H160,
+            from: sp_core::H160,
             data: Vec<u8>,
             value: sp_core::U256,
             gas_limit: sp_core::U256,
@@ -497,7 +496,7 @@ impl_runtime_apis! {
             max_priority_fee_per_gas: Option<sp_core::U256>,
             nonce: Option<sp_core::U256>,
             estimate: bool,
-            access_list: Option<Vec<(fp_evm::H160, Vec<sp_core::H256>)>>,
+            access_list: Option<Vec<(sp_core::H160, Vec<sp_core::H256>)>>,
         ) -> Result<pallet_evm::CreateInfo, sp_runtime::DispatchError> {
             let config = if estimate {
                 let mut config = <Runtime as pallet_evm::Config>::config().clone();

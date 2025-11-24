@@ -5,19 +5,19 @@
 // - pallet_ethereum: Ethereum block and transaction format support
 // - pallet_base_fee: EIP-1559 base fee mechanism
 
-use super::{AccountId, Balance, Balances, Runtime, RuntimeEvent, Timestamp};
+use super::{AccountId, Balances, Runtime, RuntimeEvent};
 use frame_support::{
     parameter_types,
-    traits::{FindAuthor, OnFinalize},
+    traits::FindAuthor,
     weights::Weight,
     ConsensusEngineId,
 };
 use pallet_evm::{
-    EnsureAddressNever, EnsureAddressRoot, FeeCalculator, IdentityAddressMapping,
+    EnsureAddressNever, FeeCalculator, IdentityAddressMapping,
 };
-use sp_core::{H160, H256, U256};
+use sp_core::{H160, U256};
 use sp_runtime::{
-    traits::{BlakeTwo256, IdentityLookup},
+    traits::BlakeTwo256,
     Permill,
 };
 
@@ -109,8 +109,8 @@ where
 
 /// Configure pallet_evm
 impl pallet_evm::Config for Runtime {
-    /// The EVM fee calculator (uses BaseFee pallet when available, FixedGasPrice otherwise)
-    type FeeCalculator = pallet_base_fee::BaseFee<Runtime>;
+    /// The EVM fee calculator
+    type FeeCalculator = FixedGasPrice;
     
     /// Gas weight mapping for transaction weight calculation
     type GasWeightMapping = pallet_evm::FixedGasWeightMapping<Runtime>;
@@ -162,14 +162,8 @@ impl pallet_evm::Config for Runtime {
     /// Gas limit PoV size ratio
     type GasLimitPovSizeRatio = ();
     
-    /// Timestamp provider
-    type Timestamp = Timestamp;
-    
     /// Weight info for benchmarking
     type WeightInfo = pallet_evm::weights::SubstrateWeight<Runtime>;
-    
-    /// SuicideQuickClearLimit - number of storage items to clear on contract self-destruct
-    type SuicideQuickClearLimit = frame_support::traits::ConstU32<0>;
 }
 
 /// Configure pallet_ethereum
