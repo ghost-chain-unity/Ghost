@@ -1,0 +1,24 @@
+# Cargo configuration to ensure substrate-wasm-builder subprocess inherits all patches
+# This is crucial for fixing duplicate lang item errors during WASM compilation
+
+[build]
+# Force all dependencies to use the same patch resolution as parent workspace
+target-dir = "target"
+
+# Explicit patches for substrate-wasm-builder subprocess
+# These override ANY versions coming from Frontier or other git dependencies
+[patch.crates-io]
+sp-io = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-application-crypto = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-core = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-runtime = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-api = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-std = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-keyring = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-application-crypto-sr25519 = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-weights = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-metadata-hash = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-version = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-genesis-builder = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-block-builder = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+sp-inherents = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
