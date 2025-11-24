@@ -14,3 +14,5 @@ mod storage;
 fn main() -> sc_cli::Result<()> {
     command::run()
 }
+
+mod account_mapping;
