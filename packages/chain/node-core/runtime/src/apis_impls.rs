@@ -43,9 +43,10 @@ use sp_version::RuntimeVersion;
 // Local module imports
 use super::{
     AccountId, Aura, Balance, Block, BlockNumber, Executive, Grandpa,
-    Nonce, Runtime, RuntimeCall, RuntimeGenesisConfig, SessionKeys, System,
+    Nonce, Runtime, RuntimeCall, SessionKeys, System,
     TransactionPayment, UncheckedExtrinsic, VERSION,
 };
+use super::runtime::RuntimeGenesisConfig;
 
 use crate::apis::ghost_protocol::{IntentData, JourneyStepData, MessagePointerData};
 use pallet_chainghost::{IntentById, IntentsByAccount, JourneyByIntent};
