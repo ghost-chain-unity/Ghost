@@ -111,34 +111,17 @@ where
     Ok(module)
 }
 
-// TODO: Rate limiting middleware - DEFERRED (DEFER-1.1.3-3)
-// The `into_context` method is deprecated/removed in jsonrpsee 0.24.x
-// Code preserved below for future integration when jsonrpsee API stabilizes
-// Phase 1.1.3 JSON-RPC Integration: Rate limiting module (rate_limit.rs) fully implemented with 8 unit tests
-// Awaiting jsonrpsee new middleware API. Ready for immediate integration within 2-3 hours of API release.
-// See rate_limit.rs for complete implementation and DEFER-1.1.3-3 in roadmap-tasks.md for details.
-/*
+/// Apply rate limiting to RPC module (jsonrpsee 0.26+ middleware)
+/// 
+/// Note: Rate limiting middleware is available via RpcServiceBuilder layer_fn at server startup.
+/// See service.rs for integration point.
 #[allow(dead_code)]
-mod rate_limit_middleware_commented {
-    use super::*;
-    
-    /// Apply rate limiting middleware to RPC module
-    pub fn apply_rate_limit_middleware<'a>(
-        module: RpcModule<()>,
-        rate_limiter: RateLimiter,
-    ) -> RpcModule<RateLimiterContext> {
-        let context = RateLimiterContext { rate_limiter };
-        module.into_context(context)
-    }
-
-    /// Context for rate limiter
-    #[derive(Clone)]
-    pub struct RateLimiterContext {
-        /// Rate limiter instance
-        pub rate_limiter: RateLimiter,
-    }
+pub fn apply_rate_limit_info_headers(
+    rate_limiter: &RateLimiter,
+    ip: Option<IpAddr>,
+) -> Result<(), RateLimitError> {
+    check_rate_limit(rate_limiter, ip, None).map(|_| ())
 }
-*/
 
 /// Helper function to check rate limit from request
 #[allow(dead_code)]
