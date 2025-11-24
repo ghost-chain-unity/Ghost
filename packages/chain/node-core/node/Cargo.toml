@@ -60,20 +60,15 @@ sc-transaction-pool.default-features = true
 sc-transaction-pool.workspace = true
 ghost-runtime.workspace = true
 
-# Frontier dependencies for Ethereum RPC compatibility (Moonbeam fork)
-# DEFERRED (November 24, 2025): Fundamental RocksDB version conflict
-# - Polkadot SDK stable2512 requires: rocksdb 0.24 (librocksdb-sys 0.17)
-# - Moonbeam Frontier (all branches) requires: rocksdb 0.21 (librocksdb-sys 0.11)
-# - Cannot coexist in single binary (native library linking conflict)
-# Status: Waiting for Moonbeam Frontier to upgrade RocksDB to 0.24
-# Action: Uncomment when Moonbeam Frontier merges rocksdb 0.24 compatibility
-#fc-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = true }
-#fc-db = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = true }
-#fc-mapping-sync = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = true }
-#fc-storage = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = true }
-#fc-consensus = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = true }
-#fp-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = true }
-#fp-evm = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = true }
+# Frontier dependencies for Ethereum RPC compatibility (Moonbeam fork stable2506)
+# Now uses moonbeam-polkadot-stable2506 branch (matches Polkadot SDK stable2506 for RocksDB compatibility)
+fc-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2506", default-features = true }
+fc-db = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2506", default-features = true }
+fc-mapping-sync = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2506", default-features = true }
+fc-storage = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2506", default-features = true }
+fc-consensus = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2506", default-features = true }
+fp-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2506", default-features = true }
+fp-evm = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2506", default-features = true }
 
 sp-api.default-features = true
 sp-api.workspace = true
