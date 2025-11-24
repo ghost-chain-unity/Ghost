@@ -61,17 +61,15 @@ sc-transaction-pool.workspace = true
 ghost-runtime.workspace = true
 
 # Frontier RPC dependencies for Ethereum compatibility (Moonbeam fork master)
-# NOTE: Commented due to sc-network/sc-network-types version incompatibility (kad module missing in stable2503 branch)
-# Runtime layer (pallet-evm, pallet-ethereum, pallet-base-fee) fully working in runtime/Cargo.toml
-# Node-side RPC backend ready - uncomment lines below when substrate versions updated to compatible release
-# fc-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-# fc-rpc-core = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-# fc-db = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-# fc-mapping-sync = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-# fc-storage = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-# fc-consensus = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-# fp-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-# fp-consensus = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = false }
+# Updated November 24, 2025: stable2504 resolves sc-network/sc-network-types kad module issue
+fc-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
+fc-rpc-core = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
+fc-db = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
+fc-mapping-sync = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
+fc-storage = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
+fc-consensus = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
+fp-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
+fp-consensus = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = false }
 
 sp-api.default-features = true
 sp-api.workspace = true
