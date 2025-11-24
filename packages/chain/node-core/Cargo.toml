@@ -89,9 +89,8 @@ opt-level = 3
 panic = "unwind"
 
 [patch.crates-io]
-# Force ALL sp_* primitives from stable2412 to prevent duplicate lang item errors during wasm build
+# Force all sp_* primitives from stable2412 to prevent duplicate lang item errors during wasm build
 # This ensures WASM and native builds use identical dependency resolution, preventing panic_impl conflicts
-# substrate-wasm-builder creates a separate build context that needs explicit patches
 sp-io = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
 sp-application-crypto = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
 sp-core = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
