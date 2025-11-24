@@ -33,14 +33,14 @@ pallet-chainghost.workspace = true
 pallet-g3mail.workspace = true
 pallet-ghonity.workspace = true
 
-# Frontier pallets for EVM compatibility (stable2412 branch)
-pallet-evm = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412", default-features = false }
-pallet-ethereum = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412", default-features = false }
-pallet-base-fee = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412", default-features = false }
-fp-evm = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412", default-features = false }
-fp-self-contained = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412", default-features = false }
-fp-rpc = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412", default-features = false }
-fp-consensus = { git = "https://github.com/polkadot-evm/frontier", branch = "stable2412", default-features = false }
+# Frontier pallets for EVM compatibility (master branch - compatible with sp-runtime 41.1.0)
+pallet-evm = { git = "https://github.com/polkadot-evm/frontier", branch = "master", default-features = false }
+pallet-ethereum = { git = "https://github.com/polkadot-evm/frontier", branch = "master", default-features = false }
+pallet-base-fee = { git = "https://github.com/polkadot-evm/frontier", branch = "master", default-features = false }
+fp-evm = { git = "https://github.com/polkadot-evm/frontier", branch = "master", default-features = false }
+fp-self-contained = { git = "https://github.com/polkadot-evm/frontier", branch = "master", default-features = false }
+fp-rpc = { git = "https://github.com/polkadot-evm/frontier", branch = "master", default-features = false }
+fp-consensus = { git = "https://github.com/polkadot-evm/frontier", branch = "master", default-features = false }
 pallet-transaction-payment-rpc-runtime-api.workspace = true
 pallet-transaction-payment.workspace = true
 scale-info = { features = ["derive", "serde"], workspace = true }
