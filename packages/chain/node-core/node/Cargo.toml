@@ -60,17 +60,6 @@ sc-transaction-pool.default-features = true
 sc-transaction-pool.workspace = true
 ghost-runtime.workspace = true
 
-# Frontier RPC dependencies for Ethereum compatibility (Moonbeam fork master)
-# Updated November 24, 2025: stable2504 resolves sc-network/sc-network-types kad module issue
-fc-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-fc-rpc-core = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-fc-db = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-fc-mapping-sync = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-fc-storage = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-fc-consensus = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-fp-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master" }
-fp-consensus = { git = "https://github.com/moonbeam-foundation/frontier", branch = "master", default-features = false }
-
 sp-api.default-features = true
 sp-api.workspace = true
 sp-block-builder.default-features = true
@@ -103,20 +92,15 @@ substrate-build-script-utils.workspace = true
 [features]
 default = ["std"]
 std = ["ghost-runtime/std"]
-# Dependencies that are only required if runtime benchmarking should be build.
 runtime-benchmarks = [
         "frame-benchmarking-cli/runtime-benchmarks",
         "frame-system/runtime-benchmarks",
-        "pallet-transaction-payment/runtime-benchmarks",
+        "sc-client-api/runtime-benchmarks",
         "sc-service/runtime-benchmarks",
-        "ghost-runtime/runtime-benchmarks",
+        "sp-api/runtime-benchmarks",
         "sp-runtime/runtime-benchmarks",
 ]
-# Enable features that allow the runtime to be tried and debugged. Name might be subject to change
-# in the near future.
 try-runtime = [
         "frame-system/try-runtime",
-        "pallet-transaction-payment/try-runtime",
-        "ghost-runtime/try-runtime",
         "sp-runtime/try-runtime",
 ]
