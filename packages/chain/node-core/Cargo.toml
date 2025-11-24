@@ -88,6 +88,11 @@ substrate-wasm-builder = { git = "https://github.com/paritytech/polkadot-sdk", b
 opt-level = 3
 panic = "unwind"
 
+[patch.crates-io]
+# Force all sp_io from stable2412 to prevent duplicate lang item errors during wasm build
+# This ensures Frontier dependencies use the same sp_io version as the rest of the workspace
+sp-io = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+
 [profile.production]
 codegen-units = 1
 inherits = "release"
