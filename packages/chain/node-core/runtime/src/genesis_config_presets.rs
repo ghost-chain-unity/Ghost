@@ -16,7 +16,7 @@
 // limitations under the License.
 
 use crate::AccountId;
-use crate::runtime::{RuntimeGenesisConfig, BalancesConfig, SudoConfig};
+use crate::runtime::{RuntimeGenesisConfig as GenesisConfig, BalancesConfig, SudoConfig};
 use alloc::{vec, vec::Vec};
 use frame_support::build_struct_json_patch;
 use serde_json::Value;
@@ -73,7 +73,7 @@ fn testnet_genesis(
     endowed_accounts: Vec<AccountId>,
     root: AccountId,
 ) -> Value {
-    build_struct_json_patch!(RuntimeGenesisConfig {
+    build_struct_json_patch!(GenesisConfig {
         balances: BalancesConfig {
             balances: endowed_accounts
                 .iter()
