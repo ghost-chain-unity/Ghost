@@ -45,11 +45,18 @@ The project uses a mono-repo architecture with pnpm workspaces for dependency is
 
 Includes JWT authentication, request signing, client-side encryption for G3Mail, API Gateway rate limiting, AI Engine content safety filtering, and comprehensive audit logging with append-only logs for AI prompts.
 
+## Recent Changes (2025-11-24)
+
+- **Runtime Structure Fix:** Reorganized runtime/src/lib.rs - moved `mod runtime` block earlier to enable proper type sequencing, removed unavailable features (RuntimeViewFunction, WeightReclaim)
+- **Type Export Fixes:** Added root-level re-exports for RuntimeGenesisConfig, BalancesConfig, SudoConfig to genesis_config_presets.rs
+- **Dependency Version Alignment:** Updated all polkadot-sdk and Frontier dependencies from stable2409 to stable2412 for consistency
+- **Import Path Fixes:** Cleaned up apis_impls.rs and genesis_config_presets.rs imports to use correct type paths
+
 ## External Dependencies
 
 ### Third-Party Services
 
-- **Blockchain & Web3:** Substrate framework, RocksDB.
+- **Blockchain & Web3:** Substrate framework (stable2412), RocksDB, Frontier/Moonbeam (stable2412 fork).
 - **AI/ML:** Hugging Face API.
 - **Caching & Storage:** Dragonfly, DuckDB, LMDB, IPFS, Amazon S3.
 - **Databases:** PostgreSQL 15+, TimescaleDB.
