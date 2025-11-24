@@ -43,7 +43,7 @@ use sp_version::RuntimeVersion;
 // Local module imports
 use super::{
     AccountId, Aura, Balance, Block, BlockNumber, Executive, Grandpa,
-    Nonce, Runtime, RuntimeCall, SessionKeys, System,
+    Nonce, Runtime, RuntimeCall, RuntimeGenesisConfig, SessionKeys, System,
     TransactionPayment, UncheckedExtrinsic, VERSION,
 };
 
