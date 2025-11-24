@@ -84,6 +84,17 @@ sp-transaction-pool = { git = "https://github.com/paritytech/polkadot-sdk", bran
 sp-version = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2503", default-features = false }
 substrate-wasm-builder = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2503", default-features = false }
 
+# CRITICAL: Force Frontier dependencies to use exact same sp_io versions as workspace
+# This prevents duplicate lang item (panic_impl) errors in WASM compilation
+# Frontier's deps may pull different sp_io versions - patch forces consistency
+[patch.crates-io]
+sp-io = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2503" }
+sp-application-crypto = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2503" }
+sp-core = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2503" }
+sp-runtime = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2503" }
+sp-std = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2503" }
+sp-api = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2503" }
+
 [profile.release]
 opt-level = 3
 panic = "unwind"
