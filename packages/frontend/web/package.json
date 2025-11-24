@@ -15,7 +15,7 @@
     "clean": "rm -rf .next out dist node_modules"
   },
   "dependencies": {
-    "next": "14.0.4",
+    "next": "14.2.33",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "@heroui/react": "^2.8.5",
