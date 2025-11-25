@@ -64,7 +64,7 @@ rand = { version = "0.8", default-features = false, optional = true }
 getrandom = { version = "0.3", default-features = false, features = ["wasm_js"], optional = true }
 
 [build-dependencies]
-substrate-wasm-builder = { optional = true, workspace = true }
+substrate-wasm-builder = { optional = true, workspace = true, default-features = true }
 
 [features]
 default = ["std"]
@@ -110,7 +110,6 @@ std = [
     "sp-std/std",
     "sp-transaction-pool/std",
     "sp-version/std",
-    "substrate-wasm-builder",
 ]
 
 # Fitur khusus untuk build WASM yang memerlukan random

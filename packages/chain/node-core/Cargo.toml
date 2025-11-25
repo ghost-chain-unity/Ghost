@@ -82,7 +82,7 @@ sp-session = { git = "https://github.com/paritytech/polkadot-sdk", branch = "sta
 sp-storage = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412", default-features = false }
 sp-transaction-pool = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412", default-features = false }
 sp-version = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412", default-features = false }
-substrate-wasm-builder = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
+substrate-wasm-builder = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412", default-features = false }
 
 [profile.release]
 opt-level = 3

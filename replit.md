@@ -49,22 +49,19 @@ Includes JWT authentication, request signing, client-side encryption for G3Mail,
 
 ### WASM Runtime Build - Error 426 & Warnings RESOLVED
 
-**Issue:** CI builds with `--no-default-features` flag for WASM compilation were failing with error 426 (unresolved reference) and 6 warnings due to conflicting dependency configurations.
+**Issue:** CI builds with `--no-default-features` flag for WASM compilation were failing with error 426 (unresolved reference) and 6 warnings.
 
-**Root Cause:** `substrate-wasm-builder` in build-dependencies was configured with `default-features = true`, which forced standard library features to be enabled even when building WASM runtime in no_std mode. This caused:
-- Feature flag conflicts between no_std WASM build and std build
-- Unresolved references in dependencies (error 426)
-- 6 compilation warnings from conflicting feature sets
+**Root Cause:** `"substrate-wasm-builder"` was incorrectly listed in the `std` feature (line 113 of runtime/Cargo.toml). Build-dependencies cannot be included in feature lists - this is invalid Cargo configuration that caused the error 426 (cannot find).
 
 **Fixes Applied (2025-11-25):**
-- **✅ Runtime Cargo.toml:** Removed `default-features = true` from `substrate-wasm-builder` build-dependency (line 70)
-- **✅ Workspace Cargo.toml:** Removed `default-features = false` override, allowing substrate-wasm-builder to use its default no-std-compatible settings (line 88)
+- **✅ Runtime Cargo.toml:** Removed invalid `"substrate-wasm-builder"` from std feature list (line 113)
+- Build.rs already has proper conditional compilation: `#[cfg(all(feature = "std", ...))]` handles substrate-wasm-builder usage correctly
 
 **Why This Works:**
-- Build-dependencies inherit correct feature resolution when `default-features` is not explicitly set
-- WASM builder now properly applies no_std mode during CI builds with `--no-default-features`
-- Dependencies stay aligned between native and WASM targets
-- Feature propagation now correct for substrate stable2412 branch
+- Build-dependencies are only for build-time and cannot be gated by feature flags
+- `build.rs` is properly conditional: calls `WasmBuilder` when `std` feature active, returns `{}` when no_std
+- When CI builds with `--no-default-features`, `std` is not enabled → build.rs returns empty → no substrate-wasm-builder needed
+- When normal native build (with default features), `std` IS enabled → build.rs calls substrate-wasm-builder → WASM output generated
 
 **Previous Fixes (2025-11-24):**
 - **✅ Fixed 20+ module visibility errors:** Removed all `runtime::` module prefixes from type references in lib.rs, apis_impls.rs, genesis_config_presets.rs. The `#[frame_support::runtime]` macro generates types directly in scope, not via module path.
