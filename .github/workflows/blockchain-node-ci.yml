@@ -83,15 +83,20 @@ jobs:
         run: |
           set -eux
           # Create temporary .cargo/config.local with getrandom patch for WASM only
+          # This isolates getrandom/js feature to WASM builds without affecting native/check/lint
           cat > .cargo/config.local << 'EOF'
           [patch.crates-io]
           getrandom = { version = "0.2", features = ["js"] }
           EOF
           
-          # Build WASM runtime with patch
+          # Clear relevant cargo cache to ensure patch is applied
+          rm -rf target/wasm32-unknown-unknown/release/deps/getrandom* || true
+          rm -rf target/wasm32-unknown-unknown/release/build/getrandom* || true
+          
+          # Build WASM runtime with getrandom/js support
           cargo build -p ghost-runtime --release --target ${{ matrix.wasm_target }}
           
-          # Clean up temp config
+          # Clean up temp config (don't affect other jobs)
           rm -f .cargo/config.local
 
       - name: Cache wasm-opt
