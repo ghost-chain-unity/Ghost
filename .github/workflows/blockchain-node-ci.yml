@@ -82,9 +82,14 @@ jobs:
           RUSTFLAGS: "-C target-feature=+atomics,+bulk-memory,+mutable-globals"
         run: |
           set -eux
-          cargo build -p ghost-runtime --release \
-            --target ${{ matrix.wasm_target }} \
-            --config 'patch.crates-io.getrandom = { version = "0.2", features = ["js"] }'
+          # Temporarily patch getrandom for WASM build only
+          sed -i '/^\[patch\.crates-io\]/a getrandom = { version = "0.2", features = ["js"] }' .cargo/config.toml
+          
+          # Build WASM runtime
+          cargo build -p ghost-runtime --release --target ${{ matrix.wasm_target }}
+          
+          # Restore original config (don't affect other jobs)
+          git checkout .cargo/config.toml
 
       - name: Cache wasm-opt
         if: ${{ matrix.wasm_opt == 'true' }}
