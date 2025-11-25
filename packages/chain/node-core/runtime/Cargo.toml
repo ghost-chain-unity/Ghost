@@ -28,6 +28,10 @@ pallet-grandpa.workspace = true
 pallet-sudo.workspace = true
 pallet-timestamp.workspace = true
 
+# Enable for Wasm builder
+rand = { version = "0.8", default-features = false, optional = true }
+getrandom = { version = "0.2", default-features = false, features = ["js"], optional = true }
+
 # Ghost Protocol custom pallets
 pallet-chainghost.workspace = true
 pallet-g3mail.workspace = true
