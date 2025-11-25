@@ -20,12 +20,6 @@ use sp_runtime::{
 use sp_version::NativeVersion;
 use sp_version::RuntimeVersion;
 
-// WASM-specific random number generation support
-#[cfg(all(not(feature = "std"), feature = "wasm-random"))]
-use rand;
-#[cfg(all(not(feature = "std"), feature = "wasm-random"))]
-use getrandom;
-
 pub use frame_system::Call as SystemCall;
 pub use pallet_balances::Call as BalancesCall;
 pub use pallet_timestamp::Call as TimestampCall;
