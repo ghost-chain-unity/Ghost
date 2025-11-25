@@ -1,4 +1,4 @@
-modules = ["nodejs-20", "rust-stable"]
+modules = ["rust-stable", "bash", "nodejs-20"]
 [agent]
 expertMode = true
 
