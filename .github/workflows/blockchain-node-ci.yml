@@ -3,7 +3,6 @@ name: Blockchain Node CI
 on:
   workflow_dispatch:
   push:
-    branches: [ main, develop ]
     tags:
       - 'v*'
 
@@ -29,13 +28,10 @@ jobs:
         id: cleanup
         run: |
           set -eux
-          echo "Cleaning target directories and wbuild..."
           rm -rf target || true
           rm -rf **/target || true
           rm -rf **/wbuild || true
-          # substrate-wasm-builder temporary dirs (defensive)
           rm -rf /home/runner/work/**/target/debug/wbuild || true
-          # signal done via GITHUB_OUTPUT (replacement for deprecated set-output)
           echo "done=true" >> "$GITHUB_OUTPUT"
 
   # -------------------------------------------------------------------
@@ -46,13 +42,12 @@ jobs:
     needs: clean-artifacts
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        wasm_target: [wasm32-unknown-unknown, wasm32v1-none]
+        wasm_target: [wasm32-unknown-unknown]
         include:
           - wasm_target: wasm32-unknown-unknown
-            wasm_opt: false
-          - wasm_target: wasm32v1-none
-            wasm_opt: false
+            wasm_opt: true
     steps:
       - uses: actions/checkout@v4
 
@@ -62,8 +57,7 @@ jobs:
           components: rust-src
 
       - name: Add wasm targets
-        run: |
-          rustup target add ${{ matrix.wasm_target }}
+        run: rustup target add ${{ matrix.wasm_target }}
 
       - name: Install system deps for wasm
         run: |
@@ -88,15 +82,23 @@ jobs:
           RUSTFLAGS: "-C target-feature=+atomics,+bulk-memory,+mutable-globals"
         run: |
           set -eux
-          cargo build -p ghost-runtime --release --target ${{ matrix.wasm_target }} --features wasm-random
+          cargo build -p ghost-runtime --release \
+            --target ${{ matrix.wasm_target }} \
+            --features wasm-random,std
 
       - name: Optionally run wasm-opt (binaryen)
         if: ${{ matrix.wasm_opt == 'true' }}
+        uses: actions/cache@v3
+        with:
+          path: packages/chain/node-core/target/wasm-opt-cache
+          key: wasm-opt-${{ hashFiles('packages/chain/node-core/runtime/**') }}
         run: |
           set -eux
           WASM_FILE=$(find packages/chain/node-core/target -type f -name "*.wasm" | head -n1)
           if [ -n "$WASM_FILE" ]; then
+            mkdir -p packages/chain/node-core/target/wasm-opt-cache
             wasm-opt -Oz -o ${WASM_FILE}.opt.wasm "$WASM_FILE"
+            cp ${WASM_FILE}.opt.wasm packages/chain/node-core/target/wasm-opt-cache/
             echo "wasm-opt produced: ${WASM_FILE}.opt.wasm"
           fi
 
@@ -223,11 +225,6 @@ jobs:
         with:
           targets: ${{ matrix.target }}
           components: rust-src
-
-      - name: Add wasm targets (kept)
-        run: |
-          rustup target add wasm32-unknown-unknown
-          rustup target add wasm32v1-none
 
       - name: Remove leftover wbuild (defensive)
         run: rm -rf **/wbuild || true
@@ -358,7 +355,6 @@ jobs:
               exit 1
             fi
             echo "name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
-          fi
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4
