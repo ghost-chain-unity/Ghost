@@ -83,7 +83,8 @@ jobs:
         run: |
           set -eux
           cargo build -p ghost-runtime --release \
-            --target ${{ matrix.wasm_target }}
+            --target ${{ matrix.wasm_target }} \
+            --config 'patch.crates-io.getrandom = { version = "0.2", features = ["js"] }'
 
       - name: Cache wasm-opt
         if: ${{ matrix.wasm_opt == 'true' }}
