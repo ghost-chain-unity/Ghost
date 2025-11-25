@@ -59,8 +59,8 @@ sp-std = { default-features = false, workspace = true }
 sp-transaction-pool = { workspace = true, default-features = false }
 sp-version = { features = ["serde"], workspace = true, default-features = false }
 
-# WASM support - getrandom with wasm_js feature for browser compatibility
-getrandom = { version = "0.2", default-features = false, features = ["wasm_js"] }
+# WASM support - getrandom with js feature for wasm32-unknown-unknown target
+getrandom = { version = "0.2", features = ["js"] }
 
 [build-dependencies]
 substrate-wasm-builder = { optional = true, workspace = true, default-features = true }

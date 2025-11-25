@@ -15,5 +15,5 @@ sp-runtime = { git = "https://github.com/paritytech/polkadot-sdk", branch = "sta
 sp-api = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
 sp-std = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
 sp-keyring = { git = "https://github.com/paritytech/polkadot-sdk", branch = "stable2412" }
-# Force getrandom with wasm_js feature for WASM target support
-getrandom = { version = "=0.2.16", default-features = false, features = ["wasm_js"] }
+# Force getrandom with js feature for wasm32-unknown-unknown support
+getrandom = { version = "0.2", features = ["js"] }
