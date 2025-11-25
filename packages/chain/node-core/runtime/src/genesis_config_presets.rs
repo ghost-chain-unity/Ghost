@@ -23,17 +23,22 @@ use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_consensus_grandpa::AuthorityId as GrandpaId;
 use sp_genesis_builder::{self, PresetId};
 use sp_keyring::Sr25519Keyring;
+
+#[cfg(feature = "evm-support")]
 use sp_core::{H160, U256};
+#[cfg(feature = "evm-support")]
 use alloc::collections::BTreeMap;
 
 // Helper function to convert AccountId to EVM H160 address
 // Strategy: Take first 20 bytes of the 32-byte AccountId
+#[cfg(feature = "evm-support")]
 fn account_id_to_h160(account_id: &AccountId) -> H160 {
     let account_bytes: &[u8; 32] = account_id.as_ref();
     H160::from_slice(&account_bytes[0..20])
 }
 
 // Helper function to create EVM genesis accounts for well-known test accounts
+#[cfg(feature = "evm-support")]
 fn get_evm_genesis_accounts() -> BTreeMap<H160, fp_evm::GenesisAccount> {
     let mut accounts = BTreeMap::new();
     
@@ -93,6 +98,7 @@ fn testnet_genesis(
                 .collect::<Vec<_>>(),
         },
         sudo: SudoConfig { key: Some(root) },
+        #[cfg(feature = "evm-support")]
         evm: pallet_evm::GenesisConfig {
             accounts: get_evm_genesis_accounts(),
             _config: Default::default(),

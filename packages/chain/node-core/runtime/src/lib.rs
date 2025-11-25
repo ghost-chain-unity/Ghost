@@ -195,13 +195,16 @@ pub mod runtime {
     #[runtime::pallet_index(9)]
     pub type Ghonity = pallet_ghonity;
 
-    // Frontier pallets for Ethereum compatibility
+    // Frontier pallets for Ethereum compatibility (only in native builds, not WASM)
+    #[cfg(feature = "evm-support")]
     #[runtime::pallet_index(10)]
     pub type EVM = pallet_evm;
 
+    #[cfg(feature = "evm-support")]
     #[runtime::pallet_index(11)]
     pub type Ethereum = pallet_ethereum;
 
+    #[cfg(feature = "evm-support")]
     #[runtime::pallet_index(12)]
     pub type BaseFee = pallet_base_fee;
 }

@@ -376,6 +376,7 @@ impl_runtime_apis! {
         }
     }
 
+    #[cfg(feature = "evm-support")]
     impl fp_rpc::EthereumRuntimeRPCApi<Block> for Runtime {
         fn chain_id() -> u64 {
             <Runtime as pallet_evm::Config>::ChainId::get()
@@ -611,6 +612,7 @@ impl_runtime_apis! {
         }
     }
 
+    #[cfg(feature = "evm-support")]
     impl fp_rpc::ConvertTransactionRuntimeApi<Block> for Runtime {
         fn convert_transaction(
             transaction: pallet_ethereum::Transaction,

@@ -47,6 +47,45 @@ Includes JWT authentication, request signing, client-side encryption for G3Mail,
 
 ## Recent Changes (2025-11-25)
 
+### Frontier Pallets Made Optional - EVM Support Feature Flag
+
+**Issue:** WASM runtime builds were failing with 400+ E0277 trait bound errors caused by Frontier pallets (pallet-evm, pallet-ethereum, pallet-base-fee) being compiled in no_std WASM builds. EVM functionality is not required for Phase 1 ChainGhost testnet.
+
+**Root Cause:** Frontier pallets depend on std-only dependencies (like alloc::collections::HashMap implementations) that cannot compile in no_std WASM environments. These pallets were unconditionally included in runtime causing compilation failures.
+
+**Solution Implemented (2025-11-25):**
+Created new `evm-support` feature flag with conditional compilation to exclude Frontier from WASM builds:
+
+**Files Modified:**
+1. **runtime/Cargo.toml:**
+   - Added `evm-support` feature flag (enabled in default features for native builds)
+   - Made Frontier dependencies optional in `std`, `runtime-benchmarks`, and `try-runtime` features using `?` syntax
+   - Native builds: `default = ["std", "evm-support"]` → includes EVM
+   - WASM builds: `--no-default-features --features wasm-random` → excludes EVM
+
+2. **runtime/src/lib.rs:**
+   - Wrapped all Frontier pallet declarations with `#[cfg(feature = "evm-support")]`
+   - Pallets EVM, Ethereum, and BaseFee only compiled when evm-support enabled
+
+3. **runtime/src/configs/mod.rs:**
+   - Made frontier config module conditional with `#[cfg(feature = "evm-support")]`
+
+4. **runtime/src/genesis_config_presets.rs:**
+   - Wrapped EVM-related imports (H160, U256, BTreeMap) with `#[cfg(feature = "evm-support")]`
+   - Made helper functions (`account_id_to_h160`, `get_evm_genesis_accounts`) conditional
+   - Made EVM genesis config optional in testnet_genesis()
+
+5. **runtime/src/apis_impls.rs:**
+   - Wrapped `fp_rpc::EthereumRuntimeRPCApi` implementation with `#[cfg(feature = "evm-support")]`
+   - Wrapped `fp_rpc::ConvertTransactionRuntimeApi` implementation with `#[cfg(feature = "evm-support")]`
+
+**Build Strategy:**
+- **Native builds:** Use default features → includes std + evm-support → full functionality
+- **WASM builds:** Use `--no-default-features --features wasm-random` → no_std, no EVM → clean compilation
+- **CI/CD:** GitHub Actions configured for both native and WASM builds, no Cargo usage on Replit
+
+**Result:** WASM runtime now builds cleanly without Frontier pallets. EVM support can be re-enabled in future phases by including evm-support feature.
+
 ### WASM Runtime Build - Error 426 & Warnings RESOLVED
 
 **Issue:** CI builds with `--no-default-features` flag for WASM compilation were failing with error 426 (unresolved reference) and 6 warnings.
