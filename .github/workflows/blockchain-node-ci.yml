@@ -76,14 +76,15 @@ jobs:
           rm -rf packages/chain/node-core/target/debug/wbuild || true
           rm -rf packages/chain/node-core/target/${{ matrix.wasm_target }} || true
 
-      - name: Build ghost-runtime (WASM with default features)
+      - name: Build ghost-runtime (WASM with random support)
         working-directory: packages/chain/node-core
         env:
           RUSTFLAGS: "-C target-feature=+atomics,+bulk-memory,+mutable-globals"
         run: |
           set -eux
           cargo build -p ghost-runtime --release \
-            --target ${{ matrix.wasm_target }}
+            --target ${{ matrix.wasm_target }} \
+            --features wasm-random
 
       - name: Cache wasm-opt
         if: ${{ matrix.wasm_opt == 'true' }}

@@ -116,6 +116,7 @@ std = [
 wasm-random = [
     "rand",
     "getrandom",
+    "getrandom/wasm_js",
 ]
 
 runtime-benchmarks = [
