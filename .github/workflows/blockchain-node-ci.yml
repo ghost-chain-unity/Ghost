@@ -84,7 +84,8 @@ jobs:
           set -eux
           cargo build -p ghost-runtime --release \
             --target ${{ matrix.wasm_target }} \
-            --features wasm-random,std
+            --no-default-features \
+            --features wasm-random
 
       - name: Cache wasm-opt
         if: ${{ matrix.wasm_opt == 'true' }}
