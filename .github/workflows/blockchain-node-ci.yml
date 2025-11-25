@@ -1,4 +1,4 @@
-name: Blockchain Node CI (Optimized: wasm-matrix + separate caches + docker cache)
+name: Blockchain Node CI
 
 on:
   workflow_dispatch:
