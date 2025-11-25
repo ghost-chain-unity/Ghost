@@ -378,40 +378,33 @@ impl_runtime_apis! {
 
     #[cfg(feature = "evm-support")]
     impl fp_rpc::EthereumRuntimeRPCApi<Block> for Runtime {
-        #[cfg(feature = "evm-support")]
         fn chain_id() -> u64 {
             <Runtime as pallet_evm::Config>::ChainId::get()
         }
 
-        #[cfg(feature = "evm-support")]
         fn account_basic(address: sp_core::H160) -> fp_evm::Account {
             pallet_evm::Pallet::<Runtime>::account_basic(&address)
         }
 
-        #[cfg(feature = "evm-support")]
         fn gas_price() -> sp_core::U256 {
             let (gas_price, _) = <Runtime as pallet_evm::Config>::FeeCalculator::min_gas_price();
             gas_price
         }
 
-        #[cfg(feature = "evm-support")]
         fn account_code_at(address: sp_core::H160) -> Vec<u8> {
             pallet_evm::AccountCodes::<Runtime>::get(address)
         }
 
-        #[cfg(feature = "evm-support")]
         fn author() -> sp_core::H160 {
             <pallet_evm::Pallet<Runtime>>::find_author()
         }
 
-        #[cfg(feature = "evm-support")]
         fn storage_at(address: sp_core::H160, index: sp_core::U256) -> sp_core::U256 {
             let mut tmp = [0u8; 32];
             index.to_big_endian(&mut tmp);
             pallet_evm::AccountStorages::<Runtime>::get(address, sp_core::H256::from_slice(&tmp[..]))
         }
 
-        #[cfg(feature = "evm-support")]
         fn call(
             from: sp_core::H160,
             to: sp_core::H160,
