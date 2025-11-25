@@ -23,22 +23,17 @@ use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_consensus_grandpa::AuthorityId as GrandpaId;
 use sp_genesis_builder::{self, PresetId};
 use sp_keyring::Sr25519Keyring;
-
-#[cfg(feature = "evm-support")]
 use sp_core::{H160, U256};
-#[cfg(feature = "evm-support")]
 use alloc::collections::BTreeMap;
 
 // Helper function to convert AccountId to EVM H160 address
 // Strategy: Take first 20 bytes of the 32-byte AccountId
-#[cfg(feature = "evm-support")]
 fn account_id_to_h160(account_id: &AccountId) -> H160 {
     let account_bytes: &[u8; 32] = account_id.as_ref();
     H160::from_slice(&account_bytes[0..20])
 }
 
 // Helper function to create EVM genesis accounts for well-known test accounts
-#[cfg(feature = "evm-support")]
 fn get_evm_genesis_accounts() -> BTreeMap<H160, fp_evm::GenesisAccount> {
     let mut accounts = BTreeMap::new();
     
@@ -71,8 +66,7 @@ fn get_evm_genesis_accounts() -> BTreeMap<H160, fp_evm::GenesisAccount> {
     accounts
 }
 
-// Native build with EVM support
-#[cfg(feature = "evm-support")]
+// Returns the genesis config presets populated with given parameters.
 fn testnet_genesis(
     initial_authorities: Vec<(AuraId, GrandpaId)>,
     endowed_accounts: Vec<AccountId>,
@@ -103,37 +97,6 @@ fn testnet_genesis(
             accounts: get_evm_genesis_accounts(),
             _config: Default::default(),
         },
-    })
-}
-
-// WASM build without EVM support
-#[cfg(not(feature = "evm-support"))]
-fn testnet_genesis(
-    initial_authorities: Vec<(AuraId, GrandpaId)>,
-    endowed_accounts: Vec<AccountId>,
-    root: AccountId,
-) -> Value {
-    build_struct_json_patch!(GenesisConfig {
-        balances: BalancesConfig {
-            balances: endowed_accounts
-                .iter()
-                .cloned()
-                .map(|k| (k, 1u128 << 60))
-                .collect::<Vec<_>>(),
-        },
-        aura: pallet_aura::GenesisConfig {
-            authorities: initial_authorities
-                .iter()
-                .map(|x| x.0.clone())
-                .collect::<Vec<_>>(),
-        },
-        grandpa: pallet_grandpa::GenesisConfig {
-            authorities: initial_authorities
-                .iter()
-                .map(|x| (x.1.clone(), 1))
-                .collect::<Vec<_>>(),
-        },
-        sudo: SudoConfig { key: Some(root) },
     })
 }
 

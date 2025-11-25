@@ -23,8 +23,7 @@
 //
 // For more information, please refer to <http://unlicense.org>
 
-// Frontier (EVM) configuration module (only in native builds, not WASM)
-#[cfg(feature = "evm-support")]
+// Frontier (EVM) configuration module
 pub mod frontier;
 
 // Substrate and Polkadot dependencies
