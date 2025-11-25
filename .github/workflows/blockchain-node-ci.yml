@@ -82,6 +82,9 @@ jobs:
           RUSTFLAGS: "-C target-feature=+atomics,+bulk-memory,+mutable-globals"
         run: |
           set -eux
+          # Ensure wasm target is available
+          rustup target add wasm32-unknown-unknown
+          
           # Create temporary .cargo/config.local with getrandom patch for WASM only
           # This isolates getrandom/js feature to WASM builds without affecting native/check/lint
           cat > .cargo/config.local << 'EOF'
