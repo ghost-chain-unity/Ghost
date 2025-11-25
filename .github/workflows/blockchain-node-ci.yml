@@ -35,99 +35,6 @@ jobs:
           echo "done=true" >> "$GITHUB_OUTPUT"
 
   # -------------------------------------------------------------------
-  # 1. Build WASM runtime (matrix)
-  # -------------------------------------------------------------------
-  build-wasm-runtime:
-    name: Build WASM runtime (matrix)
-    needs: clean-artifacts
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        wasm_target: [wasm32-unknown-unknown]
-        include:
-          - wasm_target: wasm32-unknown-unknown
-            wasm_opt: false
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rust-src
-
-      - name: Add wasm targets
-        run: rustup target add ${{ matrix.wasm_target }}
-
-      - name: Install system deps for wasm
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y clang cmake llvm protobuf-compiler libprotobuf-dev binaryen
-
-      - name: Setup separate cache for runtime (WASM)
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: packages/chain/node-core
-          cache-on-failure: true
-          key: wasm-${{ matrix.wasm_target }}-${{ hashFiles('packages/chain/node-core/runtime/**') }}
-
-      - name: Clean wasm-specific outputs (defensive)
-        run: |
-          rm -rf packages/chain/node-core/target/debug/wbuild || true
-          rm -rf packages/chain/node-core/target/${{ matrix.wasm_target }} || true
-
-      - name: Build ghost-runtime (WASM - Phase 1 runtime only)
-        working-directory: packages/chain/node-core
-        env:
-          RUSTFLAGS: "-C target-feature=+atomics,+bulk-memory,+mutable-globals"
-        run: |
-          set -eux
-          # Ensure wasm target is available
-          rustup target add wasm32-unknown-unknown
-          
-          # Create temporary .cargo/config.local with getrandom patch for WASM only
-          # This isolates getrandom/js feature to WASM builds without affecting native/check/lint
-          cat > .cargo/config.local << 'EOF'
-          [patch.crates-io]
-          getrandom = { version = "0.2", features = ["js"] }
-          EOF
-          
-          # Clear relevant cargo cache to ensure patch is applied
-          rm -rf target/wasm32-unknown-unknown/release/deps/getrandom* || true
-          rm -rf target/wasm32-unknown-unknown/release/build/getrandom* || true
-          
-          # Build WASM runtime with getrandom/js support
-          cargo build -p ghost-runtime --release --target ${{ matrix.wasm_target }}
-          
-          # Clean up temp config (don't affect other jobs)
-          rm -f .cargo/config.local
-
-      - name: Cache wasm-opt
-        if: ${{ matrix.wasm_opt == 'true' }}
-        uses: actions/cache@v3
-        with:
-          path: packages/chain/node-core/target/wasm-opt-cache
-          key: wasm-opt-${{ hashFiles('packages/chain/node-core/runtime/**') }}
-
-      - name: Run wasm-opt (binaryen)
-        if: ${{ matrix.wasm_opt == 'true' }}
-        run: |
-          set -eux
-          WASM_FILE=$(find packages/chain/node-core/target -type f -name "*.wasm" | head -n1)
-          if [ -n "$WASM_FILE" ]; then
-            mkdir -p packages/chain/node-core/target/wasm-opt-cache
-            wasm-opt -Oz -o ${WASM_FILE}.opt.wasm "$WASM_FILE"
-            cp ${WASM_FILE}.opt.wasm packages/chain/node-core/target/wasm-opt-cache/
-            echo "wasm-opt produced: ${WASM_FILE}.opt.wasm"
-          fi
-
-      - name: Upload wasm artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ghost-runtime-wasm-${{ matrix.wasm_target }}
-          path: packages/chain/node-core/target/**/release/*.wasm
-
-  # -------------------------------------------------------------------
   # 2. Check & Lint
   # -------------------------------------------------------------------
   check:
@@ -178,7 +85,7 @@ jobs:
   # -------------------------------------------------------------------
   test:
     name: Test
-    needs: [check, build-wasm-runtime]
+    needs: [check]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -214,19 +121,12 @@ jobs:
       - name: Run pallet tests
         run: bash packages/chain/node-core/scripts/test-pallets.sh
 
-      - name: Download wasm artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: ghost-runtime-wasm-wasm32-unknown-unknown
-          path: runtime-wasm-artifacts
-        continue-on-error: true
-
   # -------------------------------------------------------------------
   # 4. Build native binaries (matrix)
   # -------------------------------------------------------------------
   build:
     name: Build native (${{ matrix.target }})
-    needs: [check, test, build-wasm-runtime]
+    needs: [check, test]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -272,6 +172,7 @@ jobs:
       - name: Build release binary
         working-directory: packages/chain/node-core
         env:
+          SKIP_WASM_BUILD: 1
           CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: ${{ matrix.target == 'aarch64-unknown-linux-gnu' && 'aarch64-linux-gnu-gcc' || '' }}
           CC_aarch64_unknown_linux_gnu: ${{ matrix.target == 'aarch64-unknown-linux-gnu' && 'aarch64-linux-gnu-gcc' || '' }}
           AR_aarch64_unknown_linux_gnu: ${{ matrix.target == 'aarch64-unknown-linux-gnu' && 'aarch64-linux-gnu-ar' || '' }}
