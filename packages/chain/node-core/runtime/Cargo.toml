@@ -64,7 +64,7 @@ rand = { version = "0.8", default-features = false, optional = true }
 getrandom = { version = "0.3", default-features = false, features = ["wasm_js"], optional = true }
 
 [build-dependencies]
-substrate-wasm-builder = { optional = true, workspace = true, default-features = true }
+substrate-wasm-builder = { optional = true, workspace = true }
 
 [features]
 default = ["std"]

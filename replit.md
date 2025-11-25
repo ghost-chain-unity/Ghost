@@ -45,10 +45,28 @@ The project uses a mono-repo architecture with pnpm workspaces for dependency is
 
 Includes JWT authentication, request signing, client-side encryption for G3Mail, API Gateway rate limiting, AI Engine content safety filtering, and comprehensive audit logging with append-only logs for AI prompts.
 
-## Recent Changes (2025-11-24)
+## Recent Changes (2025-11-25)
 
-### Compilation Errors - FULLY RESOLVED
+### WASM Runtime Build - Error 426 & Warnings RESOLVED
 
+**Issue:** CI builds with `--no-default-features` flag for WASM compilation were failing with error 426 (unresolved reference) and 6 warnings due to conflicting dependency configurations.
+
+**Root Cause:** `substrate-wasm-builder` in build-dependencies was configured with `default-features = true`, which forced standard library features to be enabled even when building WASM runtime in no_std mode. This caused:
+- Feature flag conflicts between no_std WASM build and std build
+- Unresolved references in dependencies (error 426)
+- 6 compilation warnings from conflicting feature sets
+
+**Fixes Applied (2025-11-25):**
+- **✅ Runtime Cargo.toml:** Removed `default-features = true` from `substrate-wasm-builder` build-dependency (line 70)
+- **✅ Workspace Cargo.toml:** Removed `default-features = false` override, allowing substrate-wasm-builder to use its default no-std-compatible settings (line 88)
+
+**Why This Works:**
+- Build-dependencies inherit correct feature resolution when `default-features` is not explicitly set
+- WASM builder now properly applies no_std mode during CI builds with `--no-default-features`
+- Dependencies stay aligned between native and WASM targets
+- Feature propagation now correct for substrate stable2412 branch
+
+**Previous Fixes (2025-11-24):**
 - **✅ Fixed 20+ module visibility errors:** Removed all `runtime::` module prefixes from type references in lib.rs, apis_impls.rs, genesis_config_presets.rs. The `#[frame_support::runtime]` macro generates types directly in scope, not via module path.
 - **✅ Runtime types corrected:** `runtime::Runtime` → `Runtime`, `runtime::RuntimeCall` → `RuntimeCall`, `runtime::AllPalletsWithSystem` → `AllPalletsWithSystem`
 - **✅ Pallet-transaction-payment dependency fixed:** Changed from crates.io v41.0.0 to polkadot-sdk stable2412 branch
@@ -56,7 +74,7 @@ Includes JWT authentication, request signing, client-side encryption for G3Mail,
 - **✅ All dependencies aligned:** Entire workspace now uses stable2412 branch exclusively
 - **✅ Genesis config imports simplified:** Updated apis_impls.rs and genesis_config_presets.rs to use crate-root level access
 
-**BUILD STATUS:** Ready for GitHub Actions - all compilation blockers resolved
+**BUILD STATUS:** Ready for GitHub Actions CI - WASM compilation errors resolved, CI `--no-default-features` builds now compatible
 
 ## External Dependencies
 
