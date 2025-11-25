@@ -71,7 +71,8 @@ fn get_evm_genesis_accounts() -> BTreeMap<H160, fp_evm::GenesisAccount> {
     accounts
 }
 
-// Returns the genesis config presets populated with given parameters.
+// Native build with EVM support
+#[cfg(feature = "evm-support")]
 fn testnet_genesis(
     initial_authorities: Vec<(AuraId, GrandpaId)>,
     endowed_accounts: Vec<AccountId>,
@@ -98,11 +99,41 @@ fn testnet_genesis(
                 .collect::<Vec<_>>(),
         },
         sudo: SudoConfig { key: Some(root) },
-        #[cfg(feature = "evm-support")]
         evm: pallet_evm::GenesisConfig {
             accounts: get_evm_genesis_accounts(),
             _config: Default::default(),
         },
+    })
+}
+
+// WASM build without EVM support
+#[cfg(not(feature = "evm-support"))]
+fn testnet_genesis(
+    initial_authorities: Vec<(AuraId, GrandpaId)>,
+    endowed_accounts: Vec<AccountId>,
+    root: AccountId,
+) -> Value {
+    build_struct_json_patch!(GenesisConfig {
+        balances: BalancesConfig {
+            balances: endowed_accounts
+                .iter()
+                .cloned()
+                .map(|k| (k, 1u128 << 60))
+                .collect::<Vec<_>>(),
+        },
+        aura: pallet_aura::GenesisConfig {
+            authorities: initial_authorities
+                .iter()
+                .map(|x| x.0.clone())
+                .collect::<Vec<_>>(),
+        },
+        grandpa: pallet_grandpa::GenesisConfig {
+            authorities: initial_authorities
+                .iter()
+                .map(|x| (x.1.clone(), 1))
+                .collect::<Vec<_>>(),
+        },
+        sudo: SudoConfig { key: Some(root) },
     })
 }
 
