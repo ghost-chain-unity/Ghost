@@ -35,82 +35,10 @@ jobs:
           echo "done=true" >> "$GITHUB_OUTPUT"
 
   # -------------------------------------------------------------------
-  # 1. Build WASM runtime (matrix)
+  # NOTE: WASM runtime build removed for Phase 1 testnet
+  # EVM support and WASM builds planned for Phase 2+
+  # Phase 1 uses native runtime only for ChainGhost/G3Mail/Ghonity
   # -------------------------------------------------------------------
-  build-wasm-runtime:
-    name: Build WASM runtime (matrix)
-    needs: clean-artifacts
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        wasm_target: [wasm32-unknown-unknown]
-        include:
-          - wasm_target: wasm32-unknown-unknown
-            wasm_opt: true
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rust-src
-
-      - name: Add wasm targets
-        run: rustup target add ${{ matrix.wasm_target }}
-
-      - name: Install system deps for wasm
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y clang cmake llvm protobuf-compiler libprotobuf-dev binaryen
-
-      - name: Setup separate cache for runtime (WASM)
-        uses: Swatinem/rust-cache@v2
-        with:
-          workspaces: packages/chain/node-core
-          cache-on-failure: true
-          key: wasm-${{ matrix.wasm_target }}-${{ hashFiles('packages/chain/node-core/runtime/**') }}
-
-      - name: Clean wasm-specific outputs (defensive)
-        run: |
-          rm -rf packages/chain/node-core/target/debug/wbuild || true
-          rm -rf packages/chain/node-core/target/${{ matrix.wasm_target }} || true
-
-      - name: Build ghost-runtime (WASM)
-        working-directory: packages/chain/node-core
-        env:
-          RUSTFLAGS: "-C target-feature=+atomics,+bulk-memory,+mutable-globals"
-        run: |
-          set -eux
-          cargo build -p ghost-runtime --release \
-            --target ${{ matrix.wasm_target }} \
-            --no-default-features \
-            --features wasm-random
-
-      - name: Cache wasm-opt
-        if: ${{ matrix.wasm_opt == 'true' }}
-        uses: actions/cache@v3
-        with:
-          path: packages/chain/node-core/target/wasm-opt-cache
-          key: wasm-opt-${{ hashFiles('packages/chain/node-core/runtime/**') }}
-
-      - name: Run wasm-opt (binaryen)
-        if: ${{ matrix.wasm_opt == 'true' }}
-        run: |
-          set -eux
-          WASM_FILE=$(find packages/chain/node-core/target -type f -name "*.wasm" | head -n1)
-          if [ -n "$WASM_FILE" ]; then
-            mkdir -p packages/chain/node-core/target/wasm-opt-cache
-            wasm-opt -Oz -o ${WASM_FILE}.opt.wasm "$WASM_FILE"
-            cp ${WASM_FILE}.opt.wasm packages/chain/node-core/target/wasm-opt-cache/
-            echo "wasm-opt produced: ${WASM_FILE}.opt.wasm"
-          fi
-
-      - name: Upload wasm artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ghost-runtime-wasm-${{ matrix.wasm_target }}
-          path: packages/chain/node-core/target/**/release/*.wasm
 
   # -------------------------------------------------------------------
   # 2. Check & Lint
@@ -163,7 +91,7 @@ jobs:
   # -------------------------------------------------------------------
   test:
     name: Test
-    needs: [check, build-wasm-runtime]
+    needs: [check]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -199,19 +127,13 @@ jobs:
       - name: Run pallet tests
         run: bash packages/chain/node-core/scripts/test-pallets.sh
 
-      - name: Download wasm artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: ghost-runtime-wasm-wasm32-unknown-unknown
-          path: runtime-wasm-artifacts
-        continue-on-error: true
 
   # -------------------------------------------------------------------
   # 4. Build native binaries (matrix)
   # -------------------------------------------------------------------
   build:
     name: Build native (${{ matrix.target }})
-    needs: [check, test, build-wasm-runtime]
+    needs: [check, test]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
