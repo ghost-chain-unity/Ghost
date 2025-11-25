@@ -50,6 +50,7 @@ sp-consensus-grandpa = { features = ["serde"], workspace = true, default-feature
 sp-core = { features = ["serde"], workspace = true, default-features = false }
 sp-genesis-builder = { workspace = true, default-features = false }
 sp-inherents = { workspace = true, default-features = false }
+sp-io = { workspace = true, default-features = false }
 sp-keyring = { workspace = true, default-features = false }
 sp-offchain = { workspace = true, default-features = false }
 sp-runtime = { features = ["serde"], workspace = true, default-features = false }
@@ -99,6 +100,7 @@ std = [
     "sp-core/std",
     "sp-genesis-builder/std",
     "sp-inherents/std",
+    "sp-io/std",
     "sp-keyring/std",
     "sp-offchain/std",
     "sp-runtime/std",
