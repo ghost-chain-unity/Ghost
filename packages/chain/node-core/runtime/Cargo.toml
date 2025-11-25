@@ -33,12 +33,6 @@ pallet-chainghost.workspace = true
 pallet-g3mail.workspace = true
 pallet-ghonity.workspace = true
 
-# Frontier pallets for EVM compatibility
-pallet-evm = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2412", default-features = false }
-pallet-ethereum = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2412", default-features = false }
-pallet-base-fee = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2412", default-features = false }
-fp-evm = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2412", default-features = false }
-fp-rpc = { git = "https://github.com/moonbeam-foundation/frontier", branch = "moonbeam-polkadot-stable2412", default-features = false }
 pallet-transaction-payment-rpc-runtime-api.workspace = true
 pallet-transaction-payment.workspace = true
 scale-info = { features = ["derive", "serde"], workspace = true }
@@ -83,11 +77,6 @@ std = [
     "pallet-chainghost/std",
     "pallet-g3mail/std",
     "pallet-ghonity/std",
-    "pallet-evm/std",
-    "pallet-ethereum/std",
-    "pallet-base-fee/std",
-    "fp-evm/std",
-    "fp-rpc/std",
     "pallet-transaction-payment-rpc-runtime-api/std",
     "pallet-transaction-payment/std",
     "scale-info/std",
@@ -123,8 +112,6 @@ runtime-benchmarks = [
     "pallet-chainghost/runtime-benchmarks",
     "pallet-g3mail/runtime-benchmarks",
     "pallet-ghonity/runtime-benchmarks",
-    "pallet-evm/runtime-benchmarks",
-    "pallet-ethereum/runtime-benchmarks",
     "pallet-transaction-payment/runtime-benchmarks",
     "sp-runtime/runtime-benchmarks",
 ]
@@ -142,9 +129,6 @@ try-runtime = [
     "pallet-chainghost/try-runtime",
     "pallet-g3mail/try-runtime",
     "pallet-ghonity/try-runtime",
-    "pallet-evm/try-runtime",
-    "pallet-ethereum/try-runtime",
-    "pallet-base-fee/try-runtime",
     "pallet-transaction-payment/try-runtime",
     "sp-runtime/try-runtime",
 ]
