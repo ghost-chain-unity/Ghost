@@ -52,7 +52,7 @@ jobs:
           - wasm_target: wasm32-unknown-unknown
             wasm_opt: false
           - wasm_target: wasm32v1-none
-            wasm_opt: true
+            wasm_opt: false
     steps:
       - uses: actions/checkout@v4
 
