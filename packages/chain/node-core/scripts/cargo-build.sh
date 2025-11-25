@@ -17,10 +17,10 @@ echo ""
 # Use release mode for faster compilation in CI
 if [ "${CI:-false}" = "true" ]; then
     echo "Building in release mode (CI environment)..."
-    cargo build --release --locked 2>&1 | tee /tmp/cargo-build.log
+    cargo build --release --locked --features wasm-random 2>&1 | tee /tmp/cargo-build.log
 else
     echo "Building in debug mode..."
-    cargo build --locked 2>&1 | tee /tmp/cargo-build.log
+    cargo build --locked --features wasm-random 2>&1 | tee /tmp/cargo-build.log
 fi
 
 echo ""

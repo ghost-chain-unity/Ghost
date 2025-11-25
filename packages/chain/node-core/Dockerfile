@@ -52,7 +52,7 @@ RUN cargo fetch --locked || cargo fetch
 # Copy full source code (overwrites dummy files)
 COPY . /polkadot
 
-RUN cargo build --locked --release
+RUN cargo build --locked --release --features wasm-random
 
 # =========================
 # Stage 2 — Runtime Image

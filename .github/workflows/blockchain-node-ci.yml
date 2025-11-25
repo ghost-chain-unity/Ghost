@@ -88,7 +88,7 @@ jobs:
           RUSTFLAGS: "-C target-feature=+atomics,+bulk-memory,+mutable-globals"
         run: |
           set -eux
-          cargo build -p ghost-runtime --release --target ${{ matrix.wasm_target }}
+          cargo build -p ghost-runtime --release --target ${{ matrix.wasm_target }} --features wasm-random
 
       - name: Optionally run wasm-opt (binaryen)
         if: ${{ matrix.wasm_opt == 'true' }}
