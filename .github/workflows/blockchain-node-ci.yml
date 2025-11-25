@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [ main, develop ]
-    tags: 
+    tags:
       - 'v*'
 
 env:
@@ -13,17 +13,10 @@ env:
   CARGO_HOME: /home/runner/.cargo
   CARGO_INCREMENTAL: 0
 
-# ---------------------------
-# NOTE about self-hosted:
-# - To run jobs on your self-hosted runner later, replace `runs-on: ubuntu-latest`
-#   with `runs-on: [self-hosted, linux]` or `runs-on: self-hosted` on the jobs you want.
-# - Alternatively, create a matrix entry with runner label to let GH Actions choose.
-# ---------------------------
-
 jobs:
-  # -------------------------
-  # 0. Cleanup starter job (always run first)
-  # -------------------------
+  # -------------------------------------------------------------------
+  # 0. CLEAN ARTIFACTS (run first)
+  # -------------------------------------------------------------------
   clean-artifacts:
     name: Clean build artifacts (fresh workspace)
     runs-on: ubuntu-latest
@@ -31,23 +24,23 @@ jobs:
       cleaned: ${{ steps.cleanup.outputs.done }}
     steps:
       - uses: actions/checkout@v4
+
       - name: Full clean (wbuild + target + cargo cache)
         id: cleanup
         run: |
-          echo "Cleaning target directories and wbuild..."
           set -eux
+          echo "Cleaning target directories and wbuild..."
           rm -rf target || true
           rm -rf **/target || true
           rm -rf **/wbuild || true
-          # remove runtime-specific temp directories used by substrate-wasm-builder
+          # substrate-wasm-builder temporary dirs (defensive)
           rm -rf /home/runner/work/**/target/debug/wbuild || true
-          echo "::set-output name=done::true"
+          # signal done via GITHUB_OUTPUT (replacement for deprecated set-output)
+          echo "done=true" >> "$GITHUB_OUTPUT"
 
-  # -------------------------
-  # 1. Build WASM runtime matrix (isolated, uses wasm cache)
-  #    - matrix builds for multiple wasm targets / variants
-  #    - caches runtime deps separately from native
-  # -------------------------
+  # -------------------------------------------------------------------
+  # 1. Build WASM runtime (matrix) - isolated from native cache
+  # -------------------------------------------------------------------
   build-wasm-runtime:
     name: Build WASM runtime (matrix)
     needs: clean-artifacts
@@ -62,27 +55,33 @@ jobs:
             wasm_opt: true
     steps:
       - uses: actions/checkout@v4
+
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
           components: rust-src
+
       - name: Add wasm targets
         run: |
           rustup target add ${{ matrix.wasm_target }}
-      - name: Install system deps (for wasm tooling)
+
+      - name: Install system deps for wasm
         run: |
           sudo apt-get update
           sudo apt-get install -y clang cmake llvm protobuf-compiler libprotobuf-dev binaryen
+
       - name: Setup separate cache for runtime (WASM)
         uses: Swatinem/rust-cache@v2
         with:
           workspaces: packages/chain/node-core
           cache-on-failure: true
           key: wasm-${{ matrix.wasm_target }}-${{ hashFiles('packages/chain/node-core/runtime/**') }}
-      - name: Clean wasm build outputs
+
+      - name: Clean wasm-specific outputs (defensive)
         run: |
           rm -rf packages/chain/node-core/target/debug/wbuild || true
-          rm -rf packages/chain/node-core/target/wasm32-unknown-unknown || true
+          rm -rf packages/chain/node-core/target/${{ matrix.wasm_target }} || true
+
       - name: Build ghost-runtime (WASM)
         working-directory: packages/chain/node-core
         env:
@@ -90,103 +89,120 @@ jobs:
         run: |
           set -eux
           cargo build -p ghost-runtime --release --target ${{ matrix.wasm_target }}
-      - name: Optionally run wasm-opt (binaryen) when requested
+
+      - name: Optionally run wasm-opt (binaryen)
         if: ${{ matrix.wasm_opt == 'true' }}
         run: |
           set -eux
-          WASM_FILE=$(find packages/chain/node-core/target -type f -name "*ghost_runtime*.wasm" | head -n1)
+          WASM_FILE=$(find packages/chain/node-core/target -type f -name "*.wasm" | head -n1)
           if [ -n "$WASM_FILE" ]; then
             wasm-opt -Oz -o ${WASM_FILE}.opt.wasm "$WASM_FILE"
             echo "wasm-opt produced: ${WASM_FILE}.opt.wasm"
           fi
+
       - name: Upload wasm artifact (for downstream jobs)
         uses: actions/upload-artifact@v4
         with:
           name: ghost-runtime-wasm-${{ matrix.wasm_target }}
           path: packages/chain/node-core/target/**/release/*.wasm
 
-  # -------------------------
-  # 2. Check & Lint (uses native cache)
-  # -------------------------
+  # -------------------------------------------------------------------
+  # 2. Check & Lint (native cache)
+  # -------------------------------------------------------------------
   check:
     name: Check & Lint
     runs-on: ubuntu-latest
     needs: clean-artifacts
     steps:
       - uses: actions/checkout@v4
+
       - name: Install Rust toolchain + formatter/linter
         uses: dtolnay/rust-toolchain@stable
         with:
           components: rust-src, rustfmt, clippy
+
       - name: Install deps for lint/check
         run: |
           sudo apt-get update
           sudo apt-get install -y protobuf-compiler libprotobuf-dev clang cmake llvm
-      - name: Remove leftover wbuild
+
+      - name: Remove leftover wbuild (defensive)
         run: rm -rf **/wbuild || true
+
       - name: Setup separate cache for native (check)
         uses: Swatinem/rust-cache@v2
         with:
           workspaces: packages/chain/node-core
           cache-on-failure: true
           key: native-check-${{ hashFiles('packages/chain/node-core/**') }}
+
       - name: Generate/update Cargo.lock if needed
         run: |
           cd packages/chain/node-core
           if [ ! -f Cargo.lock ] || [ node/Cargo.toml -nt Cargo.lock ] || [ runtime/Cargo.toml -nt Cargo.lock ]; then
             cargo update --workspace
           fi
+
       - name: Run cargo check
         run: bash packages/chain/node-core/scripts/cargo-check.sh
+
       - name: Run cargo fmt
         run: bash packages/chain/node-core/scripts/cargo-fmt.sh
+
       - name: Run cargo clippy
         run: bash packages/chain/node-core/scripts/cargo-clippy.sh
 
-  # -------------------------
-  # 3. Test (depends on check + wasm builds)
-  # -------------------------
+  # -------------------------------------------------------------------
+  # 3. Test (depends on check + wasm)
+  # -------------------------------------------------------------------
   test:
     name: Test
     needs: [check, build-wasm-runtime]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
           components: rust-src
+
       - name: Install test deps
         run: |
           sudo apt-get update
           sudo apt-get install -y protobuf-compiler libprotobuf-dev clang cmake llvm
-      - name: Remove leftover wbuild
+
+      - name: Remove leftover wbuild (defensive)
         run: rm -rf **/wbuild || true
+
       - name: Setup native cache for tests
         uses: Swatinem/rust-cache@v2
         with:
           workspaces: packages/chain/node-core
           cache-on-failure: true
           key: native-test-${{ hashFiles('packages/chain/node-core/**') }}
+
       - name: Generate/update Cargo.lock if needed
         run: |
           cd packages/chain/node-core
           cargo update --workspace || true
+
       - name: Run unit & integration tests
         run: bash packages/chain/node-core/scripts/cargo-test.sh
+
       - name: Run pallet tests
         run: bash packages/chain/node-core/scripts/test-pallets.sh
-      - name: Download wasm artifacts (for verification)
+
+      - name: Download wasm artifacts (verification)
         uses: actions/download-artifact@v4
         with:
           name: ghost-runtime-wasm-wasm32-unknown-unknown
           path: runtime-wasm-artifacts
         continue-on-error: true
 
-  # -------------------------
-  # 4. Build native binaries (matrixed by target)
-  #    - Uses native cache separate from wasm cache
-  # -------------------------
+  # -------------------------------------------------------------------
+  # 4. Build native binaries (matrixed)
+  # -------------------------------------------------------------------
   build:
     name: Build native (${{ matrix.target }})
     needs: [check, test, build-wasm-runtime]
@@ -194,7 +210,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [x86_64-unknown-linux-gnu, aarch64-unknown-linux-gnu]
         include:
           - target: x86_64-unknown-linux-gnu
             artifact: ghost-node-linux-amd64
@@ -202,58 +217,67 @@ jobs:
             artifact: ghost-node-linux-arm64
     steps:
       - uses: actions/checkout@v4
+
       - name: Install Rust toolchain (with target)
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
           components: rust-src
-      - name: Add wasm targets (kept, but native build separate)
+
+      - name: Add wasm targets (kept)
         run: |
           rustup target add wasm32-unknown-unknown
           rustup target add wasm32v1-none
-      - name: Remove leftover wbuild
+
+      - name: Remove leftover wbuild (defensive)
         run: rm -rf **/wbuild || true
+
       - name: Install build deps
         run: |
           sudo apt-get update
           sudo apt-get install -y clang llvm protobuf-compiler libprotobuf-dev cmake libssl-dev libudev-dev build-essential
+
       - name: Install cross-compilation tools (ARM64)
         if: matrix.target == 'aarch64-unknown-linux-gnu'
         run: sudo apt-get install -y gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+
       - name: Setup native cache
         uses: Swatinem/rust-cache@v2
         with:
           workspaces: packages/chain/node-core
           cache-on-failure: true
           key: native-build-${{ matrix.target }}-${{ hashFiles('packages/chain/node-core/**') }}
+
       - name: Generate/update Cargo.lock
         run: |
           cd packages/chain/node-core
           cargo update --workspace || true
+
       - name: Build release binary
         working-directory: packages/chain/node-core
         env:
-          # cross toolchain env for ARM64
           CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: ${{ matrix.target == 'aarch64-unknown-linux-gnu' && 'aarch64-linux-gnu-gcc' || '' }}
           CC_aarch64_unknown_linux_gnu: ${{ matrix.target == 'aarch64-unknown-linux-gnu' && 'aarch64-linux-gnu-gcc' || '' }}
           AR_aarch64_unknown_linux_gnu: ${{ matrix.target == 'aarch64-unknown-linux-gnu' && 'aarch64-linux-gnu-ar' || '' }}
         run: |
           set -eux
           cargo build --release --target ${{ matrix.target }} --verbose
+
       - name: Prepare artifact
         run: |
           mkdir -p artifacts/${{ matrix.artifact }}
           cp packages/chain/node-core/target/${{ matrix.target }}/release/ghost-node artifacts/${{ matrix.artifact }}/ghost-node
           chmod +x artifacts/${{ matrix.artifact }}/ghost-node
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.artifact }}
           path: artifacts/${{ matrix.artifact }}/*
 
-  # -------------------------
-  # 5. Build & Push Docker (uses Docker layer cache)
-  # -------------------------
+  # -------------------------------------------------------------------
+  # 5. Build & Push Docker (uses GHA layer cache)
+  # -------------------------------------------------------------------
   build-docker:
     name: Build and push Docker image
     runs-on: ubuntu-latest
@@ -269,14 +293,17 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
@@ -286,31 +313,21 @@ jobs:
             type=ref,event=branch
             type=sha,prefix={{branch}}-
             type=raw,value=latest,enable={{is_default_branch}}
-      - name: Restore gha cache for docker layers
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: docker-cache-${{ runner.os }}-${{ hashFiles('packages/chain/node-core/Dockerfile') }}
-          restore-keys: |
-            docker-cache-${{ runner.os }}-
-      - name: Build and push Docker image (cached)
+
+      - name: Build and push Docker image (cached via GHA)
         uses: docker/build-push-action@v5
         with:
           context: packages/chain/node-core
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           platforms: linux/amd64
-      - name: Move new cache
-        run: |
-          rm -rf /tmp/.buildx-cache || true
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache || true
 
-  # -------------------------
+  # -------------------------------------------------------------------
   # 6. Release: aggregate artifacts + create GitHub release
-  # -------------------------
+  # -------------------------------------------------------------------
   release:
     name: Create Release
     runs-on: ubuntu-latest
@@ -325,27 +342,32 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
+
       - name: Determine tag name
         id: tag
         run: |
+          set -eux
           if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == refs/tags/* ]]; then
             TAG_NAME="${{ github.ref }}"
             TAG_NAME="${TAG_NAME#refs/tags/}"
-            echo "name=${TAG_NAME}" >> $GITHUB_OUTPUT
+            echo "name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
           else
             TAG_NAME=$(git describe --tags --abbrev=0 2>/dev/null)
             if [ -z "$TAG_NAME" ]; then
               echo "No tags found"
               exit 1
             fi
-            echo "name=${TAG_NAME}" >> $GITHUB_OUTPUT
+            echo "name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
           fi
+
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: release-artifacts
+
       - name: Create checksums
         run: |
+          set -eux
           cd release-artifacts
           for dir in */; do
             cd "$dir"
@@ -356,6 +378,7 @@ jobs:
             done
             cd ..
           done
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
