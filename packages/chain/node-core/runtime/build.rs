@@ -1,16 +1,22 @@
-#[cfg(all(feature = "std", feature = "metadata-hash"))]
 fn main() {
-    substrate_wasm_builder::WasmBuilder::init_with_defaults()
-        .enable_metadata_hash("UNIT", 12)
-        .build();
-}
+    // Skip WASM build if SKIP_WASM_BUILD is set (Phase 1: native-only)
+    if std::env::var("SKIP_WASM_BUILD").is_ok() {
+        println!("cargo:warning=Skipping WASM build (SKIP_WASM_BUILD=1) - Phase 1 native only");
+        return;
+    }
 
-#[cfg(all(feature = "std", not(feature = "metadata-hash")))]
-fn main() {
-    substrate_wasm_builder::WasmBuilder::build_using_defaults();
-}
+    #[cfg(feature = "std")]
+    {
+        #[cfg(feature = "metadata-hash")]
+        {
+            substrate_wasm_builder::WasmBuilder::init_with_defaults()
+                .enable_metadata_hash("UNIT", 12)
+                .build();
+        }
 
-/// The wasm builder is deactivated when compiling
-/// this crate for wasm to speed up the compilation.
-#[cfg(not(feature = "std"))]
-fn main() {}
+        #[cfg(not(feature = "metadata-hash"))]
+        {
+            substrate_wasm_builder::WasmBuilder::build_using_defaults();
+        }
+    }
+}
